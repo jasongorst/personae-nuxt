@@ -1,0 +1,27 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.1.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Character {
+  id          Int      @id @default(autoincrement())
+  player      String
+  mortalName  String?
+  faeName     String?
+  rank        String?
+  kith        String?
+  location    String?
+  position    String?
+  seeming     String?
+  house       String?
+  bannerhouse String?
+  description String?
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+}
