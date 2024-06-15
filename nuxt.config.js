@@ -4,6 +4,7 @@ export default defineNuxtConfig({
   devServer: { port: 3001 },
   modules: [
     "@nuxtjs/tailwindcss",
+    "@pinia/nuxt",
     "nuxt-icon",
     "nuxt-lodash"
   ],
@@ -14,17 +15,18 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
+      link: [
+        { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+        { rel: "icon", href: "/theater-masks-solid.svg" },
+        { rel: "manifest", href: "/manifest.json" },
+        { rel: "mask-icon", href: "/theater-masks-solid.svg", color: "#6e0b75" }
+      ],
       meta: [
         { charset: "UTF-8" },
-        { name: "theme-color", content: "#ff9a33" },
+        { name: "theme-color", content: "#6e0b75" },
         { name: "viewport", content: "width=device-width, initial-scale=1.0" }
       ],
-      link: [
-        { rel: "icon", href: "/users-rays-solid.svg" },
-        { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
-        { rel: "manifest", href: "/manifest.json" },
-        { rel: "mask-icon", href: "/users-rays-solid.svg", color: "#ff9a33" }
-      ]
+      title: "Dramatis Personae"
     }
   }
 })

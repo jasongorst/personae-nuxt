@@ -1,11 +1,11 @@
-import tailwindContainerQueries from "@tailwindcss/container-queries"
 import daisyui from "daisyui"
 import themes from "daisyui/src/theming/themes"
+import tailwindTypography from "@tailwindcss/typography"
 
 export default {
   plugins: [
-    tailwindContainerQueries,
-    daisyui
+    daisyui,
+    tailwindTypography
   ],
   daisyui: {
     themes: [
@@ -49,7 +49,7 @@ export default {
       "sunset"
     ],
     darkMode: "media",
-    darkTheme: "halloween",
+    darkTheme: "business",
     logs: false
   }
 }
