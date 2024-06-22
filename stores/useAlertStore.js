@@ -16,26 +16,30 @@ export default defineStore("alert", {
   actions: {
     addMessage(text, {
       severity = "info",
-      canDismiss = true,
-      dismissedIn = 4 * 1000,
+      dismissable = true,
+      dismissedIn = 0,
       dismissOnLeave = false
     } = {}) {
       const id = this.nextId
 
-      const message = new AlertMessage(text, {
-        severity,
-        canDismiss,
-        dismissedIn,
-        dismissOnLeave
+      // if neither dismissable nor auto-dismissed, make the alert dismissable
+      if (!dismissable && dismissedIn === 0) {
+        dismissable = true
+      }
+
+      this.messages.set(id, {
+        text: text,
+        severity: severity,
+        dismissable: dismissable,
+        dismissedIn: dismissedIn,
+        dismissOnLeave: dismissOnLeave
       })
 
-      this.messages.set(id, message)
       this.nextId++
-
       return id
     },
 
-    getMessageID(id) {
+    getMessage(id) {
       return this.messages.get(id)
     },
 

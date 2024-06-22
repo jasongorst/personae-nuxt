@@ -18,7 +18,7 @@
             <Icon
               v-if="sort.attribute === attribute"
               :name="sort.isAscending ? 'fa6-solid:arrow-down-a-z' : 'fa6-solid:arrow-down-z-a'"
-              fixed-width
+              class="w-[1.25em] h-[1em] -mt-[0.1667em]"
             />
           </span>
         </th>
@@ -83,6 +83,6 @@ function attributeTooltip(attribute) {
 
 .tooltip-late:hover:before,
 .tooltip-late:hover:after {
-  @apply delay-300;
+  @apply delay-500;
 }
 </style>

@@ -7,8 +7,8 @@ export const useSessionStore = defineStore("session", {
 
     _assign(
       sessionState,
-      getJSONCookie("account"),
-      JSON.parse(localStorage.getItem("account"))
+      //getJSONCookie("account"),
+      //JSON.parse(localStorage.getItem("account"))
     )
 
     return sessionState
@@ -29,8 +29,8 @@ export const useSessionStore = defineStore("session", {
 
   actions: {
     clear() {
-      clearJSONCookie("account")
-      localStorage.removeItem("account")
+      //clearJSONCookie("account")
+      //localStorage.removeItem("account")
       this.$reset()
     },
 
@@ -40,11 +40,11 @@ export const useSessionStore = defineStore("session", {
         isAdmin: isAdmin
       }
 
-      if (useLocalStorage) {
-        localStorage.setItem("account", JSON.stringify(account))
-      } else {
-        setJSONCookie("account", account)
-      }
+      //if (useLocalStorage) {
+      //  localStorage.setItem("account", JSON.stringify(account))
+      //} else {
+      //  setJSONCookie("account", account)
+      //}
 
       this.$patch(account)
     }

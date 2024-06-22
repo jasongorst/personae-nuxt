@@ -1,21 +1,17 @@
 <template>
   <div class="navbar bg-primary text-primary-content">
     <div class="md:hidden">
-      <div
+      <details
         id="hamburger-menu-dropdown"
         class="dropdown"
       >
-        <label
-          tabindex="0"
+        <summary
           class="btn btn-ghost normal-case"
         >
           <Icon name="fa6-solid:bars" />
-        </label>
+        </summary>
 
-        <ul
-          tabindex="0"
-          class="dropdown-content menu mt-3 p-2 shadow bg-primary rounded-box z-10 whitespace-nowrap"
-        >
+        <ul class="dropdown-content menu mt-3 p-2 shadow bg-primary rounded-box z-10 whitespace-nowrap">
           <li>
             <NuxtLink to="/">
               Home
@@ -50,7 +46,7 @@
             </a>
           </li>
         </ul>
-      </div>
+      </details>
     </div>
 
     <div class="btn btn-ghost normal-case text-lg">

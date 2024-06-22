@@ -11,7 +11,7 @@ function isInFilter(character, filter) {
   let result = true
 
   _forEach(filter, (values, attribute) => {
-    if (!isEmpty(values) && !values.includes(character[attribute])) {
+    if (!_isEmpty(values) && !values.includes(character[attribute])) {
       result = false
       return false
     }

@@ -2,10 +2,10 @@
   <div class="drawer-side">
     <div class="p-6 md:p-8 w-72 h-full bg-base-200 text-base-content overflow-y-auto z-20">
       <button
-        v-if="charactersStore.isFilterSet"
-        class="btn btn-sm btn-accent btn-block uppercase mb-6"
-        @click="charactersStore.resetFilter"
         type="button"
+        v-if="charactersStore.isFilterSet"
+        @click="charactersStore.resetFilter"
+        class="btn btn-sm btn-accent btn-block uppercase mb-6"
       >
         Clear Filter
       </button>
@@ -35,7 +35,7 @@
               class="checkbox checkbox-xs"
             >
             <span
-              :class="{ 'opacity-60': !isValueInAttributeMap(value, attribute, filteredAttributeMap) }"
+              :class="{ 'opacity-60': !isInAttributeMap(value, attribute, filteredAttributeMap) }"
               class="label-text text-sm"
             >
               {{ value }}
@@ -64,20 +64,19 @@ function attributeMap(characters) {
   return result
 }
 
-function isValueInAttributeMap(value, attribute, attributeMap) {
+function isInAttributeMap(value, attribute, attributeMap) {
   const values = attributeMap.get(attribute)
-  return (isEmpty(values) || values.includes(value))
+  return (_isEmpty(values) || values.includes(value))
 }
 </script>
 
 <style scoped>
 .drawer-side {
-  @apply static w-full;
-  transform: translateX(-18rem);
-  transition: transform 0.4s cubic-bezier(0, 0, 0.58, 1);
+  @apply static w-full -translate-x-[18rem];
+  transition: transform 300ms cubic-bezier(0, 0, 0.58, 1);
 
   & > *:not(&.drawer-overlay) {
-    transform: translateX(0);
+    @apply translate-x-0;
   }
 
   & ul {

@@ -1,18 +1,4 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
-  devServer: { port: 3001 },
-  modules: [
-    "@nuxtjs/tailwindcss",
-    "@pinia/nuxt",
-    "nuxt-icon",
-    "nuxt-lodash"
-  ],
-  lodash: {
-    prefix: "_",
-    prefixSkip: false,
-    upperAfterPrefix: false
-  },
   app: {
     head: {
       link: [
@@ -27,6 +13,28 @@ export default defineNuxtConfig({
         { name: "viewport", content: "width=device-width, initial-scale=1.0" }
       ],
       title: "Dramatis Personae"
+    }
+  },
+  devtools: { enabled: true },
+  devServer: { port: 3001 },
+  modules: [
+    "@nuxtjs/tailwindcss",
+    "@pinia/nuxt",
+    "nuxt-icon",
+    "nuxt-lodash"
+  ],
+  lodash: {
+    prefix: "_",
+    prefixSkip: false,
+    upperAfterPrefix: false
+  },
+  vite: {
+    vue: {
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => (tag.startsWith("trix-") || tag.startsWith("action-text-"))
+        }
+      }
     }
   }
 })

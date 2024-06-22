@@ -1,11 +1,9 @@
 <template>
-  <div
+  <details
     class="dropdown dropdown-bottom dropdown-end"
     ref="userMenu"
   >
-    <div
-      role="button"
-      tabindex="0"
+    <summary
       class="btn btn-ghost swap"
       :class="{ 'swap-active': isSignedIn }"
     >
@@ -17,10 +15,9 @@
         name="fa6-regular:circle-user"
         class="swap-off"
       />
-    </div>
+    </summary>
 
     <ul
-      tabindex="0"
       class="dropdown-content menu w-52 mt-3 p-2 shadow bg-primary rounded-box z-10 whitespace-nowrap"
     >
       <template v-if="isSignedIn">
@@ -75,14 +72,11 @@
 
       <ClientOnly>
         <li>
-          <ThemeChanger
-            default-theme="fantasy"
-            default-dark-theme="business"
-          />
+          <ThemeChanger />
         </li>
       </ClientOnly>
     </ul>
-  </div>
+  </details>
 </template>
 
 <script setup>

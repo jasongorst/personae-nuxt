@@ -4,7 +4,7 @@
       v-for="[id, message] in alertStore.messages"
       :key="id"
       :severity="message.severity"
-      :can-dismiss="message.canDismiss"
+      :dismissable="message.dismissable"
       :dismissed-in="message.dismissedIn"
       :dismiss-on-leave="message.dismissOnLeave"
       @dismiss="alertStore.removeMessage(id)"

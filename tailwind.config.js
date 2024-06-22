@@ -5,7 +5,7 @@ import tailwindTypography from "@tailwindcss/typography"
 export default {
   plugins: [
     daisyui,
-    tailwindTypography
+    tailwindTypography,
   ],
   daisyui: {
     themes: [

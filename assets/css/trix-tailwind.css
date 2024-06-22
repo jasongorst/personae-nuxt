@@ -1,4 +1,4 @@
-.trix trix-toolbar {
+trix-toolbar {
   .trix-button {
     @apply btn btn-sm btn-secondary !border-none rounded-sm block py-0 px-3;
 
@@ -30,64 +30,62 @@
       @apply !bg-none bg-secondary-content;
     }
   }
-}
 
-.trix-button--icon-attach::before {
-  mask: url("@/assets/images/attach.svg") center no-repeat;
-  top: 8%;
-  bottom: 4%;
-}
+  .trix-button--icon-attach::before {
+    mask: url("~/assets/images/attach.svg") center no-repeat;
+  }
 
-.trix-button--icon-bold::before {
-  mask: url("@/assets/images/bold.svg") center no-repeat;
-}
+  .trix-button--icon-bold::before {
+    mask: url("~/assets/images/bold.svg") center no-repeat;
+  }
 
-.trix-button--icon-italic::before {
-  mask: url("@/assets/images/italic.svg") center no-repeat;
-}
+  .trix-button--icon-italic::before {
+    mask: url("~/assets/images/italic.svg") center no-repeat;
+  }
 
-.trix-button--icon-link::before {
-  mask: url("@/assets/images/link.svg") center no-repeat;
-}
+  .trix-button--icon-link::before {
+    mask: url("~/assets/images/link.svg") center no-repeat;
+  }
 
-.trix-button--icon-strike::before {
-  mask: url("@/assets/images/strike.svg") center no-repeat;
-}
+  .trix-button--icon-strike::before {
+    mask: url("~/assets/images/strike.svg") center no-repeat;
+  }
 
-.trix-button--icon-quote::before {
-  mask: url("@/assets/images/quote.svg") center no-repeat;
-}
+  .trix-button--icon-quote::before {
+    mask: url("~/assets/images/quote.svg") center no-repeat;
+  }
 
-.trix-button--icon-heading-1::before {
-  mask: url("@/assets/images/heading_1.svg") center no-repeat;
-}
+  .trix-button--icon-heading-1::before {
+    mask: url("~/assets/images/heading_1.svg") center no-repeat;
+  }
 
-.trix-button--icon-code::before {
-  mask: url("@/assets/images/code.svg") center no-repeat;
-}
+  .trix-button--icon-code::before {
+    mask: url("~/assets/images/code.svg") center no-repeat;
+  }
 
-.trix-button--icon-bullet-list::before {
-  mask: url("@/assets/images/bullets.svg") center no-repeat;
-}
+  .trix-button--icon-bullet-list::before {
+    mask: url("~/assets/images/bullets.svg") center no-repeat;
+  }
 
-.trix-button--icon-number-list::before {
-  mask: url("@/assets/images/numbers.svg") center no-repeat;
-}
+  .trix-button--icon-number-list::before {
+    mask: url("~/assets/images/numbers.svg") center no-repeat;
+  }
 
-.trix-button--icon-undo::before {
-  mask: url("@/assets/images/undo.svg") center no-repeat;
-}
+  .trix-button--icon-undo::before {
+    mask: url("~/assets/images/undo.svg") center no-repeat;
+  }
 
-.trix-button--icon-redo::before {
-  mask: url("@/assets/images/redo.svg") center no-repeat;
-}
+  .trix-button--icon-redo::before {
+    mask: url("~/assets/images/redo.svg") center no-repeat;
+  }
 
-.trix-button--icon-decrease-nesting-level::before {
-  mask: url("@/assets/images/nesting_level_decrease.svg") center no-repeat;
-}
+  .trix-button--icon-decrease-nesting-level::before {
+    mask: url("~/assets/images/nesting_level_decrease.svg") center no-repeat;
+  }
 
-.trix-button--icon-increase-nesting-level::before {
-  mask: url("@/assets/images/nesting_level_increase.svg") center no-repeat;
+  .trix-button--icon-increase-nesting-level::before {
+    mask: url("~/assets/images/nesting_level_increase.svg") center no-repeat;
+  }
 }
 
 .trix-dialog {

@@ -33,13 +33,12 @@
 .drawer {
   & .drawer-content {
     @apply grid grid-cols-1 grid-rows-1 items-start justify-items-start;
-    width: calc(100% + 18rem);
-    transform: translateX(-18rem);
-    transition: transform 0.4s cubic-bezier(0, 0, 0.58, 1), width 0.4s cubic-bezier(0, 0, 0.58, 1);
+    @apply w-[calc(100%_+_18rem)] -translate-x-[18rem];
+    transition: transform 300ms cubic-bezier(0, 0, 0.58, 1), width 300ms cubic-bezier(0, 0, 0.58, 1);
 
     & .drawer-overlay {
       @apply cursor-pointer bg-transparent;
-      transition: background-color 0.2s cubic-bezier(0, 0, 0.58, 1);
+      transition: background-color 150ms cubic-bezier(0, 0, 0.58, 1);
     }
 
     & > * {
@@ -49,8 +48,7 @@
 
   & .drawer-toggle:checked {
     & ~ .drawer-content > .drawer-overlay {
-      @apply place-self-stretch sticky top-0 z-50 min-[1568px]:hidden;
-      background-color: hsl(0 0% 0%/0.4);
+      @apply bg-base-300/50 place-self-stretch sticky top-0 z-50 min-[1568px]:hidden;
     }
 
     & ~ .drawer-content {
@@ -58,8 +56,7 @@
     }
 
     & ~ .drawer-side {
-      @apply sticky;
-      transform: translateX(0);
+      @apply sticky translate-x-0;
     }
   }
 }

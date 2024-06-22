@@ -1,6 +1,8 @@
 <template>
   <details>
-    <summary>Choose Theme</summary>
+    <summary class="hide-dropdown-arrow">
+      Change Theme
+    </summary>
 
     <div class="theme-changer -mt-1 -mb-2 h-[38rem] max-h-[calc(100vh-4rem)] w-48 overflow-y-auto grid grid-cols-1 gap-2 px-2">
       <template
@@ -67,9 +69,7 @@ const currentTheme = ref(getLocalTheme() || "default")
 
 watch(
   currentTheme,
-  (newTheme) => {
-    applyTheme(newTheme)
-  },
+  (newTheme) => applyTheme(newTheme),
   { immediate: true }
 )
 
@@ -103,7 +103,7 @@ function setLocalTheme(theme) {
   @apply after:sticky after:bottom-0 after:left-0 after:w-full after:h-2 after:-mt-2 after:bg-gradient-to-t after:from-primary after:to-transparent after:border-0 after:border-white;
 }
 
-.menu :where(li > details > summary):after {
-  @apply !invisible;
+.hide-dropdown-arrow {
+  @apply after:hidden;
 }
 </style>
