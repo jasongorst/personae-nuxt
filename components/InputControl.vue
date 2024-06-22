@@ -11,8 +11,8 @@
     <input
       v-model="model"
       :type="type"
-      :id="id"
       :class="inputClass"
+      :id="id"
       :list="`${id}_list`"
       :disabled="disabled"
       v-bind="$attrs"
@@ -34,17 +34,20 @@
 
 <script setup>
 defineOptions({
-  // disable attribute fallthrough
+  // disable attribute fallthrough to root component
+  //   (they're assigned to the <input> with v-bind="$attrs")
   inheritAttrs: false
 })
 
 const model = defineModel()
 
 const props = defineProps({
+  // id of <input>
   id: {
     type: String,
     required: true
   },
+  // type of <input>
   type: {
     type: String,
     default: "text",
@@ -52,6 +55,7 @@ const props = defineProps({
       return ["checkbox", "email", "text"].includes(value)
     }
   },
+  // size of input (daisyui sizes)
   size: {
     type: String,
     default: "md",
@@ -59,32 +63,40 @@ const props = defineProps({
       return ["lg", "md", "sm", "xs"].includes(value)
     }
   },
+  // class of div.form-control
   wrapperClass: {
     type: [Array, String]
   },
+  // content of <label>
   label: {
     type: String
   },
+  // class of label.label
   labelClass: {
     type: [Array, String],
     default: "text-secondary"
   },
+  // array of <option> values for <datalist>
   datalist: {
     type: Array,
     default: []
   },
+  // content of error message
   error: {
     type: String,
     default: ""
   },
+  // class of error span.label-text-alt
   errorLabelClass: {
     type: [Array, String],
     default: "text-error"
   },
+  // disabled input
   disabled: {
     type: Boolean,
     default: false
   },
+  // tooltip content for data-tip attribute
   disabledTooltip: {
     type: String,
     default: ""
@@ -93,18 +105,26 @@ const props = defineProps({
 
 const disabledClass = ["tooltip", "tooltip-info", "tooltip-bottom", "tooltip-late"]
 
+const checkboxSize = {
+  lg: "checkbox-lg",
+  md: "checkbox-md",
+  sm: "checkbox-sm",
+  xs: "checkbox-xs"
+}
+
+const inputSize = {
+  lg: "input-lg",
+  md: "input-md",
+  sm: "input-sm",
+  xs: "input-xs"
+}
+
 const inputClass = computed(() => {
-  let result = []
+  const result = []
 
   switch (props.type) {
     case "checkbox":
-      result.push("checkbox", `checkbox-${props.size}`)
-
-      if (props.disabled) {
-        result.push("cursor-not-allowed")
-      } else {
-        result.push("cursor-pointer")
-      }
+      result.push("checkbox", checkboxSize[props.size])
 
       if (isPresent(props.error)) {
         result.push("checkbox-error")
@@ -115,18 +135,22 @@ const inputClass = computed(() => {
     case "email":
     case "text":
     default:
-      result.push("input", "input-bordered", `input-${props.size}`)
+      result.push("input", "input-bordered", inputSize[props.size])
 
       if (isPresent(props.error)) {
         result.push("input-error")
       }
   }
 
+  if (props.disabled) {
+    result.push("cursor-not-allowed")
+  }
+
   return result
 })
 
 const computedLabelClass = computed(() => {
-  let result = classToArray(props.labelClass)
+  let result = castClassListToArray(props.labelClass)
 
   if (props.disabled) {
     result.push("label-disabled", "cursor-not-allowed")
@@ -145,11 +169,15 @@ const formControlClass = computed(() => {
   }
 })
 
-function classToArray(className) {
-  if (_isString(className)) {
-    return className.split(" ")
+function castClassListToArray(classList) {
+  if (_isString(classList)) {
+    return classList.split(" ")
+  } else if (_isArray(classList)) {
+    return classList
   } else {
-    return className
+    console.error(`can't cast ${classList} as an array of class names`)
+
+    throw TypeError(`can't cast ${classList} as an array of class names`)
   }
 }
 </script>
@@ -162,11 +190,5 @@ function classToArray(className) {
 .tooltip-late:hover:before,
 .tooltip-late:hover:after {
   @apply delay-500;
-}
-
-.hello-tree-shaker {
-  @apply input input-bordered input-error input-lg input-md input-sm input-xs;
-  @apply checkbox checkbox-error checkbox-lg checkbox-md checkbox-sm checkbox-xs;
-  @apply cursor-pointer cursor-not-allowed;
 }
 </style>
