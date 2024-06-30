@@ -1,12 +1,15 @@
 <template>
   <div
-    class="alert text-start justify-items-start grid-flow-col pr-8 relative border-2 grid grid-cols-[1rem,_auto] gap-8 hover:swap-active"
-    :class="[{ 'alert-animate': clickable, 'cursor-pointer': clickable }, borderColor[severity]]"
+    class="
+      alert relative border-2 text-start justify-items-start pr-8 hover:swap-active
+      grid grid-flow-col grid-cols-[1rem,_auto] gap-8
+    "
+    :class="[{ 'alert-animate': dismissable, 'cursor-pointer': dismissable }, borderColor[severity]]"
     @click="dismiss"
   >
     <template v-if="dismissable">
       <button
-        class="btn btn-square btn-xs btn-ghost absolute right-1 top-1"
+        class="absolute right-1 top-1 btn btn-square btn-xs btn-ghost"
         type="button"
       >
         <!-- dismissable && dismissedIn > 0 -->
@@ -20,7 +23,7 @@
             role="progressbar"
           ></span>
 
-          <span class="swap-on inline-grid w-4 h-4 place-content-center">
+          <span class="inline-grid w-4 h-4 place-content-center swap-on">
             <Icon name="fa6-solid:xmark" />
           </span>
         </span>
@@ -34,7 +37,7 @@
     </template>
 
     <template v-else>
-      <div class="flex justify-center items-center text-xs leading-none h-6 w-6 p-0 absolute right-1 top-1">
+      <div class="absolute right-1 top-1 h-6 w-6 p-0 flex justify-center items-center text-xs leading-none">
         <!-- !dismissable && dismissedIn > 0 -->
         <div
           v-if="isPositive(dismissedIn)"
@@ -65,16 +68,7 @@ const props = defineProps({
   severity: {
     type: String,
     default: "info",
-    validator(value, _) {
-      if (["info", "success", "warning", "error"].includes(value)) {
-        return true
-      } else if (["alert", "notice"].includes(value)) {
-        console.log("'alert' and 'notice' severity are deprecated. Use 'error' and 'info' instead.")
-        return true
-      } else {
-        return false
-      }
-    }
+    validator: (value) => (["info", "success", "warning", "error"].includes(value))
   },
 
   dismissable: {
@@ -94,9 +88,6 @@ const props = defineProps({
 })
 
 const emit = defineEmits(["dismiss"])
-
-props.severity = normalizeSeverity(props.severity)
-const clickable = props.dismissable
 
 const borderColor = {
   error: "border-error/50",
@@ -153,25 +144,6 @@ if (isPositive(props.dismissedIn)) {
 function dismiss() {
   if (props.dismissable) {
     emit("dismiss")
-  }
-}
-
-function normalizeSeverity(severity) {
-  switch (severity) {
-    case "error":
-    case "warning":
-    case "success":
-    case "info":
-      return severity
-
-    // deprecated
-    case "alert":
-      return "error"
-
-    // deprecated
-    case "notice":
-    default:
-      return "info"
   }
 }
 </script>

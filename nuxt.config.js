@@ -15,7 +15,13 @@ export default defineNuxtConfig({
       title: "Dramatis Personae"
     }
   },
-  devtools: { enabled: true },
+  devtools: {
+    enabled: true,
+
+    timeline: {
+      enabled: true
+    }
+  },
   devServer: { port: 3001 },
   modules: [
     "@nuxtjs/tailwindcss",

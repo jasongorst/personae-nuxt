@@ -30,7 +30,7 @@ export function useApiCall(
       //console.log("[useFetch response]")
       //console.dir(response, { colors: true })
 
-      if (_has(response, "error")) {
+      if (response.ok) {
         await successCb(response)
       }
     },

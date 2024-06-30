@@ -1,14 +1,15 @@
 <template>
   <div class="card bg-base-300 shadow-xl mx-auto max-w-prose">
     <div class="card-body">
-      <CharacterForm
-        v-model="character"
+      <AccountForm
+        v-model="account"
         :field-error="fieldError"
+        action="edit"
       />
 
-      <div class="card-actions mt-6 flex-row-reverse">
+      <div class="card-actions pt-3 flex-row-reverse">
         <LoadingButton
-          @click="saveCharacter"
+          @click="saveAccount"
           :is-loading="savingStatus === 'pending'"
           type="button"
           class="btn-sm btn-secondary uppercase"
@@ -17,18 +18,21 @@
         </LoadingButton>
 
         <button
+          type="button"
           @click="router.back"
           class="btn btn-sm btn-primary uppercase"
-          type="button"
         >
           Cancel
         </button>
 
         <LoadingButton
-          @click="deleteCharacter"
+          @click="deleteAccount"
           :is-loading="deletingStatus === 'pending'"
           type="button"
-          class="btn btn-sm btn-accent uppercase"
+          class="btn btn-sm btn-accent uppercase text-info-content"
+          :class="{ 'loading-button-disabled': isOwnAccount }"
+          :disabled="isOwnAccount"
+          data-tip="Please don't delete your own account."
         >
           Delete
         </LoadingButton>
@@ -38,22 +42,32 @@
 </template>
 
 <script setup>
+const props = defineProps(["id"])
+
 const route = useRoute()
 const router = useRouter()
 const alertStore = useAlertStore()
 const fieldError = ref(null)
 const fieldErrorAlertId = ref(null)
 
-const characterBody = computed(() => ({
-  character: _reduce(
-    apiAttributes,
-    (obj, attribute) => {
-      obj[attribute] = character.value[attribute]
-      return obj
-    },
-    {}
+const accountAttributes = ["email", "password", "status", "admin"]
+
+const accountBody = computed(() => ({
+  account: _pick(
+    _omitBy(account.value, isBlank),
+    accountAttributes
   )
 }))
+
+//const sessionStore = useSessionStore()
+//const { getAccount } = storeToRefs(sessionStore)
+
+//const isOwnAccount = computed(
+//  () => (getAccount.value && (getAccount.value.email === account.value.email))
+//)
+
+// dummy isOwnAccount
+const isOwnAccount = false
 
 onBeforeRouteLeave(() => {
   dismissFieldErrorAlert()
@@ -65,9 +79,9 @@ function dismissFieldErrorAlert() {
   }
 }
 
-// load character
-const { data: character } = await useApiCall(
-  `http://localhost:3000/characters/${route.params.id}`,
+// load account
+const { data: account } = await useApiCall(
+  `http://localhost:3000/accounts/${route.params.id}`,
   {
     beforeCb: async () => {
       await sleep(2000)
@@ -75,7 +89,7 @@ const { data: character } = await useApiCall(
 
     apiErrorCb: () => {
       alertStore.addMessage(
-        "The character couldn't be loaded. Something is wrong with the server.", {
+        "The account couldn't be loaded. Something is wrong with the server.", {
           severity: "error",
           dismissOnLeave: true
         }
@@ -84,7 +98,7 @@ const { data: character } = await useApiCall(
 
     fetchErrorCb: () => {
       alertStore.addMessage(
-        "The character couldn't be loaded. The server cannot be reached.", {
+        "The account couldn't be loaded. The server cannot be reached.", {
           severity: "error",
           dismissOnLeave: true
         }
@@ -93,13 +107,13 @@ const { data: character } = await useApiCall(
   }
 )
 
-// save character
-const { execute: saveCharacter, status: savingStatus } = await useApiCall(
-  `http://localhost:3000/characters/${route.params.id}`,
+// save account
+const { execute: saveAccount, status: savingStatus } = useApiCall(
+  `http://localhost:3000/accounts/${route.params.id}`,
   {
     manualFetch: true,
     method: "patch",
-    body: characterBody,
+    body: accountBody,
 
     beforeCb: async () => {
       await sleep(2000)
@@ -108,32 +122,35 @@ const { execute: saveCharacter, status: savingStatus } = await useApiCall(
       fieldErrorAlertId.value = null
     },
 
-    successCb: async (response) => {
+    successCb: async () => {
       alertStore.addMessage(
-        "The character has been updated.", {
+        "The account has been updated.", {
           severity: "success",
           dismissedIn: 4000
         }
       )
 
-      await router.push(`show-${route.params.id}`)
+      await router.push("/dashboard/account")
     },
 
     fieldErrorCb: (response) => {
       fieldErrorAlertId.value = alertStore.addMessage(
-        "There was a problem updating the character. See below.", {
+        "There was a problem updating the account. See below.", {
           severity: "warning",
           dismissOnLeave: true
         }
       )
 
-      fieldError.value = sentenceizeValues(response._data)
+      fieldError.value = deepConvertValues(
+        deepConvertValues(response._data, sentenceize),
+        joinArrays
+      )
     },
 
     apiErrorCb: async (error) => {
       //if (error?.response?.status === 401) {
       //  alertStore.addMessage(
-      //    "You must be signed in to edit characters.", {
+      //    "You must be signed in to edit accounts.", {
       //      severity: "warning",
       //      dismissOnLeave: true
       //    }
@@ -141,18 +158,18 @@ const { execute: saveCharacter, status: savingStatus } = await useApiCall(
       //
       //  await router.replace({ name: "sign-in", query: { next: route.path } })
       //} else {
-        alertStore.addMessage(
-          "The character couldn't be updated. Something is wrong with the server.", {
-            severity: "error",
-            dismissOnLeave: true
-          }
-        )
+      alertStore.addMessage(
+        "The account couldn't be updated. Something is wrong with the server.", {
+          severity: "error",
+          dismissOnLeave: true
+        }
+      )
       //}
     },
 
     fetchErrorCb: () => {
       alertStore.addMessage(
-        "The character couldn't be updated. The server cannot be reached.", {
+        "The account couldn't be updated. The server cannot be reached.", {
           severity: "error",
           dismissOnLeave: true
         }
@@ -161,9 +178,9 @@ const { execute: saveCharacter, status: savingStatus } = await useApiCall(
   }
 )
 
-// delete character
-const { execute: deleteCharacter, status: deletingStatus } = await useApiCall(
-  `http://localhost:3000/characters/${route.params.id}`,
+// delete account
+const { execute: deleteAccount, status: deletingStatus } = await useApiCall(
+  `http://localhost:3000/accounts/${route.params.id}`,
   {
     manualFetch: true,
     method: "delete",
@@ -174,19 +191,19 @@ const { execute: deleteCharacter, status: deletingStatus } = await useApiCall(
 
     successCb: async () => {
       alertStore.addMessage(
-        "The character has been deleted.", {
+        "The account has been deleted.", {
           severity: "success",
           dismissedIn: 4000
         }
       )
 
-      await router.push("/")
+      await router.push("/dashboard/account")
     },
 
     apiErrorCb: async (error) => {
-      //if (error.status === 401) {
+      //if (error?.response?.status === 401) {
       //  alertStore.addMessage(
-      //    "You must be signed in to delete characters.", {
+      //    "You must be signed in to delete accounts.", {
       //      severity: "warning",
       //      dismissOnLeave: true
       //    }
@@ -194,18 +211,18 @@ const { execute: deleteCharacter, status: deletingStatus } = await useApiCall(
       //
       //  await router.replace({ name: "sign-in", query: { next: route.path } })
       //} else {
-        alertStore.addMessage(
-          "The character couldn't be deleted. Something is wrong with the server.", {
-            severity: "error",
-            dismissOnLeave: true
-          }
-        )
+      alertStore.addMessage(
+        "The account couldn't be deleted. Something is wrong with the server.", {
+          severity: "error",
+          dismissOnLeave: true
+        }
+      )
       //}
     },
 
     fetchErrorCb: () => {
       alertStore.addMessage(
-        "The character couldn't be deleted. The server cannot be reached.", {
+        "The account couldn't be deleted. The server cannot be reached.", {
           severity: "error",
           dismissOnLeave: true
         }
@@ -215,6 +232,15 @@ const { execute: deleteCharacter, status: deletingStatus } = await useApiCall(
 )
 </script>
 
-<style scoped>
+<style>
+.tooltip-late:hover:before,
+.tooltip-late:hover:after {
+  @apply delay-500;
+}
 
+.loading-button-disabled {
+  @apply tooltip tooltip-info tooltip-bottom tooltip-late;
+  @apply no-animation cursor-not-allowed !pointer-events-auto;
+  @apply before:font-light before:normal-case before:!text-info-content;
+}
 </style>

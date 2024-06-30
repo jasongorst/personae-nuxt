@@ -1,6 +1,6 @@
 <template>
   <div class="toast toast-top toast-end w-full md:w-[24rem] lg:w-[28rem] xl:w-[32rem] absolute p-0 top-20 z-[9] whitespace-normal">
-    <AlertBar
+    <AlertItem
       v-for="[id, message] in alertStore.messages"
       :key="id"
       :severity="message.severity"
@@ -10,7 +10,7 @@
       @dismiss="alertStore.removeMessage(id)"
     >
       {{ message.text }}
-    </AlertBar>
+    </AlertItem>
   </div>
 </template>
 

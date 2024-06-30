@@ -1,24 +1,25 @@
 <template>
   <div class="form-control">
     <label
+      v-if="$slots.label"
       :for="labelFor"
       class="label label-text"
       :class="labelClass"
     >
-      {{ label }}
+      <slot name="label" />
     </label>
 
     <slot />
 
     <label
-      v-if="isPresent(error)"
+      v-if="$slots.error"
       class="label"
     >
       <span
         class="label-text-alt"
         :class="errorLabelClass"
       >
-        {{ error }}
+        <slot name="error" />
       </span>
     </label>
   </div>
@@ -26,19 +27,12 @@
 
 <script setup>
 const props = defineProps({
-  label: {
-    type: String
-  },
   labelFor: {
     type: String
   },
   labelClass: {
     type: [Array, String],
     default: "text-secondary"
-  },
-  error: {
-    type: String,
-    default: ""
   },
   errorLabelClass: {
     type: [Array, String],

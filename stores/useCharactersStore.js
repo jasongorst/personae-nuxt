@@ -11,8 +11,10 @@ function isInFilter(character, filter) {
   let result = true
 
   _forEach(filter, (values, attribute) => {
-    if (!_isEmpty(values) && !values.includes(character[attribute])) {
+    if (!isEmpty(values) && !values.includes(character[attribute])) {
       result = false
+
+      // exit forEach early
       return false
     }
   })
@@ -62,8 +64,12 @@ export default defineStore("characters", {
       this.filter = getBlankFilter()
     },
 
-    sortCharacters(comparison) {
-      this.characters.sort(comparison)
+    sortCharacters(attribute, direction = "asc") {
+      if (direction === "asc") {
+        this.characters.sort(compareAsc(attribute))
+      } else {
+        this.characters.sort(compareDesc(attribute))
+      }
     }
   }
 })

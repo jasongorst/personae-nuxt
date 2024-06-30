@@ -1,4 +1,4 @@
-export default function type(value) {
+export default function checkType(value) {
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof
   if (value === null) {
     return "null"

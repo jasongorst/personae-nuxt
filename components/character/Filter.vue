@@ -66,7 +66,7 @@ function attributeMap(characters) {
 
 function isInAttributeMap(value, attribute, attributeMap) {
   const values = attributeMap.get(attribute)
-  return (_isEmpty(values) || values.includes(value))
+  return (isEmpty(values) || values.includes(value))
 }
 </script>
 

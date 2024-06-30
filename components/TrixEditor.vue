@@ -42,7 +42,6 @@ const props = defineProps({
   // `id` of the hidden input field
   inputId: {
     type: String,
-    required: false,
     default: () => uuid()
   },
   // `name` of the hidden input field

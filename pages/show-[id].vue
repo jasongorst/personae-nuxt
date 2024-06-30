@@ -75,10 +75,30 @@ const route = useRoute()
 //const { isSignedIn } = storeToRefs(sessionStore)
 const isSignedIn = true
 
-const { data: character } = await useFetch(
+const { data: character } = await useApiCall(
   `http://localhost:3000/characters/${route.params.id}`,
   {
-    transform: (data) => deepConvertKeys(data, _camelCase)
+    beforeCb: async () => {
+      await sleep(2000)
+    },
+
+    apiErrorCb: () => {
+      alertStore.addMessage(
+        "The character couldn't be loaded. Something is wrong with the server.", {
+          severity: "error",
+          dismissOnLeave: true
+        }
+      )
+    },
+
+    fetchErrorCb: () => {
+      alertStore.addMessage(
+        "The character couldn't be loaded. The server cannot be reached.", {
+          severity: "error",
+          dismissOnLeave: true
+        }
+      )
+    }
   }
 )
 </script>

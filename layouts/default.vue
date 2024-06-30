@@ -12,13 +12,9 @@
         class="drawer-overlay"
       />
 
-      <div class="relative w-full xl:max-w-screen-xl xl:mx-auto">
-        <NavBar class="mb-4 lg:mb-6" />
-
-        <AlertMessages />
-
+      <BaseLayout>
         <slot />
-      </div>
+      </BaseLayout>
     </div>
 
     <CharacterFilter />

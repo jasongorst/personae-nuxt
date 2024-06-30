@@ -17,7 +17,7 @@
           <span class="inline-block w-0 overflow-x-visible text-accent">
             <Icon
               v-if="sort.attribute === attribute"
-              :name="sort.isAscending ? 'fa6-solid:arrow-down-a-z' : 'fa6-solid:arrow-down-z-a'"
+              :name="sort.sortDirection === 'asc' ? 'fa6-solid:arrow-down-a-z' : 'fa6-solid:arrow-down-z-a'"
               class="w-[1.25em] h-[1em] -mt-[0.1667em]"
             />
           </span>
@@ -40,30 +40,29 @@
 const charactersStore = useCharactersStore()
 
 const sort = ref({
-  attribute: "id",
-  isAscending: true,
+  attribute: "createdAt",
+  sortDirection: "asc"
 })
 
 function updateSort(attribute) {
   if (sort.value.attribute === attribute) {
-    if (sort.value.isAscending) {
-      sort.value.isAscending = false
-      charactersStore.sortCharacters(compareDesc(attribute))
+    if (sort.value.sortDirection === "asc") {
+      sort.value.sortDirection = "desc"
     } else {
-      sort.value.attribute = "id"
-      sort.value.isAscending = true
-      charactersStore.sortCharacters(compareAsc("id"))
+      sort.value.attribute = "createdAt"
+      sort.value.sortDirection = "asc"
     }
   } else {
     sort.value.attribute = attribute
-    sort.value.isAscending = true
-    charactersStore.sortCharacters(compareAsc(attribute))
+    sort.value.sortDirection = "asc"
   }
+
+  charactersStore.sortCharacters(sort.value.attribute, sort.value.sortDirection)
 }
 
 function attributeTooltip(attribute) {
   if (sort.value.attribute === attribute) {
-    if (sort.value.isAscending) {
+    if (sort.value.sortDirection === "asc") {
       return "Click to reverse sort order."
     } else {
       return "Click for default order."

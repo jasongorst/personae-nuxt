@@ -37,11 +37,31 @@
 const charactersStore = useCharactersStore()
 const { characters, query } = storeToRefs(charactersStore)
 
-const { data, refresh: loadCharacters } = await useFetch(
+const { data, refresh: loadCharacters } = await useApiCall(
   "http://localhost:3000/characters",
   {
+    manualFetch: true,
     query: { q: query },
-    transform: (data) => deepConvertKeys(data, _camelCase)
+
+    transform: (data) => deepParseTimestamps(deepConvertKeys(data, _camelCase)),
+
+    apiErrorCb: () => {
+      alertStore.addMessage(
+        "Couldn't load characters. Something is wrong with the server.", {
+          severity: "error",
+          dismissOnLeave: true
+        }
+      )
+    },
+
+    fetchErrorCb: () => {
+      alertStore.addMessage(
+        "Couldn't load characters. The server cannot be reached.", {
+          severity: "error",
+          dismissOnLeave: true
+        }
+      )
+    }
   }
 )
 
@@ -59,32 +79,32 @@ watch(
 )
 
 // add some dummy alerts
-callOnce(() => {
-  const alertStore = useAlertStore()
-
-  alertStore.addMessage(
-    "This is a test.", {
-      severity: "info",
-      dismissable: true,
-      dismissedIn: 4 * 1000
-    }
-  )
-
-  alertStore.addMessage(
-    "This is only a test.", {
-      severity: "success",
-      dismissable: true
-    }
-  )
-
-  alertStore.addMessage(
-    "This is also a test.", {
-      severity: "warning",
-      dismissable: false,
-      dismissedIn: 4 * 1000
-    }
-  )
-})
+//callOnce(() => {
+//  const alertStore = useAlertStore()
+//
+//  alertStore.addMessage(
+//    "This is a test.", {
+//      severity: "info",
+//      dismissable: true,
+//      dismissedIn: 4 * 1000
+//    }
+//  )
+//
+//  alertStore.addMessage(
+//    "This is only a test.", {
+//      severity: "success",
+//      dismissable: true
+//    }
+//  )
+//
+//  alertStore.addMessage(
+//    "This is also a test.", {
+//      severity: "warning",
+//      dismissable: false,
+//      dismissedIn: 10 * 1000
+//    }
+//  )
+//})
 </script>
 
 <style scoped>

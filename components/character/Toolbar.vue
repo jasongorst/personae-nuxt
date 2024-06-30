@@ -11,7 +11,7 @@
 
       <NuxtLink
         v-if="isSignedIn"
-        to="create"
+        to="/create"
         class="justify-self-end btn btn-xs btn-secondary uppercase"
       >
         Add

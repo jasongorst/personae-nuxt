@@ -31,7 +31,7 @@
 
           <li v-if="currentRoute === '/'">
             <div>
-              <SearchField input-id="dropdown_search" />
+              <NavSearch input-id="dropdown_search" />
             </div>
           </li>
 
@@ -87,7 +87,7 @@
 
     <div class="flex grow justify-end">
       <div class="hidden md:flex md:pr-4">
-        <SearchField
+        <NavSearch
           v-if="currentRoute === '/'"
           input-id="navbar_search"
         />
@@ -107,7 +107,7 @@
         </a>
       </div>
 
-      <UserMenu />
+      <NavUserMenu />
     </div>
   </div>
 </template>

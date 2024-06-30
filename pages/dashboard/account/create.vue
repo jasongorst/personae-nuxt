@@ -1,14 +1,15 @@
 <template>
   <div class="card bg-base-300 shadow-xl mx-auto max-w-prose">
     <div class="card-body">
-      <CharacterForm
-        v-model="character"
+      <AccountForm
+        v-model="account"
         :field-error="fieldError"
+        action="create"
       />
 
-      <div class="card-actions mt-6 flex-row-reverse">
+      <div class="card-actions pt-3 flex-row-reverse">
         <LoadingButton
-          @click="saveCharacter"
+          @click="saveAccount"
           :is-loading="savingStatus === 'pending'"
           type="button"
           class="btn-sm btn-secondary uppercase"
@@ -29,15 +30,17 @@
 </template>
 
 <script setup>
-const route = useRoute()
 const router = useRouter()
 const alertStore = useAlertStore()
 const fieldError = ref(null)
 const fieldErrorAlertId = ref(null)
 
-const character = ref(_fromPairs(
-  apiAttributes.map((attribute) => [attribute, null])
-))
+const account = ref({
+  email: null,
+  password: null,
+  status: "verified",
+  admin: false
+})
 
 onBeforeRouteLeave(() => {
   dismissFieldErrorAlert()
@@ -49,12 +52,12 @@ function dismissFieldErrorAlert() {
   }
 }
 
-const { execute: saveCharacter, status: savingStatus } = await useApiCall(
-  "http://localhost:3000/characters",
+const { execute: saveAccount, status: savingStatus } = await useApiCall(
+  "http://localhost:3000/accounts",
   {
     manualFetch: true,
     method: "post",
-    body: { character: character.value },
+    body: { account: account.value },
 
     beforeCb: async () => {
       await sleep(2000)
@@ -63,20 +66,20 @@ const { execute: saveCharacter, status: savingStatus } = await useApiCall(
       fieldErrorAlertId.value = null
     },
 
-    successCb: async (response) => {
+    successCb: async () => {
       alertStore.addMessage(
-        "The character has been created.", {
+        "The account has been created.", {
           severity: "success",
           dismissedIn: 4000
         }
       )
 
-      await router.push(`show-${response._data.id}`)
+      await router.push("/dashboard/account")
     },
 
     fieldErrorCb: (response) => {
       fieldErrorAlertId.value = alertStore.addMessage(
-        "There was a problem creating the character. See below.", {
+        "There was a problem creating the account. See below.", {
           severity: "warning",
           dismissOnLeave: true
         }
@@ -88,10 +91,10 @@ const { execute: saveCharacter, status: savingStatus } = await useApiCall(
       )
     },
 
-    apiErrorCb: async (error) => {
+    apiErrorCb: async () => {
       //if (error?.response?.status === 401) {
       //  alertStore.addMessage(
-      //    "You must be signed in to create characters.", {
+      //    "You must be signed in to edit accounts.", {
       //      severity: "warning",
       //      dismissOnLeave: true
       //    }
@@ -100,7 +103,7 @@ const { execute: saveCharacter, status: savingStatus } = await useApiCall(
       //  await router.replace({ name: "sign-in", query: { next: route.path } })
       //} else {
         alertStore.addMessage(
-          "The character couldn't be created. Something is wrong with the server.", {
+          "The account couldn't be created. Something is wrong with the server.", {
             severity: "error",
             dismissOnLeave: true
           }
@@ -110,7 +113,7 @@ const { execute: saveCharacter, status: savingStatus } = await useApiCall(
 
     fetchErrorCb: () => {
       alertStore.addMessage(
-        "The character couldn't be created. The server cannot be reached.", {
+        "The account couldn't be created. The server cannot be reached.", {
           severity: "error",
           dismissOnLeave: true
         }

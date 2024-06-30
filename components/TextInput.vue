@@ -2,17 +2,15 @@
   <FormControl
     :class="formControlClass"
     :data-tip="disabledTooltip"
-    :label="label"
-    :labelFor="id"
+    :label-for="id"
     :label-class="computedLabelClass"
-    :error="error"
     :error-label-class="errorLabelClass"
   >
     <input
       v-model="model"
-      :type="type"
-      :class="inputClass"
       :id="id"
+      :type="type"
+      :class="[...inputClass, { [inputErrorClass]: $slots.error }]"
       :list="`${id}_list`"
       :disabled="disabled"
       v-bind="$attrs"
@@ -29,6 +27,14 @@
       >
       </option>
     </datalist>
+
+    <template #label>
+      <slot name="label" />
+    </template>
+
+    <template #error v-if="$slots.error">
+      <slot name="error" />
+    </template>
   </FormControl>
 </template>
 
@@ -45,7 +51,7 @@ const props = defineProps({
   // id of <input>
   id: {
     type: String,
-    required: true
+    default: () => uuid()
   },
   // type of <input>
   type: {
@@ -67,10 +73,6 @@ const props = defineProps({
   wrapperClass: {
     type: [Array, String]
   },
-  // content of <label>
-  label: {
-    type: String
-  },
   // class of label.label
   labelClass: {
     type: [Array, String],
@@ -80,11 +82,6 @@ const props = defineProps({
   datalist: {
     type: Array,
     default: []
-  },
-  // content of error message
-  error: {
-    type: String,
-    default: ""
   },
   // class of error span.label-text-alt
   errorLabelClass: {
@@ -122,24 +119,10 @@ const inputSize = {
 const inputClass = computed(() => {
   const result = []
 
-  switch (props.type) {
-    case "checkbox":
-      result.push("checkbox", checkboxSize[props.size])
-
-      if (isPresent(props.error)) {
-        result.push("checkbox-error")
-      }
-
-      break
-
-    case "email":
-    case "text":
-    default:
-      result.push("input", "input-bordered", inputSize[props.size])
-
-      if (isPresent(props.error)) {
-        result.push("input-error")
-      }
+  if (props.type === "checkbox") {
+    result.push("checkbox", checkboxSize[props.size])
+  } else {
+    result.push("input", "input-bordered", inputSize[props.size])
   }
 
   if (props.disabled) {
@@ -149,8 +132,16 @@ const inputClass = computed(() => {
   return result
 })
 
+const inputErrorClass = computed(() => {
+  if (props.type === "checkbox") {
+    return "checkbox-error"
+  } else {
+    return "input-error"
+  }
+})
+
 const computedLabelClass = computed(() => {
-  let result = castClassListToArray(props.labelClass)
+  let result = classListToArray(props.labelClass)
 
   if (props.disabled) {
     result.push("label-disabled", "cursor-not-allowed")
@@ -168,18 +159,6 @@ const formControlClass = computed(() => {
     return props.wrapperClass
   }
 })
-
-function castClassListToArray(classList) {
-  if (_isString(classList)) {
-    return classList.split(" ")
-  } else if (_isArray(classList)) {
-    return classList
-  } else {
-    console.error(`can't cast ${classList} as an array of class names`)
-
-    throw TypeError(`can't cast ${classList} as an array of class names`)
-  }
-}
 </script>
 
 <style>
