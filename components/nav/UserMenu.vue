@@ -3,17 +3,15 @@
     class="dropdown dropdown-bottom dropdown-end"
     ref="userMenu"
   >
-    <summary
-      class="btn btn-ghost swap"
-      :class="{ 'swap-active': isSignedIn }"
-    >
+    <summary class="btn btn-ghost">
       <Icon
+        v-if="isSignedIn"
         name="fa6-solid:circle-user"
-        class="swap-on"
       />
+
       <Icon
+        v-else
         name="fa6-regular:circle-user"
-        class="swap-off"
       />
     </summary>
 
@@ -22,13 +20,12 @@
     >
       <template v-if="isSignedIn">
         <li class="menu-title text-primary-content/55 whitespace-nowrap">
-          {{ sessionStore.email }}
+          {{ email }}
         </li>
 
-        <li v-if="sessionStore.isAdmin">
+        <li v-if="isAdmin">
           <NuxtLink
-            :to="{ name: 'accounts' }"
-            class="whitespace-nowrap"
+            to="/dashboard/account"
             @click="closeUserMenu"
           >
             Dashboard
@@ -37,7 +34,7 @@
 
         <li>
           <NuxtLink
-            :to="{ name: 'changePassword' }"
+            to="/user/change-password"
             class="whitespace-nowrap"
             @click="closeUserMenu"
           >
@@ -51,7 +48,10 @@
             class="whitespace-nowrap"
             @click="signOut"
           >
-            <span v-if="isLoading" class="loading loading-spinner"></span>
+            <span
+              v-if="signOutStatus === 'pending'"
+              class="loading loading-spinner"><!--
+         --></span>
 
             <span v-else>Sign Out</span>
           </button>
@@ -61,7 +61,7 @@
       <template v-else>
         <li>
           <NuxtLink
-            :to="signInRoute"
+            to="/user/sign-in"
             class="whitespace-nowrap"
             @click="closeUserMenu"
           >
@@ -82,66 +82,56 @@
 <script setup>
 const userMenu = ref(null)
 
-//const alertStore = useAlertStore()
-//const sessionStore = useSessionStore()
-//const { isSignedIn } = storeToRefs(sessionStore)
-
-// dummy sign-in/sign-out
-const sessionStore = {
-  email: "an-email-address@example.com",
-  isAdmin: false
-}
-const isSignedIn = false
-const signOut = () => {}
-const isLoading = false
-const signInRoute = "/"
+const alertStore = useAlertStore()
+const sessionStore = useSessionStore()
+const { email, isAdmin, isSignedIn } = storeToRefs(sessionStore)
 
 const route = useRoute()
 
-//const signInRoute = computed(() => (
-//  { name: "sign-in", query: { next: route.path } }
-//))
-
 function closeUserMenu() {
-  elementWithChildren(userMenu.value, (el) => el.blur())
+  userMenu.value.open = false
 }
 
-//const { isLoading, callApi: signOut } = useApiCall({
-//  apiCall: async () => {
-//    if (confirm("Are you sure?")) {
-//      await RodauthApi.logout()
-//    }
-//  },
-//
-//  successCb: () => {
-//    alertStore.addMessage(
-//      "You have been signed out.", {
-//        severity: "success",
-//        dismissedIn: 4000
-//      }
-//    )
-//
-//    sessionStore.clear()
-//  },
-//
-//  apiErrorCb: () => {
-//    alertStore.addMessage(
-//      "You couldn't be signed out. Something is wrong with the server.", {
-//        severity: "error",
-//        dismissOnLeave: true
-//      }
-//    )
-//  },
-//
-//  fetchErrorCb: () => {
-//    alertStore.addMessage(
-//      "You couldn't be signed out. The server cannot be reached.", {
-//        severity: "error",
-//        dismissOnLeave: true
-//      }
-//    )
-//  }
-//})
+const { execute: signOut, status: signOutStatus } = useApiCall(
+  "http://localhost:3000/auth/logout",
+  {
+    manualFetch: true,
+    method: "post",
+
+    beforeCb: async () => {
+      await sleep(2000)
+    },
+
+    successCb: async () => {
+      alertStore.addMessage(
+        "You have been signed out.", {
+          severity: "success",
+          dismissedIn: 4000
+        }
+      )
+
+      sessionStore.clear()
+    },
+
+    apiErrorCb: async () => {
+      alertStore.addMessage(
+        "You couldn't be signed out. Something is wrong with the server.", {
+          severity: "error",
+          dismissOnLeave: true
+        }
+      )
+    },
+
+    fetchErrorCb: async () => {
+      alertStore.addMessage(
+        "You couldn't be signed out. The server cannot be reached.", {
+          severity: "error",
+          dismissOnLeave: true
+        }
+      )
+    }
+  }
+)
 </script>
 
 <style scoped>
