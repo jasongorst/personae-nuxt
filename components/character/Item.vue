@@ -6,7 +6,7 @@
       class="!p-0"
     >
       <NuxtLink
-        :to="`show-${character.id}`"
+        :to="`/show-${character.id}`"
         class="inline-block w-full px-3 py-2 xl:px-4 xl:py-3"
         v-html="character[attribute] || '&nbsp;'"
       ></NuxtLink>
