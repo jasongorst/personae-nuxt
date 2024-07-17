@@ -7,14 +7,17 @@ export default defineNuxtConfig({
         { rel: "manifest", href: "/manifest.json" },
         { rel: "mask-icon", href: "/theater-masks-solid.svg", color: "#6e0b75" }
       ],
+
       meta: [
         { charset: "UTF-8" },
         { name: "theme-color", content: "#6e0b75" },
         { name: "viewport", content: "width=device-width, initial-scale=1.0" }
       ],
+
       title: "Dramatis Personae"
     }
   },
+
   devtools: {
     enabled: true,
 
@@ -22,18 +25,25 @@ export default defineNuxtConfig({
       enabled: true
     }
   },
+
+  compatibilityDate: "2024-07-10",
+
   devServer: { port: 3001 },
+
   modules: [
+    "@nuxt/icon",
     "@nuxtjs/tailwindcss",
+    "@pinia-plugin-persistedstate/nuxt",
     "@pinia/nuxt",
-    "nuxt-icon",
     "nuxt-lodash"
   ],
+
   lodash: {
     prefix: "_",
     prefixSkip: false,
     upperAfterPrefix: false
   },
+
   vite: {
     vue: {
       template: {
