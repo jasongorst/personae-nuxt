@@ -38,7 +38,7 @@ const charactersStore = useCharactersStore()
 const { characters, query } = storeToRefs(charactersStore)
 
 const { data, refresh: loadCharacters } = await useApiCall(
-  "http://localhost:3000/characters",
+  "/api/v1/characters",
   {
     manualFetch: true,
     query: { q: query },

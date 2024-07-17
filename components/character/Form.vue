@@ -30,6 +30,10 @@
       <template #label>
         {{ _startCase(attribute) }}
       </template>
+
+      <template #error v-if="_has(fieldError, attribute)">
+        {{ fieldError[attribute] }}
+      </template>
     </TrixInput>
   </ClientOnly>
 </template>

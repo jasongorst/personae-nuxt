@@ -67,7 +67,7 @@ function dismissFieldErrorAlert() {
 
 // load character
 const { data: character } = await useApiCall(
-  `http://localhost:3000/characters/${route.params.id}`,
+  `/api/v1/characters/${route.params.id}`,
   {
     beforeCb: async () => {
       await sleep(2000)
@@ -95,7 +95,7 @@ const { data: character } = await useApiCall(
 
 // save character
 const { execute: saveCharacter, status: savingStatus } = await useApiCall(
-  `http://localhost:3000/characters/${route.params.id}`,
+  `/api/v1/characters/${route.params.id}`,
   {
     manualFetch: true,
     method: "patch",
@@ -163,7 +163,7 @@ const { execute: saveCharacter, status: savingStatus } = await useApiCall(
 
 // delete character
 const { execute: deleteCharacter, status: deletingStatus } = await useApiCall(
-  `http://localhost:3000/characters/${route.params.id}`,
+  `/api/v1/characters/${route.params.id}`,
   {
     manualFetch: true,
     method: "delete",

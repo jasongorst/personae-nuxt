@@ -76,7 +76,7 @@ const route = useRoute()
 const isSignedIn = true
 
 const { data: character } = await useApiCall(
-  `http://localhost:3000/characters/${route.params.id}`,
+  `/api/v1/characters/${route.params.id}`,
   {
     beforeCb: async () => {
       await sleep(2000)

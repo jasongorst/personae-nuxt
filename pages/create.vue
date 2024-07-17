@@ -50,7 +50,7 @@ function dismissFieldErrorAlert() {
 }
 
 const { execute: saveCharacter, status: savingStatus } = await useApiCall(
-  "http://localhost:3000/characters",
+  "/api/v1/characters",
   {
     manualFetch: true,
     method: "post",
