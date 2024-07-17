@@ -7,15 +7,21 @@
   >
     <TrixEditor
       v-model="model"
+      :class="{ 'textarea-error': $slots.error }"
       :input-id="id"
       :input-name="`${id}_content`"
       :placeholder="placeholder"
       :autofocus="autofocus"
       :config="config"
+      v-bind="$attrs"
     />
 
     <template #label>
       <slot name="label" />
+    </template>
+
+    <template #error v-if="$slots.error">
+      <slot name="error" />
     </template>
   </FormControl>
 </template>
@@ -23,28 +29,28 @@
 <script setup>
 defineOptions({
   // disable attribute fallthrough to root component
-  //   (they're assigned to the <input> with v-bind="$attrs")
+  //   (they're assigned to the TrixEditor with v-bind="$attrs")
   inheritAttrs: false
 })
 
 const model = defineModel()
 
 const props = defineProps({
-  // id of hidden <input>
+  // id of hidden TrixEditor hidden input
   id: {
     type: String,
     default: () => uuid()
   },
-  // class of div.form-control
+  // class of FormControl
   wrapperClass: {
     type: [Array, String]
   },
-  // class of label.label
+  // class of label
   labelClass: {
     type: [Array, String],
     default: "text-secondary"
   },
-  // class of error span.label-text-alt
+  // class of error label
   errorLabelClass: {
     type: [Array, String],
     default: "text-error"
@@ -55,7 +61,7 @@ const props = defineProps({
     required: false,
     default: ""
   },
-  // focus editor when attached
+  // focus editor when attached?
   autofocus: {
     type: Boolean,
     required: false,

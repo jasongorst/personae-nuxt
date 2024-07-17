@@ -3,8 +3,7 @@
     <label
       v-if="$slots.label"
       :for="labelFor"
-      class="label label-text"
-      :class="labelClass"
+      :class="['label', 'label-text', ...classListToArray(labelClass)]"
     >
       <slot name="label" />
     </label>

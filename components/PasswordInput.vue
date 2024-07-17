@@ -11,11 +11,11 @@
     >
       <input
         v-model="password"
+        class="input input-bordered grow border-r-0 rounded-r-none focus:!outline-none focus-within:!outline-none"
+        :class="[inputSize[props.size], { 'input-error': $slots.error }]"
         :id="id"
         @change="emit('change')"
         :type="inputType"
-        class="input input-bordered grow border-r-0 rounded-r-none focus:!outline-none focus-within:!outline-none"
-        :class="[inputSize[props.size], { 'input-error': $slots.error }]"
         v-bind="$attrs"
       />
 

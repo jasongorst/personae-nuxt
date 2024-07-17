@@ -23,6 +23,7 @@
       @trix-file-accept.prevent="emitTrixFileAccept"
       @trix-attachment-add="emitTrixAttachmentAdd"
       @trix-attachment-remove="emitTrixAttachmentRemove"
+      v-bind="$attrs"
     />
   </div>
 </template>
@@ -31,6 +32,12 @@
 import "trix/dist/trix.css"
 import "~/assets/css/trix-tailwind.css"
 import Trix from "trix"
+
+defineOptions({
+  // disable attribute fallthrough to root component
+  //   (they're assigned to the trix-editor with v-bind="$attrs")
+  inheritAttrs: false
+})
 
 const model = defineModel({
   type: String,
@@ -133,6 +140,5 @@ function emitTrixAttachmentRemove(file) {
 </script>
 
 <style scoped>
-@import url("trix/dist/trix.css");
-@import url("~/assets/css/trix-tailwind.css");
+
 </style>

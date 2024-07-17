@@ -5,21 +5,20 @@
       { 'disabled-tooltip': (disabled && isPresent(disabledTooltip)) }
     ]"
     :data-tip="disabledTooltip"
-    :labelFor="id"
-    :label-class="[...classListToArray(labelClass), { 'label-disabled': disabled }]"
+    :label-for="id"
+    :label-class="[...classListToArray(labelClass), 'cursor-pointer', { 'label-disabled': disabled }]"
     :error-label-class="errorLabelClass"
   >
-    <SelectField
+    <CheckboxField
       v-model="model"
-      :class="{ 'select-error': $slots.error }"
+      :class="{ 'checkbox-error': $slots.error }"
       :id="id"
       :size="size"
-      :options="options"
       :disabled="disabled"
       v-bind="$attrs"
     />
 
-    <template #label v-if="$slots.label">
+    <template #label>
       <slot name="label" />
     </template>
 
@@ -32,19 +31,19 @@
 <script setup>
 defineOptions({
   // disable attribute fallthrough to root component
-  //   (they're assigned to the SelectField with v-bind="$attrs")
+  //   (they're assigned to the CheckboxField with v-bind="$attrs")
   inheritAttrs: false
 })
 
 const model = defineModel()
 
 const props = defineProps({
-  // id of <select>
+  // id of CheckboxField
   id: {
     type: String,
     default: () => uuid()
   },
-  // size of select (daisyui sizes)
+  // size of CheckboxField (daisyui sizes)
   size: {
     type: String,
     default: "md",
@@ -61,17 +60,12 @@ const props = defineProps({
     type: [Array, String],
     default: "text-secondary"
   },
-  // options for SelectField
-  options: {
-    type: [Array, Object],
-    required: true
-  },
   // class of error label
   errorLabelClass: {
     type: [Array, String],
     default: "text-error"
   },
-  // disabled SelectField
+  // disabled CheckboxField
   disabled: {
     type: Boolean,
     default: false
