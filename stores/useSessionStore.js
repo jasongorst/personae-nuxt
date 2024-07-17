@@ -1,27 +1,10 @@
-export const useSessionStore = defineStore("session", {
-  state: () => {
-    let sessionState = {
-      email: null,
-      isAdmin: false
-    }
-
-    _assign(
-      sessionState,
-      //getJSONCookie("account"),
-      //JSON.parse(localStorage.getItem("account"))
-    )
-
-    return sessionState
-  },
+export default defineStore("session", {
+  state: () => ({
+    email: null,
+    isAdmin: false
+  }),
 
   getters: {
-    getAccount(state) {
-      return {
-        email: state.email,
-        isAdmin: state.isAdmin
-      }
-    },
-
     isSignedIn(state) {
       return isPresent(state.email)
     },
@@ -29,24 +12,17 @@ export const useSessionStore = defineStore("session", {
 
   actions: {
     clear() {
-      //clearJSONCookie("account")
-      //localStorage.removeItem("account")
       this.$reset()
     },
 
-    set(email, isAdmin = false, useLocalStorage = false) {
-      const account = {
+    set(email, isAdmin = false) {
+      this.$patch({
         email: email,
         isAdmin: isAdmin
-      }
-
-      //if (useLocalStorage) {
-      //  localStorage.setItem("account", JSON.stringify(account))
-      //} else {
-      //  setJSONCookie("account", account)
-      //}
-
-      this.$patch(account)
+      })
     }
-  }
+  },
+
+  // use pinia-plugin-persistedstate
+  persist: true
 })

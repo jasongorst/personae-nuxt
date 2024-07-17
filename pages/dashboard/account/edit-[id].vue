@@ -66,8 +66,10 @@ const accountBody = computed(() => ({
 //  () => (getAccount.value && (getAccount.value.email === account.value.email))
 //)
 
-// dummy isOwnAccount
-const isOwnAccount = false
+// dummy sessionStore
+const isOwnAccount = computed(
+  () => (account.value.email === "jason@evilpaws.org")
+)
 
 onBeforeRouteLeave(() => {
   dismissFieldErrorAlert()
