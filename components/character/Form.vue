@@ -42,7 +42,7 @@
 const character = defineModel()
 const props = defineProps(["fieldError"])
 
-const { data: options } = await useApiCall("http://localhost:3000/characters/options")
+const { data: options } = await useApiCall("/api/v1/characters/options")
 </script>
 
 <style scoped>
