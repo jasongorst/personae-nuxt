@@ -12,9 +12,9 @@
         class="drawer-overlay"
       />
 
-      <BaseLayout>
+      <BaseContainer>
         <slot />
-      </BaseLayout>
+      </BaseContainer>
     </div>
 
     <CharacterFilter />

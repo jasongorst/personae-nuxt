@@ -1,7 +1,7 @@
 <template>
-  <BaseLayout>
+  <BaseContainer>
     <slot />
-  </BaseLayout>
+  </BaseContainer>
 </template>
 
 <script setup>
