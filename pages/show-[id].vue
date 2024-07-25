@@ -78,10 +78,6 @@ const isSignedIn = true
 const { data: character } = await useApiCall(
   `/api/v1/characters/${route.params.id}`,
   {
-    beforeCb: async () => {
-      await sleep(2000)
-    },
-
     apiErrorCb: () => {
       alertStore.addMessage(
         "The character couldn't be loaded. Something is wrong with the server.", {

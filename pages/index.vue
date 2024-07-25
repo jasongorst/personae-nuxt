@@ -77,34 +77,6 @@ watch(
   },
   { immediate: true }
 )
-
-// add some dummy alerts
-//callOnce(() => {
-//  const alertStore = useAlertStore()
-//
-//  alertStore.addMessage(
-//    "This is a test.", {
-//      severity: "info",
-//      dismissable: true,
-//      dismissedIn: 4 * 1000
-//    }
-//  )
-//
-//  alertStore.addMessage(
-//    "This is only a test.", {
-//      severity: "success",
-//      dismissable: true
-//    }
-//  )
-//
-//  alertStore.addMessage(
-//    "This is also a test.", {
-//      severity: "warning",
-//      dismissable: false,
-//      dismissedIn: 10 * 1000
-//    }
-//  )
-//})
 </script>
 
 <style scoped>

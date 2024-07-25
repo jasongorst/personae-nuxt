@@ -69,10 +69,6 @@ function dismissFieldErrorAlert() {
 const { data: character } = await useApiCall(
   `/api/v1/characters/${route.params.id}`,
   {
-    beforeCb: async () => {
-      await sleep(2000)
-    },
-
     apiErrorCb: () => {
       alertStore.addMessage(
         "The character couldn't be loaded. Something is wrong with the server.", {
@@ -102,8 +98,6 @@ const { execute: saveCharacter, status: savingStatus } = await useApiCall(
     body: characterBody,
 
     beforeCb: async () => {
-      await sleep(2000)
-
       dismissFieldErrorAlert()
       fieldErrorAlertId.value = null
     },
@@ -167,10 +161,6 @@ const { execute: deleteCharacter, status: deletingStatus } = await useApiCall(
   {
     manualFetch: true,
     method: "delete",
-
-    beforeCb: async () => {
-      await sleep(2000)
-    },
 
     successCb: async () => {
       alertStore.addMessage(

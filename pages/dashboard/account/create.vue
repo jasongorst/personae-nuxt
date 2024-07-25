@@ -60,8 +60,6 @@ const { execute: saveAccount, status: savingStatus } = await useApiCall(
     body: { account: account.value },
 
     beforeCb: async () => {
-      await sleep(2000)
-
       dismissFieldErrorAlert()
       fieldErrorAlertId.value = null
     },

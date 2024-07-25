@@ -119,10 +119,6 @@ function attributeTooltip(attribute) {
 const { data: accounts } = await useApiCall(
   "http://localhost:3000/accounts",
   {
-    beforeCb: async () => {
-      await sleep(2000)
-    },
-
     apiErrorCb: () => {
       alertStore.addMessage(
         "Couldn't load accounts. Something is wrong with the server.", {

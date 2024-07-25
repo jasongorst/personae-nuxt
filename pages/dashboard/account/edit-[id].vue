@@ -85,10 +85,6 @@ function dismissFieldErrorAlert() {
 const { data: account } = await useApiCall(
   `http://localhost:3000/accounts/${route.params.id}`,
   {
-    beforeCb: async () => {
-      await sleep(2000)
-    },
-
     apiErrorCb: () => {
       alertStore.addMessage(
         "The account couldn't be loaded. Something is wrong with the server.", {
@@ -118,8 +114,6 @@ const { execute: saveAccount, status: savingStatus } = useApiCall(
     body: accountBody,
 
     beforeCb: async () => {
-      await sleep(2000)
-
       dismissFieldErrorAlert()
       fieldErrorAlertId.value = null
     },
@@ -186,10 +180,6 @@ const { execute: deleteAccount, status: deletingStatus } = await useApiCall(
   {
     manualFetch: true,
     method: "delete",
-
-    beforeCb: async () => {
-      await sleep(2000)
-    },
 
     successCb: async () => {
       alertStore.addMessage(

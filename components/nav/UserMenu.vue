@@ -98,10 +98,6 @@ const { execute: signOut, status: signOutStatus } = useApiCall(
     manualFetch: true,
     method: "post",
 
-    beforeCb: async () => {
-      await sleep(2000)
-    },
-
     successCb: async () => {
       alertStore.addMessage(
         "You have been signed out.", {

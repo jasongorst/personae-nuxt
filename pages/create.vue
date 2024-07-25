@@ -57,8 +57,6 @@ const { execute: saveCharacter, status: savingStatus } = await useApiCall(
     body: { character: character.value },
 
     beforeCb: async () => {
-      await sleep(2000)
-
       dismissFieldErrorAlert()
       fieldErrorAlertId.value = null
     },
