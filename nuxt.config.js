@@ -19,6 +19,10 @@ export default defineNuxtConfig(
       }
     },
 
+    compatibilityDate: "2024-11-27",
+
+    devServer: { port: 3001 },
+
     devtools: {
       enabled: true,
 
@@ -27,9 +31,9 @@ export default defineNuxtConfig(
       }
     },
 
-    compatibilityDate: "2024-11-05",
-
-    devServer: { port: 3001 },
+    future: {
+      compatibilityVersion: 4
+    },
 
     modules: [
       "@nuxt/icon",
