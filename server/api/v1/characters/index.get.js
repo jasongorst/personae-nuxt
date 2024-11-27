@@ -7,11 +7,8 @@ export default defineEventHandler(async (event) => {
       "http://localhost:3000/characters",
       { query: query }
     )
-  } catch(error) {
-    throw createError({
-      statusCode: 500,
-      statusMessage: error.message
-    })
+  } catch (error) {
+    throw createError({ statusCode: 500, statusMessage: error.message })
   }
 
   return characters

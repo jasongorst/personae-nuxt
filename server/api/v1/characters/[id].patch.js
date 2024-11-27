@@ -12,10 +12,7 @@ export default defineEventHandler(async (event) => {
         body: deepConvertKeys(character, snakeCase)
       })
   } catch(error) {
-    throw createError({
-      statusCode: 500,
-      statusMessage: error.message
-    })
+    throw createError({ statusCode: 500, statusMessage: error.message })
   }
 
   return response
