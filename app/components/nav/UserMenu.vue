@@ -5,27 +5,22 @@
   >
     <summary class="btn btn-ghost">
       <Icon
-        v-if="status === 'authenticated'"
+        v-if="isSignedIn"
         name="fa6-solid:circle-user"
       />
 
       <Icon
-        v-else-if="status === 'unauthenticated'"
+        v-else
         name="fa6-regular:circle-user"
       />
-
-      <span
-        v-else
-        class="loading loading-spinner"><!--
-   --></span>
     </summary>
 
     <ul
       class="dropdown-content menu w-52 mt-3 p-2 shadow bg-primary rounded-box z-10 whitespace-nowrap"
     >
-      <template v-if="status === 'authenticated'">
+      <template v-if="isSignedIn">
         <li class="menu-title text-primary-content/55 whitespace-nowrap">
-          {{ data.email }}
+          {{ email }}
         </li>
 
         <li v-if="isAdmin">
@@ -51,10 +46,10 @@
           <button
             type="button"
             class="whitespace-nowrap"
-            @click="handleSignOut"
+            @click="signOut"
           >
             <span
-              v-if="status === 'loading'"
+              v-if="signOutStatus === 'pending'"
               class="loading loading-spinner"><!--
          --></span>
 
@@ -86,16 +81,53 @@
 
 <script setup>
 const userMenu = ref(null)
-const { status, data, signOut } = useAuth()
+
+const alertStore = useAlertStore()
+const sessionStore = useSessionStore()
+const { email, isAdmin, isSignedIn } = storeToRefs(sessionStore)
+
+const route = useRoute()
 
 function closeUserMenu() {
   userMenu.value.open = false
 }
 
-async function handleSignOut() {
-  await signOut()
-  closeUserMenu()
-}
+const { execute: signOut, status: signOutStatus } = useApiCall(
+  "http://localhost:3000/auth/logout",
+  {
+    manualFetch: true,
+    method: "post",
+
+    successCb: async () => {
+      alertStore.addMessage(
+        "You have been signed out.", {
+          severity: "success",
+          dismissedIn: 4000
+        }
+      )
+
+      sessionStore.clear()
+    },
+
+    apiErrorCb: async () => {
+      alertStore.addMessage(
+        "You couldn't be signed out. Something is wrong with the server.", {
+          severity: "error",
+          dismissOnLeave: true
+        }
+      )
+    },
+
+    fetchErrorCb: async () => {
+      alertStore.addMessage(
+        "You couldn't be signed out. The server cannot be reached.", {
+          severity: "error",
+          dismissOnLeave: true
+        }
+      )
+    }
+  }
+)
 </script>
 
 <style scoped>
