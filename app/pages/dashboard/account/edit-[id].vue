@@ -8,14 +8,14 @@
       />
 
       <div class="card-actions pt-3 flex-row-reverse">
-        <LoadingButton
+        <UILoadingButton
           @click="saveAccount"
           :is-loading="savingStatus === 'pending'"
           type="button"
           class="btn-sm btn-secondary uppercase"
         >
           Save
-        </LoadingButton>
+        </UILoadingButton>
 
         <button
           type="button"
@@ -25,7 +25,7 @@
           Cancel
         </button>
 
-        <LoadingButton
+        <UILoadingButton
           @click="deleteAccount"
           :is-loading="deletingStatus === 'pending'"
           type="button"
@@ -35,7 +35,7 @@
           data-tip="Please don't delete your own account."
         >
           Delete
-        </LoadingButton>
+        </UILoadingButton>
       </div>
     </div>
   </div>

@@ -7,14 +7,14 @@
       />
 
       <div class="card-actions mt-6 flex-row-reverse">
-        <LoadingButton
+        <UILoadingButton
           @click="saveCharacter"
           :is-loading="savingStatus === 'pending'"
           type="button"
           class="btn-sm btn-secondary uppercase"
         >
           Save
-        </LoadingButton>
+        </UILoadingButton>
 
         <button
           @click="router.back"
@@ -24,14 +24,14 @@
           Cancel
         </button>
 
-        <LoadingButton
+        <UILoadingButton
           @click="deleteCharacter"
           :is-loading="deletingStatus === 'pending'"
           type="button"
           class="btn btn-sm btn-accent uppercase"
         >
           Delete
-        </LoadingButton>
+        </UILoadingButton>
       </div>
     </div>
   </div>

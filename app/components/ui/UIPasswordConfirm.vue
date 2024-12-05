@@ -3,7 +3,7 @@
     class="contents"
     :class="wrapperClass"
   >
-    <PasswordInput
+    <UIPasswordInput
       v-model="password"
       @change="comparePasswords"
       :id="id"
@@ -22,10 +22,10 @@
       <template #error v-if="$slots.passwordError">
         <slot name="passwordError" />
       </template>
-    </PasswordInput>
+    </UIPasswordInput>
 
-    <PasswordInput
-      v-model="passwordConfirm"
+    <UIPasswordInput
+      v-model="UIPasswordConfirm"
       @change="comparePasswords"
       :id="`${id}_confirm`"
       :size="size"
@@ -45,7 +45,7 @@
           Passwords do not match.
         </slot>
       </template>
-    </PasswordInput>
+    </UIPasswordInput>
   </div>
 </template>
 
@@ -104,15 +104,15 @@ const props = defineProps({
 const emit = defineEmits(["hasMismatchError"])
 
 const password = ref(null)
-const passwordConfirm = ref(null)
+const UIPasswordConfirm = ref(null)
 const hasMismatchedPasswords = ref(false)
 
 function comparePasswords() {
-  if (isBlank(passwordConfirm.value)) {
-    // reset if passwordConfirm is blank
+  if (isBlank(UIPasswordConfirm.value)) {
+    // reset if UIPasswordConfirm is blank
     confirmedPassword.value = ""
     hasMismatchedPasswords.value = false
-  } else if (password.value === passwordConfirm.value) {
+  } else if (password.value === UIPasswordConfirm.value) {
     confirmedPassword.value = password.value
     hasMismatchedPasswords.value = false
   } else {

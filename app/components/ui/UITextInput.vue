@@ -1,22 +1,22 @@
 <template>
-  <FormControl
+  <UIFormControl
     :class="[
       ...classListToArray(wrapperClass),
       { 'disabled-tooltip': (disabled && isPresent(disabledTooltip)) }
     ]"
     :data-tip="disabledTooltip"
-    :label-for="id"
-    :label-class="[...classListToArray(labelClass), { 'label-disabled': disabled }]"
     :error-label-class="errorLabelClass"
+    :label-class="[ ...classListToArray(labelClass), { 'label-disabled': disabled } ]"
+    :label-for="id"
   >
-    <TextField
+    <UITextField
+      :id="id"
       v-model="model"
       :class="{ 'input-error': $slots.error }"
-      :id="id"
-      :type="type"
-      :size="size"
       :datalist="datalist"
       :disabled="disabled"
+      :size="size"
+      :type="type"
       v-bind="$attrs"
     />
 
@@ -24,51 +24,51 @@
       <slot name="label" />
     </template>
 
-    <template #error v-if="$slots.error">
+    <template v-if="$slots.error" #error>
       <slot name="error" />
     </template>
-  </FormControl>
+  </UIFormControl>
 </template>
 
 <script setup>
 defineOptions({
   // disable attribute fallthrough to root component
-  //   (they're assigned to the TextField with v-bind="$attrs")
+  //   (they're assigned to the UITextField.vue with v-bind="$attrs")
   inheritAttrs: false
 })
 
 const model = defineModel()
 
 const props = defineProps({
-  // id of TextField
+  // id of UITextField.vue
   id: {
     type: String,
     default: () => uuid()
   },
-  // type of TextField input
+  // type of UITextField.vue input
   type: {
     type: String,
     default: "text",
     validator(value) {
-      return ["email", "text"].includes(value)
+      return [ "email", "text" ].includes(value)
     }
   },
-  // size of TextField (daisyui sizes)
+  // size of UITextField.vue (daisyui sizes)
   size: {
     type: String,
     default: "md",
     validator(value) {
-      return ["lg", "md", "sm", "xs"].includes(value)
+      return [ "lg", "md", "sm", "xs" ].includes(value)
     }
   },
-  // class of FormControl
+  // class of UiFormControl
   wrapperClass: {
-    type: [Array, String],
+    type: [ Array, String ],
     default: ""
   },
   // class of label
   labelClass: {
-    type: [Array, String],
+    type: [ Array, String ],
     default: "text-secondary"
   },
   // array of option values for datalist
@@ -78,10 +78,10 @@ const props = defineProps({
   },
   // class of error label
   errorLabelClass: {
-    type: [Array, String],
+    type: [ Array, String ],
     default: "text-error"
   },
-  // disabled TextField
+  // disabled UITextField.vue
   disabled: {
     type: Boolean,
     default: false

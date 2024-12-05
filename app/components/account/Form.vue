@@ -1,5 +1,5 @@
 <template>
-  <TextInput
+  <UITextInput
     v-model="account.email"
     id="email"
     type="email"
@@ -12,9 +12,9 @@
     <template #error v-if="_has(fieldError, 'email')">
       {{ fieldError.email }}
     </template>
-  </TextInput>
+  </UITextInput>
 
-  <PasswordConfirm
+  <UIPasswordConfirm
     v-model="account.password"
     id="password"
     size="sm"
@@ -26,9 +26,9 @@
     <template #error v-if="_has(fieldError, 'password')">
       {{ fieldError.password }}
     </template>
-  </PasswordConfirm>
+  </UIPasswordConfirm>
 
-  <SelectInput
+  <UISelectInput
     v-model="account.status"
     id="status"
     size="sm"
@@ -44,9 +44,9 @@
     <template #error v-if="_has(fieldError, 'status')">
       {{ fieldError.status }}
     </template>
-  </SelectInput>
+  </UISelectInput>
 
-  <CheckboxInput
+  <UICheckboxInput
     v-model="account.admin"
     id="admin"
     size="sm"
@@ -61,7 +61,7 @@
     <template #error v-if="_has(fieldError, 'admin')">
       {{ fieldError.admin }}
     </template>
-  </CheckboxInput>
+  </UICheckboxInput>
 </template>
 
 <script setup>

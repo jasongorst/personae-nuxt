@@ -1,11 +1,11 @@
 <template>
   <input
-    v-model="model"
     :id="id"
-    :type="type"
+    v-model="model"
     :class="['input', 'input-bordered', inputSize[size], { 'cursor-not-allowed': disabled }]"
-    :list="isPresent(datalist) ? `${id}_list` : null"
     :disabled="disabled"
+    :list="isPresent(datalist) ? `${id}_list` : null"
+    :type="type"
     v-bind="$attrs"
   />
 
@@ -36,7 +36,7 @@ const props = defineProps({
     type: String,
     default: "text",
     validator(value) {
-      return ["email", "text"].includes(value)
+      return [ "email", "text" ].includes(value)
     }
   },
   // size of input (daisyui sizes)
@@ -44,7 +44,7 @@ const props = defineProps({
     type: String,
     default: "md",
     validator(value) {
-      return ["lg", "md", "sm", "xs"].includes(value)
+      return [ "lg", "md", "sm", "xs" ].includes(value)
     }
   },
   // array of option values for datalist

@@ -1,11 +1,11 @@
 <template>
-  <FormControl
+  <UIFormControl
     :class="wrapperClass"
     :label-for="id"
     :label-class="labelClass"
     :error-label-class="errorLabelClass"
   >
-    <TrixEditor
+    <UITrixEditor
       v-model="model"
       :class="{ 'textarea-error': $slots.error }"
       :input-id="id"
@@ -23,25 +23,25 @@
     <template #error v-if="$slots.error">
       <slot name="error" />
     </template>
-  </FormControl>
+  </UIFormControl>
 </template>
 
 <script setup>
 defineOptions({
   // disable attribute fallthrough to root component
-  //   (they're assigned to the TrixEditor with v-bind="$attrs")
+  //   (they're assigned to the UiTrixEditor with v-bind="$attrs")
   inheritAttrs: false
 })
 
 const model = defineModel()
 
 const props = defineProps({
-  // id of hidden TrixEditor hidden input
+  // id of hidden UiTrixEditor hidden input
   id: {
     type: String,
     default: () => uuid()
   },
-  // class of FormControl
+  // class of UiFormControl
   wrapperClass: {
     type: [Array, String]
   },

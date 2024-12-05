@@ -2,8 +2,8 @@
   <div class="form-control">
     <label
       v-if="$slots.label"
-      :for="labelFor"
       :class="['label', 'label-text', ...classListToArray(labelClass)]"
+      :for="labelFor"
     >
       <slot name="label" />
     </label>
@@ -15,8 +15,8 @@
       class="label"
     >
       <span
-        class="label-text-alt"
         :class="errorLabelClass"
+        class="label-text-alt"
       >
         <slot name="error" />
       </span>
@@ -30,11 +30,11 @@ const props = defineProps({
     type: String
   },
   labelClass: {
-    type: [Array, String],
+    type: [ Array, String ],
     default: "text-secondary"
   },
   errorLabelClass: {
-    type: [Array, String],
+    type: [ Array, String ],
     default: "text-error"
   }
 })

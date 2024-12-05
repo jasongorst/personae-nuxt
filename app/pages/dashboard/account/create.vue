@@ -8,14 +8,14 @@
       />
 
       <div class="card-actions pt-3 flex-row-reverse">
-        <LoadingButton
+        <UILoadingButton
           @click="saveAccount"
           :is-loading="savingStatus === 'pending'"
           type="button"
           class="btn-sm btn-secondary uppercase"
         >
           Save
-        </LoadingButton>
+        </UILoadingButton>
 
         <button
           @click="router.back"

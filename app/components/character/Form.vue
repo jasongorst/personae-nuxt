@@ -3,7 +3,7 @@
     v-for="attribute of detailAttributes"
     :key="attribute"
   >
-    <TextInput
+    <UITextInput
       v-model="character[attribute]"
       :id="attribute"
       type="text"
@@ -17,11 +17,11 @@
       <template #error v-if="_has(fieldError, attribute)">
         {{ fieldError[attribute] }}
       </template>
-    </TextInput>
+    </UITextInput>
   </template>
 
   <ClientOnly>
-    <TrixInput
+    <UITrixInput
       v-for="attribute of richTextAttributes"
       :key="attribute"
       v-model="character[attribute]"
@@ -34,7 +34,7 @@
       <template #error v-if="_has(fieldError, attribute)">
         {{ fieldError[attribute] }}
       </template>
-    </TrixInput>
+    </UITrixInput>
   </ClientOnly>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <FormControl
+  <UIFormControl
     :class="[
       ...classListToArray(wrapperClass),
       { 'disabled-tooltip': (disabled && isPresent(disabledTooltip)) }
@@ -9,9 +9,9 @@
     :label-class="[...classListToArray(labelClass), 'cursor-pointer', { 'label-disabled': disabled }]"
     :error-label-class="errorLabelClass"
   >
-    <ToggleField
+    <UICheckboxField
       v-model="model"
-      :class="{ 'toggle-error': $slots.error }"
+      :class="{ 'checkbox-error': $slots.error }"
       :id="id"
       :size="size"
       :disabled="disabled"
@@ -25,25 +25,25 @@
     <template #error v-if="$slots.error">
       <slot name="error" />
     </template>
-  </FormControl>
+  </UIFormControl>
 </template>
 
 <script setup>
 defineOptions({
   // disable attribute fallthrough to root component
-  //   (they're assigned to the ToggleField with v-bind="$attrs")
+  //   (they're assigned to the UiCheckboxField with v-bind="$attrs")
   inheritAttrs: false
 })
 
 const model = defineModel()
 
 const props = defineProps({
-  // id of ToggleField
+  // id of UiCheckboxField
   id: {
     type: String,
     default: () => uuid()
   },
-  // size of ToggleField (daisyui sizes)
+  // size of UiCheckboxField (daisyui sizes)
   size: {
     type: String,
     default: "md",
@@ -51,7 +51,7 @@ const props = defineProps({
       return ["lg", "md", "sm", "xs"].includes(value)
     }
   },
-  // class of FormControl
+  // class of UiFormControl
   wrapperClass: {
     type: [Array, String]
   },
@@ -65,7 +65,7 @@ const props = defineProps({
     type: [Array, String],
     default: "text-error"
   },
-  // disabled ToggleField
+  // disabled UiCheckboxField
   disabled: {
     type: Boolean,
     default: false
