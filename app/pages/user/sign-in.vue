@@ -4,7 +4,7 @@
       Sign In
     </h1>
 
-    <TextInput
+    <UITextInput
       v-model="credentials.email"
       id="login"
       type="email"
@@ -17,12 +17,12 @@
         Email Address
       </template>
 
-      <template #error v-if="_has(fieldError, 'email')">
-        {{ fieldError.email }}
-      </template>
-    </TextInput>
+<!--      <template #error v-if="_has(fieldError, 'email')">-->
+<!--        {{ fieldError.email }}-->
+<!--      </template>-->
+    </UITextInput>
 
-    <PasswordInput
+    <UIPasswordInput
       v-model="credentials.password"
       id="password"
       placeholder="Password"
@@ -33,12 +33,12 @@
         Password
       </template>
 
-      <template #error v-if="_has(fieldError, 'password')">
-        {{ fieldError.password }}
-      </template>
-    </PasswordInput>
+<!--      <template #error v-if="_has(fieldError, 'password')">-->
+<!--        {{ fieldError.password }}-->
+<!--      </template>-->
+    </UIPasswordInput>
 
-    <ToggleInput
+    <UIToggleInput
       class="toggle-success"
       id="remember-me"
       size="sm"
@@ -48,15 +48,15 @@
       <template #label>
         Stay Signed In
       </template>
-    </ToggleInput>
+    </UIToggleInput>
 
     <div class="form-control pt-3">
-      <LoadingButton
-        @click="signIn"
-        :is-loading="signInStatus === 'pending'"
+      <UILoadingButton
+        @click="handleSignIn"
+        :is-loading="status === 'loading'"
       >
         Sign In
-      </LoadingButton>
+      </UILoadingButton>
     </div>
   </div>
 
@@ -85,9 +85,8 @@
 
 <script setup>
 const route = useRoute()
-const router = useRouter()
-const alertStore = useAlertStore()
-const sessionStore = useSessionStore()
+
+const { status, data, getSession, signIn } = useAuth()
 
 const nextRoute = route.query.next ? route.query.next : "/"
 
@@ -96,83 +95,9 @@ const credentials = ref({
   password: null
 })
 
-const useLocalStorage = ref(true)
-
-const fieldError = ref(null)
-const fieldErrorAlertId = ref(null)
-
-onBeforeRouteLeave(() => {
-  dismissFieldErrorAlert()
-})
-
-function dismissFieldErrorAlert() {
-  if (fieldErrorAlertId.value) {
-    alertStore.removeMessage(fieldErrorAlertId.value)
-  }
+async function handleSignIn() {
+  await signIn(credentials.value, { callbackUrl: nextRoute })
 }
-
-const { execute: signIn, status: signInStatus } = useApiCall(
-  "http://localhost:3000/auth/login",
-  {
-    manualFetch: true,
-    method: "post",
-    body: credentials.value,
-
-    beforeCb: async () => {
-      dismissFieldErrorAlert()
-      fieldErrorAlertId.value = null
-    },
-
-    successCb: async (response) => {
-      alertStore.addMessage(
-        "You are now signed in.", {
-          severity: "success",
-          dismissedIn: 4000
-        }
-      )
-
-      sessionStore.set(credentials.value.email, response._data.isAdmin)
-
-      //await router.push(nextRoute)
-    },
-
-    fieldErrorCb: (response) => {
-      fieldErrorAlertId.value = alertStore.addMessage(
-        "There was a problem signing you in. See below.", {
-          severity: "warning",
-          dismissOnLeave: true
-        }
-      )
-
-      fieldError.value = deepConvertValues(
-        deepConvertValues(response._data.fieldError, sentenceize),
-        joinArrays
-      )
-    },
-
-    apiErrorCb: async () => {
-      alertStore.addMessage(
-        "Unable to sign you in. Something is wrong with the server.", {
-          severity: "error",
-          dismissOnLeave: true
-        }
-      )
-
-      await router.back()
-    },
-
-    fetchErrorCb: async () => {
-      alertStore.addMessage(
-        "Unable to sign you in. The server cannot be reached.", {
-          severity: "error",
-          dismissOnLeave: true
-        }
-      )
-
-      await router.back()
-    }
-  }
-)
 </script>
 
 <style scoped>
