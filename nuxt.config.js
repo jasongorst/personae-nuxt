@@ -18,7 +18,7 @@ export default defineNuxtConfig({
     }
   },
 
-  compatibilityDate: "2024-11-27",
+  compatibilityDate: "2024-11-01",
 
   components: [
     { path: "~/ui", prefix: "UI" },
@@ -42,72 +42,17 @@ export default defineNuxtConfig({
   modules: [
     "@nuxt/icon",
     "@nuxtjs/tailwindcss",
-    "@pinia-plugin-persistedstate/nuxt",
     "@pinia/nuxt",
-    "@sidebase/nuxt-auth",
+    "nuxt-auth-utils",
     "nuxt-lodash"
   ],
 
-  auth: {
-    isEnabled: true,
-    baseURL: "http://localhost:3000/",
-    disableServerSideAuth: false,
-    globalAppMiddleware: true,
-    provider: {
-      type: "local",
-      pages: {
-        login: "/user/sign-in"
-      },
-      endpoints: {
-        signIn: { path: "auth/login", method: "post" },
-        signOut: { path: "auth/logout", method: "post" },
-        signUp: false,
-        getSession: { path: "auth/session", method: "get" }
-      },
-      token: {
-        signInResponseTokenPointer: "/access_token",
-        type: "Bearer",
-        cookieName: "auth.token",
-        headerName: "Authorization",
-        maxAgeInSeconds: 1800,
-        sameSiteAttribute: "lax",
-        cookieDomain: "",
-        secureCookieAttribute: false,
-        httpOnlyCookieAttribute: false
-      },
-      refresh: {
-        isEnabled: true,
-        endpoint: { path: "auth/jwt-refresh", method: "POST" },
-        refreshOnlyToken: true,
-        token: {
-          signInResponseRefreshTokenPointer: "/refresh_token",
-          refreshResponseTokenPointer: "",
-          refreshRequestTokenPointer: "/refresh_token",
-          cookieName: "auth.token",
-          maxAgeInSeconds: 1800,
-          sameSiteAttribute: "lax",
-          cookieDomain: "",
-          secureCookieAttribute: false,
-          httpOnlyCookieAttribute: false
-        }
-      },
-      session: {
-        dataType: {
-          email: "string",
-          admin: "boolean"
-        }
+  nitro: {
+    storage: {
+      redis: {
+        driver: "redis"
       }
-    },
-    sessionRefresh: {
-      enablePeriodically: false,
-      enableOnWindowFocus: false,
     }
-  },
-
-  lodash: {
-    prefix: "_",
-    prefixSkip: false,
-    upperAfterPrefix: false
   },
 
   vite: {
@@ -118,5 +63,16 @@ export default defineNuxtConfig({
         }
       }
     }
+  },
+
+  // module configs
+  auth: {
+    webAuthn: true
+  },
+
+  lodash: {
+    prefix: "_",
+    prefixSkip: false,
+    upperAfterPrefix: false
   }
 })
