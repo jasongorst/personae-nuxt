@@ -4,7 +4,7 @@
       Sign In
     </h1>
 
-    <TextInput
+    <UITextInput
       v-model="credentials.email"
       id="login"
       type="email"
@@ -20,9 +20,9 @@
       <template #error v-if="_has(fieldError, 'email')">
         {{ fieldError.email }}
       </template>
-    </TextInput>
+    </UITextInput>
 
-    <PasswordInput
+    <UIPasswordInput
       v-model="credentials.password"
       id="password"
       placeholder="Password"
@@ -36,9 +36,9 @@
       <template #error v-if="_has(fieldError, 'password')">
         {{ fieldError.password }}
       </template>
-    </PasswordInput>
+    </UIPasswordInput>
 
-    <ToggleInput
+    <UIToggleInput
       class="toggle-success"
       id="remember-me"
       size="sm"
@@ -48,15 +48,15 @@
       <template #label>
         Stay Signed In
       </template>
-    </ToggleInput>
+    </UIToggleInput>
 
     <div class="form-control pt-3">
-      <LoadingButton
+      <UILoadingButton
         @click="signIn"
         :is-loading="signInStatus === 'pending'"
       >
         Sign In
-      </LoadingButton>
+      </UILoadingButton>
     </div>
   </div>
 
