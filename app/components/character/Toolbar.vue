@@ -50,8 +50,7 @@ const isSignedIn = ref(true)
 </script>
 
 <style scoped>
-.character-toolbar {
-  @apply before:block before:sticky before:bottom-20 before:w-full before:h-4 before:bg-gradient-to-t before:from-base-100 before:to-transparent;
+.character-toolbar {@apply before:block before:sticky before:bottom-20 before:w-full before:h-4 before:bg-gradient-to-t before:from-base-100 ;
   @apply after:block after:sticky after:bottom-0 after:w-full after:h-4 after:bg-base-100;
 }
 
