@@ -37,7 +37,7 @@
           <button
             type="button"
             class="whitespace-nowrap"
-            @click="clear"
+            @click="signOut"
           >
             Sign Out
           </button>
@@ -49,7 +49,7 @@
           <button
             type="button"
             class="whitespace-nowrap"
-            @click="auth"
+            @click="showAuthModal"
           >
             Sign In
           </button>
@@ -63,20 +63,35 @@
       </ClientOnly>
     </ul>
   </details>
+
+  <NavWebauthnModal
+    :showModal="showWebauthnModal"
+    @close="showWebauthnModal = false"
+  />
 </template>
 
 <script setup>
+const alertStore = useAlertStore()
+const { loggedIn, user, clear } = useUserSession()
+
 const userMenu = ref(null)
 const showWebauthnModal = ref(false)
 
-const { loggedIn, user, clear } = useUserSession()
-const { isSupported } = useWebAuthn()
+function showAuthModal() {
+  showWebauthnModal.value = true
+  closeUserMenu()
+}
 
-function auth() {
-  if (isSupported) {
-    showWebauthnModal.value = true
-    closeUserMenu()
-  }
+async function signOut() {
+  await clear()
+  closeUserMenu()
+
+  alertStore.addMessage(
+    "You've been signed out.", {
+      severity: "success",
+      dismissedIn: 4000
+    }
+  )
 }
 
 function closeUserMenu() {
