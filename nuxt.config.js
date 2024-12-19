@@ -56,6 +56,10 @@ export default defineNuxtConfig({
     }
   },
 
+  runtimeConfig: {
+    baseURL: "http://localhost:3000/auth"
+  },
+
   vite: {
     vue: {
       template: {
@@ -68,7 +72,30 @@ export default defineNuxtConfig({
 
   // module configs
   auth: {
-    webAuthn: true
+    // nuxt-auth-utils
+    webAuthn: true,
+
+    // @sidebase/nuxt-auth
+    originEnvKey: "NUXT_BASE_URL", // baseURL from runtimeConfig
+    provider: {
+      type: "local",
+      endpoints: {
+        signUp: false,
+        signIn: { path: "/login", method: "post" },
+        signOut: { path: "/logout", method: "post" },
+        getSession: { path: "/session", method: "get" }
+      },
+      token: {
+        signInResponseTokenPointer: "/access_token"
+      },
+      refresh: {
+        isEnabled: true,
+        endpoint: { path: "/jwt-refresh", method: "post" },
+        token: {
+          signInResponseRefreshTokenPointer: "/refresh_token"
+        }
+      }
+    }
   },
 
   headlessui: {
