@@ -44,6 +44,7 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@pinia/nuxt",
     "nuxt-auth-utils",
+    "nuxt-headlessui",
     "nuxt-lodash"
   ],
 
@@ -68,6 +69,10 @@ export default defineNuxtConfig({
   // module configs
   auth: {
     webAuthn: true
+  },
+
+  headlessui: {
+    prefix: "H"
   },
 
   lodash: {

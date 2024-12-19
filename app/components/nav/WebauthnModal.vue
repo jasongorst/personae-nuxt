@@ -1,114 +1,173 @@
 <template>
-  <input type="checkbox" id="webauthn_modal" class="modal-toggle" checked />
-  <div
-    class="modal modal-bottom sm:modal-middle"
-    role="dialog"
-  >
-    <div class="modal-box card">
-      <div class="card-body">
-        <h3 class="card-title">
-          Login with credential
-        </h3>
+  <ClientOnly>
+    <HDialog
+      :open="showModal"
+      :initial-focus="dialogRef"
+      @close="$emit('close')"
+      class="modal modal-open modal-bottom sm:modal-middle"
+    >
+      <HDialogPanel
+        ref="dialogRef"
+        class="modal-box card"
+      >
+        <div class="card-body">
+          <HTabGroup>
+            <HTabList class="tabs tabs-bordered pb-4">
+              <HTab class="tab">
+                Sign Up
+              </HTab>
 
-        <p>First time? Register your credential</p>
+              <HTab class="tab">
+                Sign In (Password)
+              </HTab>
 
-        <div class="modal-action">
-          <form
-            method="dialog"
-            @submit.prevent="signUp"
-          >
-            <UITextInput
-              v-model="userName"
-              id="signup_username"
-              type="email"
-              size="md"
-              placeholder="Email address"
-              autocomplete="email"
-              required
-            >
-              <template #label>
-                Email Address
-              </template>
-            </UITextInput>
+              <HTab class="tab">
+                Sign In (Passkey)
+              </HTab>
+            </HTabList>
 
-            <UITextInput
-              v-model="displayName"
-              id="signup_displayname"
-              type="text"
-              size="md"
-              placeholder="Name"
-              autocomplete="name"
-              required
-            >
-              <template #label>
-                Name
-              </template>
-            </UITextInput>
+            <HTabPanels>
+              <HTabPanel>
+                <form
+                  method="dialog"
+                  @submit.prevent="signUp"
+                >
+                  <UITextInput
+                    v-model="credentials.email"
+                    id="signup_username"
+                    type="email"
+                    size="md"
+                    placeholder="Email address"
+                    autocomplete="email"
+                    required
+                  >
+                    <template #label>
+                      Email Address
+                    </template>
+                  </UITextInput>
 
-            <div class="form-control pt-3">
-              <button
-                class="btn"
-                type="submit"
-                :disabled="!userName"
-              >
-                Register
-              </button>
-            </div>
-          </form>
+                  <UITextInput
+                    v-model="credentials.name"
+                    id="signup_displayname"
+                    type="text"
+                    size="md"
+                    placeholder="Name"
+                    autocomplete="name"
+                    required
+                  >
+                    <template #label>
+                      Name
+                    </template>
+                  </UITextInput>
 
-          <div class="divider">OR</div>
+                  <div class="form-control pt-3">
+                    <button
+                      class="btn"
+                      type="submit"
+                      :disabled="!credentials.email || !credentials.name"
+                    >
+                      Sign Up
+                    </button>
+                  </div>
+                </form>
+              </HTabPanel>
 
-          <form
-            method="dialog"
-            @submit.prevent="signIn"
-          >
-            <UITextInput
-              v-model="userName"
-              id="signin"
-              type="email"
-              size="md"
-              placeholder="Email address"
-              autocomplete="email webauthn"
-              required
-            >
-              <template #label>
-                Email Address
-              </template>
-            </UITextInput>
+              <HTabPanel>
+                <UITextInput
+                  v-model="credentials.email"
+                  id="password_username"
+                  type="email"
+                  size="md"
+                  placeholder="Email address"
+                  autocomplete="email"
+                  required
+                >
+                  <template #label>
+                    Email Address
+                  </template>
 
-            <div class="form-control pt-3">
-              <button
-                class="btn"
-                type="submit"
-                :disabled="!userName"
-              >
-                Register
-              </button>
-            </div>
-          </form>
+                  <template #error v-if="_has(fieldError, 'email')">
+                    {{ fieldError.email }}
+                  </template>
+                </UITextInput>
+
+                <UIPasswordInput
+                  v-model="credentials.password"
+                  id="password_password"
+                  placeholder="Password"
+                  autocomplete="current-password"
+                  required
+                >
+                  <template #label>
+                    Password
+                  </template>
+
+                  <template #error v-if="_has(fieldError, 'password')">
+                    {{ fieldError.password }}
+                  </template>
+                </UIPasswordInput>
+
+                <div class="form-control pt-3">
+                  <UILoadingButton
+                    @click="signInWithPassword"
+                    :is-loading="signInStatus === 'pending'"
+                    :disabled="!credentials.email || !credentials.password"
+                  >
+                    Sign In
+                  </UILoadingButton>
+                </div>
+              </HTabPanel>
+
+              <HTabPanel>
+                <form
+                  method="dialog"
+                  @submit.prevent="signInWithPasskey"
+                >
+                  <UITextInput
+                    v-model="credentials.email"
+                    id="signin"
+                    type="email"
+                    size="md"
+                    placeholder="Email address"
+                    autocomplete="email webauthn"
+                    required
+                  >
+                    <template #label>
+                      Email Address
+                    </template>
+                  </UITextInput>
+
+                  <div class="form-control pt-3">
+                    <button
+                      class="btn"
+                      type="submit"
+                      :disabled="!credentials.email"
+                    >
+                      Sign In
+                    </button>
+                  </div>
+                </form>
+              </HTabPanel>
+            </HTabPanels>
+          </HTabGroup>
         </div>
-      </div>
-    </div>
-  </div>
+      </HDialogPanel>
+    </HDialog>
+  </ClientOnly>
 </template>
 
 <script setup>
 const props = defineProps({
-  show: {
+  showModal: {
     type: Boolean,
     default: false
   }
 })
 
-const showModal = ref(props.show)
-
-const signingIn = ref(false)
-const userName = ref("")
-const displayName = ref("")
+const emit = defineEmits([ "close" ])
 
 const alertStore = useAlertStore()
-
-const { fetch } = useUserSession()
+const { loggedIn, fetch } = useUserSession()
 
 const { register, authenticate } = useWebAuthn({
   registerEndpoint: "/api/v1/webauthn/register",
@@ -116,52 +175,138 @@ const { register, authenticate } = useWebAuthn({
   useBrowserAutofill: true
 })
 
+const dialogRef = ref(null)
+
+const credentials = ref({
+  email: null,
+  name: null,
+  password: null
+})
+
+const fieldError = ref(null)
+const fieldErrorAlertId = ref(null)
+
 async function signUp() {
-  if (signingIn.value || !userName.value || !displayName.value) return
+  try {
+    await register({
+      userName: credentials.value.email,
+      displayName: credentials.value.name
+    })
 
-  signingIn.value = true
+    await fetch()
 
-  await register({
-    userName: userName.value,
-    displayName: displayName.value
-  })
-    .then(fetch())
-    .then(() => showModal.value = false)
-    .catch((err) => {
-      console.log(err)
+    if (loggedIn) {
+      emit("close")
 
       alertStore.addMessage(
-        err.data?.message || err.message, {
+        "Your login been registered.", {
+          severity: "success",
+          dismissedIn: 4000
+        }
+      )
+    }
+  } catch (err) {
+    console.log(err)
+
+    alertStore.addMessage(
+      err.data?.message || err.message, {
+        severity: "error",
+        dismissOnLeave: true
+      }
+    )
+  }
+}
+
+async function signInWithPasskey() {
+  try {
+    await authenticate(credentials.value.email)
+
+    await fetch()
+
+    if (loggedIn) {
+      emit("close")
+
+      alertStore.addMessage(
+        "You are now signed in.", {
+          severity: "success",
+          dismissedIn: 4000
+        }
+      )
+    }
+  } catch (err) {
+    console.log(err)
+
+    alertStore.addMessage(
+      err.data?.message || err.message, {
+        severity: "error",
+        dismissOnLeave: true
+      }
+    )
+  }
+}
+
+function dismissFieldErrorAlert() {
+  if (fieldErrorAlertId.value) {
+    alertStore.removeMessage(fieldErrorAlertId.value)
+  }
+}
+
+const { execute: signInWithPassword, status: signInStatus } = useApiCall(
+  "http://localhost:3000/auth/login",
+  {
+    manualFetch: true,
+    method: "post",
+    body: credentials.value,
+
+    beforeCb: async () => {
+      dismissFieldErrorAlert()
+      fieldErrorAlertId.value = null
+    },
+
+    successCb: async (_) => {
+      alertStore.addMessage(
+        "You are now signed in.", {
+          severity: "success",
+          dismissedIn: 4000
+        }
+      )
+
+      // set user in session
+    },
+
+    fieldErrorCb: (response) => {
+      fieldErrorAlertId.value = alertStore.addMessage(
+        "There was a problem signing you in. See below.", {
+          severity: "warning",
+          dismissOnLeave: true
+        }
+      )
+
+      fieldError.value = deepConvertValues(
+        deepConvertValues(response._data.fieldError, sentenceize),
+        joinArrays
+      )
+    },
+
+    apiErrorCb: async () => {
+      alertStore.addMessage(
+        "Unable to sign you in. Something is wrong with the server.", {
           severity: "error",
           dismissOnLeave: true
         }
       )
-    })
+    },
 
-  signingIn.value = false
-}
-
-async function signIn() {
-  if (signingIn.value) return
-
-  signingIn.value = true
-
-  await authenticate(userName.value)
-    .then(fetch)
-    .then(() => showModal.value = false)
-    .catch((err) => {
-      console.log(err)
-
+    fetchErrorCb: async () => {
       alertStore.addMessage(
-        err.data?.message || err.message, {
+        "Unable to sign you in. The server cannot be reached.", {
           severity: "error",
           dismissOnLeave: true
         }
       )
-    })
-
-  signingIn.value = false
-}
+    }
+  }
+)
 </script>
 
 <style scoped>
