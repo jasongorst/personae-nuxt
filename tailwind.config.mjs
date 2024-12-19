@@ -1,11 +1,15 @@
 import daisyui from "daisyui"
 import themes from "daisyui/src/theming/themes"
 import tailwindTypography from "@tailwindcss/typography"
+import headlessUITailwindCSS from "@headlessui/tailwindcss"
 
 export default {
   plugins: [
     daisyui,
-    tailwindTypography,
+    headlessUITailwindCSS,
+    tailwindTypography({
+      prefix: "H"
+    })
   ],
   daisyui: {
     themes: [
