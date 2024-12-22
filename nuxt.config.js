@@ -43,10 +43,19 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "@nuxtjs/tailwindcss",
     "@pinia/nuxt",
+    "@sidebase/nuxt-auth",
     "nuxt-auth-utils",
     "nuxt-headlessui",
     "nuxt-lodash"
   ],
+
+  runtimeConfig: {
+    auth: {
+      baseUrl: ""
+    },
+
+    dbUrl: "file:server/db/dev.sqlite3"
+  },
 
   nitro: {
     storage: {
@@ -54,10 +63,6 @@ export default defineNuxtConfig({
         driver: "redis"
       }
     }
-  },
-
-  runtimeConfig: {
-    baseURL: "http://localhost:3000/auth"
   },
 
   vite: {
@@ -76,9 +81,19 @@ export default defineNuxtConfig({
     webAuthn: true,
 
     // @sidebase/nuxt-auth
-    originEnvKey: "NUXT_BASE_URL", // baseURL from runtimeConfig
+    isEnabled: true,
+    globalAppMiddleware: {
+      unauthenticatedOnly: false,
+      navigateAuthenticatedTo: "/",
+      navigateUnauthenticatedTo: "/",
+      addDefaultCallbackUrl: false
+    },
+    originEnvKey: "NUXT_AUTH_BASE_URL",
     provider: {
       type: "local",
+      pages: {
+        login: "/"
+      },
       endpoints: {
         signUp: false,
         signIn: { path: "/login", method: "post" },
@@ -91,8 +106,11 @@ export default defineNuxtConfig({
       refresh: {
         isEnabled: true,
         endpoint: { path: "/jwt-refresh", method: "post" },
+        refreshOnlyToken: false,
         token: {
-          signInResponseRefreshTokenPointer: "/refresh_token"
+          signInResponseRefreshTokenPointer: "/refresh_token",
+          refreshResponseTokenPointer: "/access_token",
+          refreshRequestTokenPointer: "/refresh_token"
         }
       }
     }
