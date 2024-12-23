@@ -2,12 +2,12 @@
   <ClientOnly>
     <HDialog
       :open="showModal"
-      :initial-focus="dialogRef"
+      :initial-focus="dialogPanelRef"
       @close="$emit('close')"
       class="modal modal-open modal-bottom sm:modal-middle"
     >
       <HDialogPanel
-        ref="dialogRef"
+        ref="dialogPanelRef"
         class="modal-box card"
       >
         <div class="card-body">
@@ -85,10 +85,6 @@
                   <template #label>
                     Email Address
                   </template>
-
-                  <template #error v-if="_has(fieldError, 'email')">
-                    {{ fieldError.email }}
-                  </template>
                 </UITextInput>
 
                 <UIPasswordInput
@@ -101,16 +97,12 @@
                   <template #label>
                     Password
                   </template>
-
-                  <template #error v-if="_has(fieldError, 'password')">
-                    {{ fieldError.password }}
-                  </template>
                 </UIPasswordInput>
 
                 <div class="form-control pt-3">
                   <UILoadingButton
                     @click="signInWithPassword"
-                    :is-loading="signInStatus === 'pending'"
+                    :is-loading="signInStatus === 'loading'"
                     :disabled="!credentials.email || !credentials.password"
                   >
                     Sign In
@@ -167,7 +159,12 @@ const props = defineProps({
 const emit = defineEmits([ "close" ])
 
 const alertStore = useAlertStore()
-const { loggedIn, fetch } = useUserSession()
+
+// NuxtAuth (password-based login via personae-api)
+const { status: signInStatus, signIn } = useAuth()
+
+// nuxt-auth-utils (webauthn via local db)
+const { loggedIn, fetch: refetchUserSession } = useUserSession()
 
 const { register, authenticate } = useWebAuthn({
   registerEndpoint: "/api/v1/webauthn/register",
@@ -175,16 +172,14 @@ const { register, authenticate } = useWebAuthn({
   useBrowserAutofill: true
 })
 
-const dialogRef = ref(null)
+// ref to HDialogPanel so we can set initial focus
+const dialogPanelRef = ref(null)
 
 const credentials = ref({
   email: null,
   name: null,
   password: null
 })
-
-const fieldError = ref(null)
-const fieldErrorAlertId = ref(null)
 
 async function signUp() {
   try {
@@ -193,7 +188,7 @@ async function signUp() {
       displayName: credentials.value.name
     })
 
-    await fetch()
+    await refetchUserSession()
 
     if (loggedIn) {
       emit("close")
@@ -206,8 +201,6 @@ async function signUp() {
       )
     }
   } catch (err) {
-    console.log(err)
-
     alertStore.addMessage(
       err.data?.message || err.message, {
         severity: "error",
@@ -220,8 +213,7 @@ async function signUp() {
 async function signInWithPasskey() {
   try {
     await authenticate(credentials.value.email)
-
-    await fetch()
+    await refetchUserSession()
 
     if (loggedIn) {
       emit("close")
@@ -234,8 +226,6 @@ async function signInWithPasskey() {
       )
     }
   } catch (err) {
-    console.log(err)
-
     alertStore.addMessage(
       err.data?.message || err.message, {
         severity: "error",
@@ -245,68 +235,36 @@ async function signInWithPasskey() {
   }
 }
 
-function dismissFieldErrorAlert() {
-  if (fieldErrorAlertId.value) {
-    alertStore.removeMessage(fieldErrorAlertId.value)
-  }
-}
+async function signInWithPassword() {
+  try {
+    await signIn(credentials.value)
 
-const { execute: signInWithPassword, status: signInStatus } = useApiCall(
-  "http://localhost:3000/auth/login",
-  {
-    manualFetch: true,
-    method: "post",
-    body: credentials.value,
+    if ((signInStatus.value === "authenticated")) {
+      emit("close")
 
-    beforeCb: async () => {
-      dismissFieldErrorAlert()
-      fieldErrorAlertId.value = null
-    },
+      // fetch NuxtAuth user
+      const { data } = useAuthState()
 
-    successCb: async (_) => {
+      // set nuxt-auth-utils user session
+      await useSetSession(data.value)
+      await refetchUserSession()
+
       alertStore.addMessage(
         "You are now signed in.", {
           severity: "success",
           dismissedIn: 4000
         }
       )
-
-      // set user in session
-    },
-
-    fieldErrorCb: (response) => {
-      fieldErrorAlertId.value = alertStore.addMessage(
-        "There was a problem signing you in. See below.", {
-          severity: "warning",
-          dismissOnLeave: true
-        }
-      )
-
-      fieldError.value = deepConvertValues(
-        deepConvertValues(response._data.fieldError, sentenceize),
-        joinArrays
-      )
-    },
-
-    apiErrorCb: async () => {
-      alertStore.addMessage(
-        "Unable to sign you in. Something is wrong with the server.", {
-          severity: "error",
-          dismissOnLeave: true
-        }
-      )
-    },
-
-    fetchErrorCb: async () => {
-      alertStore.addMessage(
-        "Unable to sign you in. The server cannot be reached.", {
-          severity: "error",
-          dismissOnLeave: true
-        }
-      )
     }
+  } catch (err) {
+    alertStore.addMessage(
+      err.data?.message || err.message, {
+        severity: "error",
+        dismissOnLeave: true
+      }
+    )
   }
-)
+}
 </script>
 
 <style scoped>

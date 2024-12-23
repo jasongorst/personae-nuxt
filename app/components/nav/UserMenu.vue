@@ -64,9 +64,9 @@
     </ul>
   </details>
 
-  <NavWebauthnModal
-    :showModal="showWebauthnModal"
-    @close="showWebauthnModal = false"
+  <AuthSignInModal
+    :showModal="showSignInModal"
+    @close="showSignInModal = false"
   />
 </template>
 
@@ -75,10 +75,10 @@ const alertStore = useAlertStore()
 const { loggedIn, user, clear } = useUserSession()
 
 const userMenu = ref(null)
-const showWebauthnModal = ref(false)
+const showSignInModal = ref(false)
 
 function showAuthModal() {
-  showWebauthnModal.value = true
+  showSignInModal.value = true
   closeUserMenu()
 }
 
