@@ -1,8 +1,7 @@
-<!--suppress IncorrectFormatting -->
 <template>
   <details
     class="dropdown dropdown-bottom dropdown-end"
-    ref="userMenu"
+    ref="userMenuRef"
   >
     <summary class="btn btn-ghost">
       <Icon
@@ -72,9 +71,14 @@
 
 <script setup>
 const alertStore = useAlertStore()
-const { loggedIn, user, clear } = useUserSession()
 
-const userMenu = ref(null)
+// nuxt-auth (password-based login via personae-api)
+const { signOut: nuxtAuthLogOut } = useAuth()
+
+// nuxt-auth-utils (webauthn via local db)
+const { loggedIn, user, session, clear: nuxtAuthUtilsLogOut } = useUserSession()
+
+const userMenuRef = ref(null)
 const showSignInModal = ref(false)
 
 function showAuthModal() {
@@ -83,7 +87,11 @@ function showAuthModal() {
 }
 
 async function signOut() {
-  await clear()
+  if (session.value?.loggedInWith === "nuxt-auth") {
+    await nuxtAuthLogOut({ redirect: false })
+  }
+
+  await nuxtAuthUtilsLogOut()
   closeUserMenu()
 
   alertStore.addMessage(
@@ -95,7 +103,7 @@ async function signOut() {
 }
 
 function closeUserMenu() {
-  userMenu.value.open = false
+  userMenuRef.value.open = false
 }
 </script>
 
