@@ -28,48 +28,43 @@
 
             <HTabPanels>
               <HTabPanel>
-                <form
-                  method="dialog"
-                  @submit.prevent="signUp"
+                <UITextInput
+                  v-model="credentials.email"
+                  id="signup_username"
+                  type="email"
+                  size="md"
+                  placeholder="Email address"
+                  autocomplete="email"
+                  required
                 >
-                  <UITextInput
-                    v-model="credentials.email"
-                    id="signup_username"
-                    type="email"
-                    size="md"
-                    placeholder="Email address"
-                    autocomplete="email"
-                    required
-                  >
-                    <template #label>
-                      Email Address
-                    </template>
-                  </UITextInput>
+                  <template #label>
+                    Email Address
+                  </template>
+                </UITextInput>
 
-                  <UITextInput
-                    v-model="credentials.name"
-                    id="signup_displayname"
-                    type="text"
-                    size="md"
-                    placeholder="Name"
-                    autocomplete="name"
-                    required
-                  >
-                    <template #label>
-                      Name
-                    </template>
-                  </UITextInput>
+                <UITextInput
+                  v-model="credentials.name"
+                  id="signup_displayname"
+                  type="text"
+                  size="md"
+                  placeholder="Name"
+                  autocomplete="name"
+                  required
+                >
+                  <template #label>
+                    Name
+                  </template>
+                </UITextInput>
 
-                  <div class="form-control pt-3">
-                    <button
-                      class="btn"
-                      type="submit"
-                      :disabled="!credentials.email || !credentials.name"
-                    >
-                      Sign Up
-                    </button>
-                  </div>
-                </form>
+                <div class="form-control pt-3">
+                  <UILoadingButton
+                    @click="registerWithPasskey(credentials.email, credentials.name)"
+                    :is-loading="!ready"
+                    :disabled="!credentials.email || !credentials.name"
+                  >
+                    Sign Up
+                  </UILoadingButton>
+                </div>
               </HTabPanel>
 
               <HTabPanel>
@@ -101,8 +96,8 @@
 
                 <div class="form-control pt-3">
                   <UILoadingButton
-                    @click="signInWithPassword"
-                    :is-loading="signInStatus === 'loading'"
+                    @click="signInWithPassword(credentials.email, credentials.password)"
+                    :is-loading="!ready"
                     :disabled="!credentials.email || !credentials.password"
                   >
                     Sign In
@@ -111,34 +106,29 @@
               </HTabPanel>
 
               <HTabPanel>
-                <form
-                  method="dialog"
-                  @submit.prevent="signInWithPasskey"
+                <UITextInput
+                  v-model="credentials.email"
+                  id="signin"
+                  type="email"
+                  size="md"
+                  placeholder="Email address"
+                  autocomplete="email webauthn"
+                  required
                 >
-                  <UITextInput
-                    v-model="credentials.email"
-                    id="signin"
-                    type="email"
-                    size="md"
-                    placeholder="Email address"
-                    autocomplete="email webauthn"
-                    required
-                  >
-                    <template #label>
-                      Email Address
-                    </template>
-                  </UITextInput>
+                  <template #label>
+                    Email Address
+                  </template>
+                </UITextInput>
 
-                  <div class="form-control pt-3">
-                    <button
-                      class="btn"
-                      type="submit"
-                      :disabled="!credentials.email"
-                    >
-                      Sign In
-                    </button>
-                  </div>
-                </form>
+                <div class="form-control pt-3">
+                  <UILoadingButton
+                    @click="signInWithPasskey(credentials.email)"
+                    :is-loading="!ready"
+                    :disabled="!credentials.email"
+                  >
+                    Sign In
+                  </UILoadingButton>
+                </div>
               </HTabPanel>
             </HTabPanels>
           </HTabGroup>
@@ -160,16 +150,40 @@ const emit = defineEmits([ "close" ])
 
 const alertStore = useAlertStore()
 
-// nuxt-auth (password-based login via personae-api)
-const { status: signInStatus, signIn } = useAuth()
+const { ready, registerWithPasskey, signInWithPasskey, signInWithPassword } = useComboAuth({
+  onRegistered() {
+    emit("close")
 
-// nuxt-auth-utils (webauthn via local db)
-const { loggedIn, fetch: refetchUserSession } = useUserSession()
+    alertStore.addMessage(
+      "Your login been registered.", {
+        severity: "success",
+        dismissedIn: 4000
+      }
+    )
+  },
 
-const { register, authenticate } = useWebAuthn({
-  registerEndpoint: "/api/v1/webauthn/register",
-  authenticateEndpoint: "/api/v1/webauthn/authenticate",
-  useBrowserAutofill: true
+  onLoggedIn() {
+    emit("close")
+
+    alertStore.addMessage(
+      "You are now signed in.", {
+        severity: "success",
+        dismissedIn: 4000
+      }
+    )
+  },
+
+  onError(error) {
+    emit("close")
+    console.log(error)
+
+    alertStore.addMessage(
+      error.data?.message || error.message, {
+        severity: "error",
+        dismissOnLeave: true
+      }
+    )
+  }
 })
 
 // ref to HDialogPanel so we can set initial focus
@@ -180,91 +194,6 @@ const credentials = ref({
   name: null,
   password: null
 })
-
-async function signUp() {
-  try {
-    await register({
-      userName: credentials.value.email,
-      displayName: credentials.value.name
-    })
-
-    await refetchUserSession()
-
-    if (loggedIn) {
-      emit("close")
-
-      alertStore.addMessage(
-        "Your login been registered.", {
-          severity: "success",
-          dismissedIn: 4000
-        }
-      )
-    }
-  } catch (err) {
-    alertStore.addMessage(
-      err.data?.message || err.message, {
-        severity: "error",
-        dismissOnLeave: true
-      }
-    )
-  }
-}
-
-async function signInWithPasskey() {
-  try {
-    await authenticate(credentials.value.email)
-    await refetchUserSession()
-
-    if (loggedIn) {
-      emit("close")
-
-      alertStore.addMessage(
-        "You are now signed in.", {
-          severity: "success",
-          dismissedIn: 4000
-        }
-      )
-    }
-  } catch (err) {
-    alertStore.addMessage(
-      err.data?.message || err.message, {
-        severity: "error",
-        dismissOnLeave: true
-      }
-    )
-  }
-}
-
-async function signInWithPassword() {
-  try {
-    await signIn(credentials.value, { redirect: false })
-
-    if ((signInStatus.value === "authenticated")) {
-      emit("close")
-
-      // fetch nuxt-auth user
-      const { data } = useAuthState()
-
-      // set nuxt-auth-utils user session
-      await useSetSession(data.value)
-      await refetchUserSession()
-
-      alertStore.addMessage(
-        "You are now signed in.", {
-          severity: "success",
-          dismissedIn: 4000
-        }
-      )
-    }
-  } catch (err) {
-    alertStore.addMessage(
-      err.data?.message || err.message, {
-        severity: "error",
-        dismissOnLeave: true
-      }
-    )
-  }
-}
 </script>
 
 <style scoped>

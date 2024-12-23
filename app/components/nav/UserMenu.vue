@@ -48,7 +48,7 @@
           <button
             type="button"
             class="whitespace-nowrap"
-            @click="showAuthModal"
+            @click="signIn"
           >
             Sign In
           </button>
@@ -72,34 +72,25 @@
 <script setup>
 const alertStore = useAlertStore()
 
-// nuxt-auth (password-based login via personae-api)
-const { signOut: nuxtAuthLogOut } = useAuth()
+const { loggedIn, user, signOut } = useComboAuth({
+  onLoggedOut() {
+    closeUserMenu()
 
-// nuxt-auth-utils (webauthn via local db)
-const { loggedIn, user, session, clear: nuxtAuthUtilsLogOut } = useUserSession()
+    alertStore.addMessage(
+      "You've been signed out.", {
+        severity: "success",
+        dismissedIn: 4000
+      }
+    )
+  }
+})
 
 const userMenuRef = ref(null)
 const showSignInModal = ref(false)
 
-function showAuthModal() {
+function signIn() {
   showSignInModal.value = true
   closeUserMenu()
-}
-
-async function signOut() {
-  if (session.value?.loggedInWith === "nuxt-auth") {
-    await nuxtAuthLogOut({ redirect: false })
-  }
-
-  await nuxtAuthUtilsLogOut()
-  closeUserMenu()
-
-  alertStore.addMessage(
-    "You've been signed out.", {
-      severity: "success",
-      dismissedIn: 4000
-    }
-  )
 }
 
 function closeUserMenu() {
