@@ -6,6 +6,7 @@ export default defineEventHandler(async (event) => {
     user: {
       username: user.email,
       admin: user.admin
-    }
+    },
+    loggedInWith: "nuxt-auth"
   })
 })

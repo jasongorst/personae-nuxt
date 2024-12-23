@@ -54,7 +54,8 @@ export default defineWebAuthnAuthenticateEventHandler({
         id: credential.user.id,
         name: credential.user.name,
         username: credential.user.username
-      }
+      },
+      loggedInWith: "nuxt-auth-utils"
     })
   }
 })
