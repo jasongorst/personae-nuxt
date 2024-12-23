@@ -160,7 +160,7 @@ const emit = defineEmits([ "close" ])
 
 const alertStore = useAlertStore()
 
-// NuxtAuth (password-based login via personae-api)
+// nuxt-auth (password-based login via personae-api)
 const { status: signInStatus, signIn } = useAuth()
 
 // nuxt-auth-utils (webauthn via local db)
@@ -237,12 +237,12 @@ async function signInWithPasskey() {
 
 async function signInWithPassword() {
   try {
-    await signIn(credentials.value)
+    await signIn(credentials.value, { redirect: false })
 
     if ((signInStatus.value === "authenticated")) {
       emit("close")
 
-      // fetch NuxtAuth user
+      // fetch nuxt-auth user
       const { data } = useAuthState()
 
       // set nuxt-auth-utils user session
