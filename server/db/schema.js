@@ -3,8 +3,8 @@ import { relations } from "drizzle-orm"
 
 export const users = sqliteTable("users", {
   id: integer("id").primaryKey(),
-  username: text("username").notNull().unique(),
-  name: text("name").notNull(),
+  email: text("email").notNull().unique(),
+  admin: integer("admin", { mode: "boolean" }).notNull(),
   createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
   lastLoginAt: integer("last_login_at", { mode: "timestamp" }).notNull()
 })
