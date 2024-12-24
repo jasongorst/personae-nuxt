@@ -4,9 +4,10 @@ export default defineEventHandler(async (event) => {
   // replace nuxt-auth-utils user session
   await replaceUserSession(event, {
     user: {
-      username: user.email,
+      email: user.email,
       admin: user.admin
     },
+
     loggedInWith: "nuxt-auth"
   })
 })

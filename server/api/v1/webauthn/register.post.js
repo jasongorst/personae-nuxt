@@ -20,16 +20,16 @@ export default defineWebAuthnRegisterEventHandler({
   },
 
   validateUser: user => z.object({
-    userName: z.string().min(1).toLowerCase().trim(),
-    displayName: z.string().min(1).trim()
+    email: z.string().email().toLowerCase().trim(),
+    admin: z.boolean()
   }).parseAsync(user),
 
   async onSuccess(event, { user, credential }) {
     const db = useDB()
 
     const dbUser = await db.insert(tables.users).values({
-      username: user.userName,
-      name: user.displayName,
+      email: user.email,
+      admin: user.admin,
       createdAt: new Date(),
       lastLoginAt: new Date()
     }).returning().get().catch(() => {
@@ -51,13 +51,13 @@ export default defineWebAuthnRegisterEventHandler({
     await setUserSession(event, {
       user: {
         id: dbUser.id,
-        username: dbUser.username,
-        name: dbUser.name || dbUser.username
+        email: dbUser.email,
+        admin: dbUser.admin
       }
     })
   },
 
-  async excludeCredentials(event, userName) {
+  async excludeCredentials(event, email) {
     return useDB()
       .select({
         id: tables.credentials.id,
@@ -65,6 +65,6 @@ export default defineWebAuthnRegisterEventHandler({
       })
       .from(tables.users)
       .innerJoin(tables.credentials, eq(tables.credentials.userId, tables.users.id))
-      .where(eq(tables.users.username, userName.toLowerCase().trim()))
+      .where(eq(tables.users.email, email.toLowerCase().trim()))
   }
 })

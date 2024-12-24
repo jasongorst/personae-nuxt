@@ -21,7 +21,7 @@ export default defineWebAuthnAuthenticateEventHandler({
     const db = useDB()
 
     const user = await db.query.users.findFirst({
-      where: eq(tables.users.username, userName),
+      where: eq(tables.users.email, userName),
       with: {
         credentials: true
       }
@@ -52,9 +52,10 @@ export default defineWebAuthnAuthenticateEventHandler({
     await setUserSession(event, {
       user: {
         id: credential.user.id,
-        name: credential.user.name,
-        username: credential.user.username
+        email: credential.user.email,
+        admin: credential.user.admin
       },
+
       loggedInWith: "nuxt-auth-utils"
     })
   }

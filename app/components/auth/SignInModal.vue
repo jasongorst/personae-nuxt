@@ -30,7 +30,7 @@
               <HTabPanel>
                 <UITextInput
                   v-model="credentials.email"
-                  id="signup_username"
+                  id="signup_email"
                   type="email"
                   size="md"
                   placeholder="Email address"
@@ -42,25 +42,11 @@
                   </template>
                 </UITextInput>
 
-                <UITextInput
-                  v-model="credentials.name"
-                  id="signup_displayname"
-                  type="text"
-                  size="md"
-                  placeholder="Name"
-                  autocomplete="name"
-                  required
-                >
-                  <template #label>
-                    Name
-                  </template>
-                </UITextInput>
-
                 <div class="form-control pt-3">
                   <UILoadingButton
-                    @click="registerWithPasskey(credentials.email, credentials.name)"
+                    @click="registerWithPasskey(credentials.email)"
                     :is-loading="!ready"
-                    :disabled="!credentials.email || !credentials.name"
+                    :disabled="!credentials.email"
                   >
                     Sign Up
                   </UILoadingButton>
@@ -70,7 +56,7 @@
               <HTabPanel>
                 <UITextInput
                   v-model="credentials.email"
-                  id="password_username"
+                  id="password_email"
                   type="email"
                   size="md"
                   placeholder="Email address"
@@ -186,12 +172,11 @@ const { ready, registerWithPasskey, signInWithPasskey, signInWithPassword } = us
   }
 })
 
-// ref to HDialogPanel so we can set initial focus
+// ref to HDialogPanel to set initial focus
 const dialogPanelRef = ref(null)
 
 const credentials = ref({
   email: null,
-  name: null,
   password: null
 })
 </script>

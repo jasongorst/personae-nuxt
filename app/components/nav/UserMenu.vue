@@ -20,7 +20,7 @@
     >
       <template v-if="loggedIn">
         <li class="menu-title text-primary-content/55 whitespace-nowrap">
-          {{ user.username }}
+          {{ user.email }}
         </li>
 
         <li v-if="user.admin">
@@ -62,11 +62,6 @@
       </ClientOnly>
     </ul>
   </details>
-
-  <AuthSignInModal
-    :showModal="showSignInModal"
-    @close="showSignInModal = false"
-  />
 </template>
 
 <script setup>
@@ -86,11 +81,10 @@ const { loggedIn, user, signOut } = useComboAuth({
 })
 
 const userMenuRef = ref(null)
-const showSignInModal = ref(false)
 
 function signIn() {
-  showSignInModal.value = true
   closeUserMenu()
+  navigateTo("/sign-in")
 }
 
 function closeUserMenu() {
