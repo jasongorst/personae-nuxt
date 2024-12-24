@@ -13,20 +13,18 @@ export function useComboAuth(
   // session from useUserSession (nuxt-auth-utils) is authoritative (as nuxtAuthUtilsSession)
   //  loggedInWith: String ["nuxt-auth", "nuxt-auth-utils"]
 
-  const error = ref(null)
-
   // nuxt-auth (password-based login via personae-api)
   const {
     status: nuxtAuthStatus,
     data: nuxtAuthSession,
-    lastRefreshedAt,
-    token,
-    refreshToken,
-    getSession,
-    signUp,
+    // lastRefreshedAt,
+    // token,
+    // refreshToken,
+    // getSession,
+    // signUp,
     signIn: nuxtAuthSignIn,
     signOut: nuxtAuthSignOut,
-    refresh
+    // refresh
   } = useAuth()
 
 // nuxt-auth-utils (webauthn via local db)
@@ -45,11 +43,13 @@ export function useComboAuth(
     useBrowserAutofill: true
   })
 
-  async function registerWithPasskey(email, name = null ) {
+  const error = ref(null)
+
+  async function registerWithPasskey(email) {
     try {
       await register({
-        userName: toValue(email),
-        displayName: toValue(name)
+        email: toValue(email),
+        admin: false
       })
 
       await onRegistered()

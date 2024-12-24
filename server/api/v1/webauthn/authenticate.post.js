@@ -52,8 +52,8 @@ export default defineWebAuthnAuthenticateEventHandler({
     await setUserSession(event, {
       user: {
         id: credential.user.id,
-        name: credential.user.name,
-        username: credential.user.username
+        email: credential.user.email,
+        admin: credential.user.admin
       },
       loggedInWith: "nuxt-auth-utils"
     })
