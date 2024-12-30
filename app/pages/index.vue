@@ -1,4 +1,6 @@
 <template>
+  <NuxtPage />
+
   <template v-if="isPositive(charactersStore.filteredCount)">
     <CharacterGrid />
 
@@ -34,6 +36,12 @@
 </template>
 
 <script setup>
+const showSignInModal = useState("showSignInModal")
+
+callOnce(() => {
+  showSignInModal.value = true
+})
+
 const charactersStore = useCharactersStore()
 const { characters, query } = storeToRefs(charactersStore)
 
