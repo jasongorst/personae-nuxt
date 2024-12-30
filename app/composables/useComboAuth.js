@@ -48,7 +48,7 @@ export function useComboAuth(
   async function registerWithPasskey(email) {
     try {
       await register({
-        email: toValue(email),
+        userName: toValue(email),
         admin: false
       })
 

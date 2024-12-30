@@ -20,7 +20,7 @@ export default defineWebAuthnRegisterEventHandler({
   },
 
   validateUser: user => z.object({
-    email: z.string().email().toLowerCase().trim(),
+    userName: z.string().min(1).toLowerCase().trim(),
     admin: z.boolean()
   }).parseAsync(user),
 
@@ -28,7 +28,7 @@ export default defineWebAuthnRegisterEventHandler({
     const db = useDB()
 
     const dbUser = await db.insert(tables.users).values({
-      email: user.email,
+      email: user.userName,
       admin: user.admin,
       createdAt: new Date(),
       lastLoginAt: new Date()
