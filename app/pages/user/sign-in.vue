@@ -52,6 +52,7 @@
 
     <div class="form-control pt-3">
       <UILoadingButton
+        class="btn"
         @click="signIn"
         :is-loading="signInStatus === 'pending'"
       >
@@ -114,7 +115,7 @@ function dismissFieldErrorAlert() {
 const { execute: signIn, status: signInStatus } = useApiCall(
   "http://localhost:3000/auth/login",
   {
-    manualFetch: true,
+    manual: true,
     method: "post",
     body: credentials.value,
 
