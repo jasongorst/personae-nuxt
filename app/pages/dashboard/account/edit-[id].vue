@@ -12,7 +12,7 @@
           @click="saveAccount"
           :is-loading="savingStatus === 'pending'"
           type="button"
-          class="btn-sm btn-secondary uppercase"
+          class="btn btn-sm btn-secondary uppercase"
         >
           Save
         </UILoadingButton>
@@ -47,6 +47,8 @@ const props = defineProps(["id"])
 const route = useRoute()
 const router = useRouter()
 const alertStore = useAlertStore()
+const { data, token } = useAuth()
+
 const fieldError = ref(null)
 const fieldErrorAlertId = ref(null)
 
@@ -59,16 +61,8 @@ const accountBody = computed(() => ({
   )
 }))
 
-//const sessionStore = useSessionStore()
-//const { getAccount } = storeToRefs(sessionStore)
-
-//const isOwnAccount = computed(
-//  () => (getAccount.value && (getAccount.value.email === account.value.email))
-//)
-
-// dummy sessionStore
 const isOwnAccount = computed(
-  () => (account.value.email === "jason@evilpaws.org")
+ () => (data.value?.user?.email === account.value.email)
 )
 
 onBeforeRouteLeave(() => {
@@ -82,21 +76,23 @@ function dismissFieldErrorAlert() {
 }
 
 // load account
-const { data: account } = await useApiCall(
-  `http://localhost:3000/accounts/${route.params.id}`,
+const { data: account } = await useApi(
+  `/accounts/${route.params.id}`,
   {
-    apiErrorCb: () => {
+    token: token,
+
+    onRequestError: () => {
       alertStore.addMessage(
-        "The account couldn't be loaded. Something is wrong with the server.", {
+        "The account couldn't be loaded. The server cannot be reached.", {
           severity: "error",
           dismissOnLeave: true
         }
       )
     },
 
-    fetchErrorCb: () => {
+    onResponseError: () => {
       alertStore.addMessage(
-        "The account couldn't be loaded. The server cannot be reached.", {
+        "The account couldn't be loaded. Something is wrong with the server.", {
           severity: "error",
           dismissOnLeave: true
         }
@@ -106,19 +102,29 @@ const { data: account } = await useApiCall(
 )
 
 // save account
-const { execute: saveAccount, status: savingStatus } = useApiCall(
-  `http://localhost:3000/accounts/${route.params.id}`,
+const { execute: saveAccount, status: savingStatus } = useApi(
+  `/accounts/${route.params.id}`,
   {
-    manualFetch: true,
+    body: computed(() => ({ account: _pick(_omitBy(account.value, isBlank), accountAttributes) })),
     method: "patch",
-    body: accountBody,
+    token: token,
+    manual: true,
 
-    beforeCb: async () => {
+    onRequest: () => {
       dismissFieldErrorAlert()
       fieldErrorAlertId.value = null
     },
 
-    successCb: async () => {
+    onRequestError: () => {
+      alertStore.addMessage(
+        "The account couldn't be updated. The server cannot be reached.", {
+          severity: "error",
+          dismissOnLeave: true
+        }
+      )
+    },
+
+    onResponse: async () => {
       alertStore.addMessage(
         "The account has been updated.", {
           severity: "success",
@@ -129,7 +135,16 @@ const { execute: saveAccount, status: savingStatus } = useApiCall(
       await router.push("/dashboard/account")
     },
 
-    fieldErrorCb: (response) => {
+    onResponseError: () => {
+      alertStore.addMessage(
+        "The account couldn't be updated. Something is wrong with the server.", {
+          severity: "error",
+          dismissOnLeave: true
+        }
+      )
+    },
+
+    onFieldError: ({ response }) => {
       fieldErrorAlertId.value = alertStore.addMessage(
         "There was a problem updating the account. See below.", {
           severity: "warning",
@@ -137,51 +152,29 @@ const { execute: saveAccount, status: savingStatus } = useApiCall(
         }
       )
 
-      fieldError.value = deepConvertValues(
-        deepConvertValues(response._data, sentenceize),
-        joinArrays
-      )
-    },
-
-    apiErrorCb: async (error) => {
-      //if (error?.response?.status === 401) {
-      //  alertStore.addMessage(
-      //    "You must be signed in to edit accounts.", {
-      //      severity: "warning",
-      //      dismissOnLeave: true
-      //    }
-      //  )
-      //
-      //  await router.replace({ name: "sign-in", query: { next: route.path } })
-      //} else {
-      alertStore.addMessage(
-        "The account couldn't be updated. Something is wrong with the server.", {
-          severity: "error",
-          dismissOnLeave: true
-        }
-      )
-      //}
-    },
-
-    fetchErrorCb: () => {
-      alertStore.addMessage(
-        "The account couldn't be updated. The server cannot be reached.", {
-          severity: "error",
-          dismissOnLeave: true
-        }
-      )
+      fieldError.value = deepConvertValues(deepConvertValues(response._data, sentenceize), joinArrays)
     }
   }
 )
 
 // delete account
-const { execute: deleteAccount, status: deletingStatus } = await useApiCall(
-  `http://localhost:3000/accounts/${route.params.id}`,
+const { execute: deleteAccount, status: deletingStatus } = await useApi(
+  `/accounts/${route.params.id}`,
   {
-    manualFetch: true,
     method: "delete",
+    token: token,
+    manual: true,
 
-    successCb: async () => {
+    onRequestError: () => {
+      alertStore.addMessage(
+        "The account couldn't be deleted. The server cannot be reached.", {
+          severity: "error",
+          dismissOnLeave: true
+        }
+      )
+    },
+
+    onResponse: async () => {
       alertStore.addMessage(
         "The account has been deleted.", {
           severity: "success",
@@ -192,29 +185,9 @@ const { execute: deleteAccount, status: deletingStatus } = await useApiCall(
       await router.push("/dashboard/account")
     },
 
-    apiErrorCb: async (error) => {
-      //if (error?.response?.status === 401) {
-      //  alertStore.addMessage(
-      //    "You must be signed in to delete accounts.", {
-      //      severity: "warning",
-      //      dismissOnLeave: true
-      //    }
-      //  )
-      //
-      //  await router.replace({ name: "sign-in", query: { next: route.path } })
-      //} else {
+    onResponseError: async () => {
       alertStore.addMessage(
         "The account couldn't be deleted. Something is wrong with the server.", {
-          severity: "error",
-          dismissOnLeave: true
-        }
-      )
-      //}
-    },
-
-    fetchErrorCb: () => {
-      alertStore.addMessage(
-        "The account couldn't be deleted. The server cannot be reached.", {
           severity: "error",
           dismissOnLeave: true
         }

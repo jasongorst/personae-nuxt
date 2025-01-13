@@ -44,7 +44,7 @@
         </RouterLink>
 
         <RouterLink
-          v-if="isSignedIn"
+          v-if="isLoggedIn"
           :to="`edit-${character.id}`"
           class="btn btn-sm btn-secondary uppercase"
         >
@@ -71,25 +71,24 @@
 
 <script setup>
 const route = useRoute()
-//const sessionStore = useSessionStore()
-//const { isSignedIn } = storeToRefs(sessionStore)
-const isSignedIn = true
+const { status } = useAuth()
+const isLoggedIn = computed(() => status.value === "authenticated")
 
-const { data: character } = await useApiCall(
-  `/api/v1/characters/${route.params.id}`,
+const { data: character } = await useApi(
+  `/characters/${route.params.id}`,
   {
-    apiErrorCb: () => {
+    onRequestError: () => {
       alertStore.addMessage(
-        "The character couldn't be loaded. Something is wrong with the server.", {
+        "The character couldn't be loaded. The server cannot be reached.", {
           severity: "error",
           dismissOnLeave: true
         }
       )
     },
 
-    fetchErrorCb: () => {
+    onResponseError: () => {
       alertStore.addMessage(
-        "The character couldn't be loaded. The server cannot be reached.", {
+        "The character couldn't be loaded. Something is wrong with the server.", {
           severity: "error",
           dismissOnLeave: true
         }

@@ -11,7 +11,7 @@
           @click="saveCharacter"
           :is-loading="savingStatus === 'pending'"
           type="button"
-          class="btn-sm btn-secondary uppercase"
+          class="btn btn-sm btn-secondary uppercase"
         >
           Save
         </UILoadingButton>
@@ -29,14 +29,15 @@
 </template>
 
 <script setup>
-const route = useRoute()
 const router = useRouter()
 const alertStore = useAlertStore()
+const { token } = useAuth()
+
 const fieldError = ref(null)
 const fieldErrorAlertId = ref(null)
 
 const character = ref(_fromPairs(
-  apiAttributes.map((attribute) => [attribute, null])
+  apiAttributes.map((attribute) => [ attribute, null ])
 ))
 
 onBeforeRouteLeave(() => {
@@ -49,70 +50,44 @@ function dismissFieldErrorAlert() {
   }
 }
 
-const { execute: saveCharacter, status: savingStatus } = await useApiCall(
-  "/api/v1/characters",
-  {
-    manualFetch: true,
+const { execute: saveCharacter, status: savingStatus } = await useApi(
+  "/characters", {
+    body: { character: character },
     method: "post",
-    body: { character: character.value },
+    token: token,
+    manual: true,
 
-    beforeCb: async () => {
+    onRequest: ({ options }) => {
       dismissFieldErrorAlert()
       fieldErrorAlertId.value = null
     },
 
-    successCb: async (response) => {
-      alertStore.addMessage(
-        "The character has been created.", {
-          severity: "success",
-          dismissedIn: 4000
-        }
-      )
+    onRequestError: () => {
+      alertStore.addMessage("The character couldn't be created. The server cannot be reached.", {
+        severity: "error",
+        dismissOnLeave: true
+      })
+    },
 
+    onResponse: async ({ response }) => {
+      alertStore.addMessage("The character has been created.", { severity: "success", dismissedIn: 4000 })
       await router.push(`show-${response._data.id}`)
     },
 
-    fieldErrorCb: (response) => {
-      fieldErrorAlertId.value = alertStore.addMessage(
-        "There was a problem creating the character. See below.", {
-          severity: "warning",
-          dismissOnLeave: true
-        }
-      )
-
-      fieldError.value = deepConvertValues(
-        deepConvertValues(response._data, sentenceize),
-        joinArrays
-      )
+    onResponseError: () => {
+      alertStore.addMessage("The character couldn't be created. Something is wrong with the server.", {
+        severity: "error",
+        dismissOnLeave: true
+      })
     },
 
-    apiErrorCb: async (error) => {
-      //if (error?.response?.status === 401) {
-      //  alertStore.addMessage(
-      //    "You must be signed in to create characters.", {
-      //      severity: "warning",
-      //      dismissOnLeave: true
-      //    }
-      //  )
-      //
-      //  await router.replace({ name: "sign-in", query: { next: route.path } })
-      //} else {
-        alertStore.addMessage(
-          "The character couldn't be created. Something is wrong with the server.", {
-            severity: "error",
-            dismissOnLeave: true
-          }
-        )
-      //}
-    },
+    onFieldError: ({ response }) => {
+      fieldErrorAlertId.value = alertStore.addMessage("There was a problem creating the character. See below.", {
+        severity: "warning",
+        dismissOnLeave: true
+      })
 
-    fetchErrorCb: () => {
-      alertStore.addMessage(
-        "The character couldn't be created. The server cannot be reached.", {
-          severity: "error",
-          dismissOnLeave: true
-        }
-      )
+      fieldError.value = deepConvertValues(deepConvertValues(response._data, sentenceize), joinArrays)
     }
   }
 )

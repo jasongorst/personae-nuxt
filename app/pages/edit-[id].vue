@@ -11,7 +11,7 @@
           @click="saveCharacter"
           :is-loading="savingStatus === 'pending'"
           type="button"
-          class="btn-sm btn-secondary uppercase"
+          class="btn btn-sm btn-secondary uppercase"
         >
           Save
         </UILoadingButton>
@@ -41,19 +41,10 @@
 const route = useRoute()
 const router = useRouter()
 const alertStore = useAlertStore()
+const { token } = useAuth()
+
 const fieldError = ref(null)
 const fieldErrorAlertId = ref(null)
-
-const characterBody = computed(() => ({
-  character: _reduce(
-    apiAttributes,
-    (obj, attribute) => {
-      obj[attribute] = character.value[attribute]
-      return obj
-    },
-    {}
-  )
-}))
 
 onBeforeRouteLeave(() => {
   dismissFieldErrorAlert()
@@ -66,21 +57,21 @@ function dismissFieldErrorAlert() {
 }
 
 // load character
-const { data: character } = await useApiCall(
-  `/api/v1/characters/${route.params.id}`,
+const { data: character } = await useApi(
+  `/characters/${route.params.id}`,
   {
-    apiErrorCb: () => {
+    onRequestError: () => {
       alertStore.addMessage(
-        "The character couldn't be loaded. Something is wrong with the server.", {
+        "The character couldn't be loaded. The server cannot be reached.", {
           severity: "error",
           dismissOnLeave: true
         }
       )
     },
 
-    fetchErrorCb: () => {
+    onResponseError: () => {
       alertStore.addMessage(
-        "The character couldn't be loaded. The server cannot be reached.", {
+        "The character couldn't be loaded. Something is wrong with the server.", {
           severity: "error",
           dismissOnLeave: true
         }
@@ -90,19 +81,29 @@ const { data: character } = await useApiCall(
 )
 
 // save character
-const { execute: saveCharacter, status: savingStatus } = await useApiCall(
-  `/api/v1/characters/${route.params.id}`,
+const { execute: saveCharacter, status: savingStatus } = await useApi(
+  `/characters/${route.params.id}`,
   {
-    manualFetch: true,
+    body: { character: computed(() => _pick(character.value, apiAttributes)) },
     method: "patch",
-    body: characterBody,
+    token: token,
+    manual: true,
 
-    beforeCb: async () => {
+    onRequest: () => {
       dismissFieldErrorAlert()
       fieldErrorAlertId.value = null
     },
 
-    successCb: async (response) => {
+    onRequestError: () => {
+      alertStore.addMessage(
+        "The character couldn't be updated. The server cannot be reached.", {
+          severity: "error",
+          dismissOnLeave: true
+        }
+      )
+    },
+
+    onResponse: async () => {
       alertStore.addMessage(
         "The character has been updated.", {
           severity: "success",
@@ -113,7 +114,15 @@ const { execute: saveCharacter, status: savingStatus } = await useApiCall(
       await router.push(`show-${route.params.id}`)
     },
 
-    fieldErrorCb: (response) => {
+    onResponseError: () => {
+      alertStore.addMessage(
+        "The character couldn't be updated. Something is wrong with the server.", {
+          severity: "error",
+          dismissOnLeave: true
+        })
+    },
+
+    onFieldError: ({ response }) => {
       fieldErrorAlertId.value = alertStore.addMessage(
         "There was a problem updating the character. See below.", {
           severity: "warning",
@@ -122,47 +131,28 @@ const { execute: saveCharacter, status: savingStatus } = await useApiCall(
       )
 
       fieldError.value = sentenceizeValues(response._data)
-    },
-
-    apiErrorCb: async (error) => {
-      //if (error?.response?.status === 401) {
-      //  alertStore.addMessage(
-      //    "You must be signed in to edit characters.", {
-      //      severity: "warning",
-      //      dismissOnLeave: true
-      //    }
-      //  )
-      //
-      //  await router.replace({ name: "sign-in", query: { next: route.path } })
-      //} else {
-        alertStore.addMessage(
-          "The character couldn't be updated. Something is wrong with the server.", {
-            severity: "error",
-            dismissOnLeave: true
-          }
-        )
-      //}
-    },
-
-    fetchErrorCb: () => {
-      alertStore.addMessage(
-        "The character couldn't be updated. The server cannot be reached.", {
-          severity: "error",
-          dismissOnLeave: true
-        }
-      )
     }
   }
 )
 
 // delete character
-const { execute: deleteCharacter, status: deletingStatus } = await useApiCall(
-  `/api/v1/characters/${route.params.id}`,
+const { execute: deleteCharacter, status: deletingStatus } = await useApi(
+  `/characters/${route.params.id}`,
   {
-    manualFetch: true,
     method: "delete",
+    token: token,
+    manual: true,
 
-    successCb: async () => {
+    onRequestError: () => {
+      alertStore.addMessage(
+        "The character couldn't be deleted. The server cannot be reached.", {
+          severity: "error",
+          dismissOnLeave: true
+        }
+      )
+    },
+
+    onResponse: async () => {
       alertStore.addMessage(
         "The character has been deleted.", {
           severity: "success",
@@ -173,29 +163,9 @@ const { execute: deleteCharacter, status: deletingStatus } = await useApiCall(
       await router.push("/")
     },
 
-    apiErrorCb: async (error) => {
-      //if (error.status === 401) {
-      //  alertStore.addMessage(
-      //    "You must be signed in to delete characters.", {
-      //      severity: "warning",
-      //      dismissOnLeave: true
-      //    }
-      //  )
-      //
-      //  await router.replace({ name: "sign-in", query: { next: route.path } })
-      //} else {
-        alertStore.addMessage(
-          "The character couldn't be deleted. Something is wrong with the server.", {
-            severity: "error",
-            dismissOnLeave: true
-          }
-        )
-      //}
-    },
-
-    fetchErrorCb: () => {
+    onResponseError: () => {
       alertStore.addMessage(
-        "The character couldn't be deleted. The server cannot be reached.", {
+        "The character couldn't be deleted. Something is wrong with the server.", {
           severity: "error",
           dismissOnLeave: true
         }

@@ -73,6 +73,8 @@
 
 <script setup>
 const alertStore = useAlertStore()
+const { token } = useAuth()
+
 const accountAttributes = ["id", "email", "status", "admin"]
 
 const sort = ref({
@@ -116,21 +118,23 @@ function attributeTooltip(attribute) {
   }
 }
 
-const { data: accounts } = await useApiCall(
-  "http://localhost:3000/accounts",
+const { data: accounts } = await useApi(
+  "/accounts",
   {
-    apiErrorCb: () => {
+    token: token,
+
+    onRequestError: () => {
       alertStore.addMessage(
-        "Couldn't load accounts. Something is wrong with the server.", {
+        "Couldn't load accounts. The server cannot be reached.", {
           severity: "error",
           dismissOnLeave: true
         }
       )
     },
 
-    fetchErrorCb: () => {
+    onResponseError: () => {
       alertStore.addMessage(
-        "Couldn't load accounts. The server cannot be reached.", {
+        "Couldn't load accounts. Something is wrong with the server.", {
           severity: "error",
           dismissOnLeave: true
         }

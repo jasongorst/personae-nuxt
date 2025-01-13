@@ -50,11 +50,9 @@ export default defineNuxtConfig({
   ],
 
   runtimeConfig: {
-    auth: {
-      baseUrl: ""
-    },
-
-    dbUrl: "file:server/db/dev.sqlite3"
+    auth: { baseUrl: "" },
+    dbUrl: "file:server/db/dev.sqlite3",
+    public: { useApi: { baseURL: "" } }
   },
 
   nitro: {
@@ -101,6 +99,8 @@ export default defineNuxtConfig({
         getSession: { path: "/session", method: "get" }
       },
       token: {
+        headerName: "Authorization",
+        type: "Bearer",
         signInResponseTokenPointer: "/access_token"
       },
       refresh: {

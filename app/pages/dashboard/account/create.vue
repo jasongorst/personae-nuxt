@@ -12,7 +12,7 @@
           @click="saveAccount"
           :is-loading="savingStatus === 'pending'"
           type="button"
-          class="btn-sm btn-secondary uppercase"
+          class="btn btn-sm btn-secondary uppercase"
         >
           Save
         </UILoadingButton>
@@ -32,6 +32,8 @@
 <script setup>
 const router = useRouter()
 const alertStore = useAlertStore()
+const { token } = useAuth()
+
 const fieldError = ref(null)
 const fieldErrorAlertId = ref(null)
 
@@ -52,19 +54,29 @@ function dismissFieldErrorAlert() {
   }
 }
 
-const { execute: saveAccount, status: savingStatus } = await useApiCall(
-  "http://localhost:3000/accounts",
+const { execute: saveAccount, status: savingStatus } = await useApi(
+  "/accounts",
   {
-    manualFetch: true,
+    body: { account: account },
     method: "post",
-    body: { account: account.value },
+    token: token,
+    manual: true,
 
-    beforeCb: async () => {
+    onRequest: async () => {
       dismissFieldErrorAlert()
       fieldErrorAlertId.value = null
     },
 
-    successCb: async () => {
+    onRequestError: () => {
+      alertStore.addMessage(
+        "The account couldn't be created. The server cannot be reached.", {
+          severity: "error",
+          dismissOnLeave: true
+        }
+      )
+    },
+
+    onResponse: async () => {
       alertStore.addMessage(
         "The account has been created.", {
           severity: "success",
@@ -75,7 +87,16 @@ const { execute: saveAccount, status: savingStatus } = await useApiCall(
       await router.push("/dashboard/account")
     },
 
-    fieldErrorCb: (response) => {
+    onResponseError: async () => {
+      alertStore.addMessage(
+        "The account couldn't be created. Something is wrong with the server.", {
+          severity: "error",
+          dismissOnLeave: true
+        }
+      )
+    },
+
+    onFieldError: (response) => {
       fieldErrorAlertId.value = alertStore.addMessage(
         "There was a problem creating the account. See below.", {
           severity: "warning",
@@ -83,39 +104,7 @@ const { execute: saveAccount, status: savingStatus } = await useApiCall(
         }
       )
 
-      fieldError.value = deepConvertValues(
-        deepConvertValues(response._data, sentenceize),
-        joinArrays
-      )
-    },
-
-    apiErrorCb: async () => {
-      //if (error?.response?.status === 401) {
-      //  alertStore.addMessage(
-      //    "You must be signed in to edit accounts.", {
-      //      severity: "warning",
-      //      dismissOnLeave: true
-      //    }
-      //  )
-      //
-      //  await router.replace({ name: "sign-in", query: { next: route.path } })
-      //} else {
-        alertStore.addMessage(
-          "The account couldn't be created. Something is wrong with the server.", {
-            severity: "error",
-            dismissOnLeave: true
-          }
-        )
-      //}
-    },
-
-    fetchErrorCb: () => {
-      alertStore.addMessage(
-        "The account couldn't be created. The server cannot be reached.", {
-          severity: "error",
-          dismissOnLeave: true
-        }
-      )
+      fieldError.value = deepConvertValues(deepConvertValues(response._data, sentenceize), joinArrays)
     }
   }
 )

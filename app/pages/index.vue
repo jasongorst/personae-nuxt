@@ -45,26 +45,26 @@ callOnce(() => {
 const charactersStore = useCharactersStore()
 const { characters, query } = storeToRefs(charactersStore)
 
-const { data, refresh: loadCharacters } = await useApiCall(
-  "/api/v1/characters",
+const { data, refresh: loadCharacters } = await useApi(
+  "/characters",
   {
-    manualFetch: true,
+    manual: true,
     query: { q: query },
 
     transform: (data) => deepParseTimestamps(deepConvertKeys(data, _camelCase)),
 
-    apiErrorCb: () => {
+    onRequestError: () => {
       alertStore.addMessage(
-        "Couldn't load characters. Something is wrong with the server.", {
+        "Couldn't load characters. The server cannot be reached.", {
           severity: "error",
           dismissOnLeave: true
         }
       )
     },
 
-    fetchErrorCb: () => {
+    onResponseError: () => {
       alertStore.addMessage(
-        "Couldn't load characters. The server cannot be reached.", {
+        "Couldn't load characters. Something is wrong with the server.", {
           severity: "error",
           dismissOnLeave: true
         }
