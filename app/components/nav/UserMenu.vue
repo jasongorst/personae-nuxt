@@ -5,7 +5,7 @@
   >
     <summary class="btn btn-ghost">
       <Icon
-        v-if="loggedIn"
+        v-if="isLoggedIn"
         name="fa6-solid:circle-user"
       />
 
@@ -15,10 +15,8 @@
       />
     </summary>
 
-    <ul
-      class="dropdown-content menu w-52 mt-3 p-2 shadow bg-primary rounded-box z-10 whitespace-nowrap"
-    >
-      <template v-if="loggedIn">
+    <ul class="dropdown-content menu w-52 mt-3 p-2 shadow bg-primary rounded-box z-10 whitespace-nowrap">
+      <template v-if="isLoggedIn">
         <li class="menu-title text-primary-content/55 whitespace-nowrap">
           {{ user.email }}
         </li>
@@ -33,13 +31,13 @@
         </li>
 
         <li>
-          <button
-            type="button"
+          <UILoadingButton
             class="whitespace-nowrap"
-            @click="signOut"
+            :is-loading="isLoading"
+            @click="useSignOut"
           >
             Sign Out
-          </button>
+          </UILoadingButton>
         </li>
       </template>
 
@@ -65,22 +63,25 @@
 </template>
 
 <script setup>
-const alertStore = useAlertStore()
-
-const { loggedIn, user, signOut } = useComboAuth({
-  onLoggedOut() {
-    closeUserMenu()
-
-    alertStore.addMessage(
-      "You've been signed out.", {
-        severity: "success",
-        dismissedIn: 4000
-      }
-    )
-  }
-})
-
 const userMenuRef = ref(null)
+const alertStore = useAlertStore()
+const { status, data: user, signOut } = useAuth()
+
+const isLoading = computed(() => status.value === "loading")
+const isLoggedIn = computed(() => status.value === "authenticated")
+
+async function useSignOut() {
+  await signOut({ redirect: false })
+
+  alertStore.addMessage(
+    "You've been signed out.", {
+      severity: "success",
+      dismissedIn: 4000
+    }
+  )
+
+  closeUserMenu()
+}
 
 function signIn() {
   closeUserMenu()

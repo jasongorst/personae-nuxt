@@ -11,113 +11,42 @@
         class="modal-box card"
       >
         <div class="card-body">
-          <HTabGroup>
-            <HTabList class="tabs tabs-bordered pb-4">
-              <HTab class="tab">
-                Sign Up
-              </HTab>
+          <UITextInput
+            v-model="credentials.email"
+            id="password_email"
+            type="email"
+            size="md"
+            placeholder="Email address"
+            autocomplete="email"
+            required
+          >
+            <template #label>
+              Email Address
+            </template>
+          </UITextInput>
 
-              <HTab class="tab">
-                Sign In (Password)
-              </HTab>
+          <UIPasswordInput
+            v-model="credentials.password"
+            id="password_password"
+            placeholder="Password"
+            autocomplete="current-password"
+            required
+          >
+            <template #label>
+              Password
+            </template>
+          </UIPasswordInput>
 
-              <HTab class="tab">
-                Sign In (Passkey)
-              </HTab>
-            </HTabList>
-
-            <HTabPanels>
-              <HTabPanel>
-                <UITextInput
-                  v-model="credentials.email"
-                  id="signup_email"
-                  type="email"
-                  size="md"
-                  placeholder="Email address"
-                  autocomplete="email"
-                  required
-                >
-                  <template #label>
-                    Email Address
-                  </template>
-                </UITextInput>
-
-                <div class="form-control pt-3">
-                  <UILoadingButton
-                    @click="registerWithPasskey(credentials.email)"
-                    :is-loading="!ready"
-                    :disabled="!credentials.email"
-                  >
-                    Sign Up
-                  </UILoadingButton>
-                </div>
-              </HTabPanel>
-
-              <HTabPanel>
-                <UITextInput
-                  v-model="credentials.email"
-                  id="password_email"
-                  type="email"
-                  size="md"
-                  placeholder="Email address"
-                  autocomplete="email"
-                  required
-                >
-                  <template #label>
-                    Email Address
-                  </template>
-                </UITextInput>
-
-                <UIPasswordInput
-                  v-model="credentials.password"
-                  id="password_password"
-                  placeholder="Password"
-                  autocomplete="current-password"
-                  required
-                >
-                  <template #label>
-                    Password
-                  </template>
-                </UIPasswordInput>
-
-                <div class="form-control pt-3">
-                  <UILoadingButton
-                    @click="signInWithPassword(credentials.email, credentials.password)"
-                    :is-loading="!ready"
-                    :disabled="!credentials.email || !credentials.password"
-                  >
-                    Sign In
-                  </UILoadingButton>
-                </div>
-              </HTabPanel>
-
-              <HTabPanel>
-                <UITextInput
-                  v-model="credentials.email"
-                  id="signin"
-                  type="email"
-                  size="md"
-                  placeholder="Email address"
-                  autocomplete="email webauthn"
-                  required
-                >
-                  <template #label>
-                    Email Address
-                  </template>
-                </UITextInput>
-
-                <div class="form-control pt-3">
-                  <UILoadingButton
-                    @click="signInWithPasskey(credentials.email)"
-                    :is-loading="!ready"
-                    :disabled="!credentials.email"
-                  >
-                    Sign In
-                  </UILoadingButton>
-                </div>
-              </HTabPanel>
-            </HTabPanels>
-          </HTabGroup>
+          <div class="form-control pt-3">
+            <UILoadingButton
+              class="btn"
+              @click="signInWithPassword"
+              :is-loading="isLoading"
+              :disabled="!credentials.email || !credentials.password"
+            >
+              Sign In
+            </UILoadingButton>
+          </div>
         </div>
       </HDialogPanel>
     </HDialog>
@@ -129,27 +58,25 @@ definePageMeta({
   path: "/sign-in"
 })
 
+const dialogPanelRef = ref(null)
 const alertStore = useAlertStore()
 const router = useRouter()
 const showSignInModal = useState("showSignInModal")
+const { status, signIn } = useAuth()
+const isLoading = computed(() => status.value === "loading")
+
+const credentials = ref({
+  email: null,
+  password: null
+})
 
 onMounted(() => {
   showSignInModal.value = true
 })
 
-const { ready, registerWithPasskey, signInWithPasskey, signInWithPassword } = useComboAuth({
-  onRegistered() {
-    closeModal()
-
-    alertStore.addMessage(
-      "Your login been registered.", {
-        severity: "success",
-        dismissedIn: 4000
-      }
-    )
-  },
-
-  onLoggedIn() {
+async function signInWithPassword() {
+  try {
+    await signIn(credentials.value, { redirect: false })
     closeModal()
 
     alertStore.addMessage(
@@ -158,9 +85,7 @@ const { ready, registerWithPasskey, signInWithPasskey, signInWithPassword } = us
         dismissedIn: 4000
       }
     )
-  },
-
-  onError(error) {
+  } catch (error) {
     closeModal()
     console.log(error)
 
@@ -171,15 +96,7 @@ const { ready, registerWithPasskey, signInWithPasskey, signInWithPassword } = us
       }
     )
   }
-})
-
-// ref to HDialogPanel to set initial focus
-const dialogPanelRef = ref(null)
-
-const credentials = ref({
-  email: null,
-  password: null
-})
+}
 
 function closeModal() {
   showSignInModal.value = false
