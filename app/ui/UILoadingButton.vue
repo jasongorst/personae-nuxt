@@ -1,6 +1,5 @@
 <template>
   <button
-    class="btn"
     type="button"
   >
     <span class="flex flex-col">
@@ -21,7 +20,7 @@
 </template>
 
 <script setup>
-const props = defineProps(["isLoading"])
+const props = defineProps([ "isLoading" ])
 </script>
 
 <style scoped>

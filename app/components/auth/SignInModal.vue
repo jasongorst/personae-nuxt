@@ -44,6 +44,7 @@
 
                 <div class="form-control pt-3">
                   <UILoadingButton
+                    class="btn"
                     @click="registerWithPasskey(credentials.email)"
                     :is-loading="!ready"
                     :disabled="!credentials.email"
@@ -82,6 +83,7 @@
 
                 <div class="form-control pt-3">
                   <UILoadingButton
+                    class="btn"
                     @click="signInWithPassword(credentials.email, credentials.password)"
                     :is-loading="!ready"
                     :disabled="!credentials.email || !credentials.password"
@@ -108,6 +110,7 @@
 
                 <div class="form-control pt-3">
                   <UILoadingButton
+                    class="btn"
                     @click="signInWithPasskey(credentials.email)"
                     :is-loading="!ready"
                     :disabled="!credentials.email"
