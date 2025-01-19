@@ -1,4 +1,4 @@
-export default defineStore("alert", {
+export const useAlert = defineStore("alert", {
   state: () => ({
     messages: new Map(),
     nextId: 1
@@ -8,13 +8,14 @@ export default defineStore("alert", {
     hasMessages(state) {
       return isPositive(state.messages.size)
     },
-    messageCount(state) {
+
+    count(state) {
       return state.messages.size
     }
   },
 
   actions: {
-    addMessage(text, {
+    add(text, {
       severity = "info",
       dismissable = true,
       dismissedIn = 0,
@@ -39,16 +40,21 @@ export default defineStore("alert", {
       return id
     },
 
-    getMessage(id) {
+    get(id) {
       return this.messages.get(id)
     },
 
-    removeAllMessages() {
+    clear() {
       this.$reset()
     },
 
-    removeMessage(id) {
+    remove(id) {
       this.messages.delete(id)
     }
   }
 })
+
+// hmr support
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useAlert, import.meta.hot))
+}
