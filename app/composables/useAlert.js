@@ -1,56 +1,59 @@
-export const useAlert = defineStore("alert", {
-  state: () => ({
-    messages: new Map(),
-    nextId: 1
-  }),
+export const useAlert = defineStore("alert", () => {
+  // state
+  const messages = ref(new Map())
+  const nextId = ref(1)
 
-  getters: {
-    hasMessages(state) {
-      return isPositive(state.messages.size)
-    },
+  // getters
+  const count = () => messages.value.size
+  const hasMessages = () =>isPositive(count.value)
 
-    count(state) {
-      return state.messages.size
+  // actions
+  function add(text, {
+    severity = "info",
+    dismissable = true,
+    dismissedIn = 0,
+    dismissOnLeave = false
+  } = {}) {
+    const id = nextId.value
+
+    // if neither dismissable nor auto-dismissed, make the alert dismissable
+    if (!dismissable && dismissedIn === 0) {
+      dismissable = true
     }
-  },
 
-  actions: {
-    add(text, {
-      severity = "info",
-      dismissable = true,
-      dismissedIn = 0,
-      dismissOnLeave = false
-    } = {}) {
-      const id = this.nextId
+    messages.value.set(id, {
+      text: text,
+      severity: severity,
+      dismissable: dismissable,
+      dismissedIn: dismissedIn,
+      dismissOnLeave: dismissOnLeave
+    })
 
-      // if neither dismissable nor auto-dismissed, make the alert dismissable
-      if (!dismissable && dismissedIn === 0) {
-        dismissable = true
-      }
+    nextId.value++
+    return id
+  }
 
-      this.messages.set(id, {
-        text: text,
-        severity: severity,
-        dismissable: dismissable,
-        dismissedIn: dismissedIn,
-        dismissOnLeave: dismissOnLeave
-      })
+  function get(id) {
+    return messages.value.get(id)
+  }
 
-      this.nextId++
-      return id
-    },
+  function clear() {
+    messages.value.clear()
+  }
 
-    get(id) {
-      return this.messages.get(id)
-    },
+  function remove(id) {
+    return messages.value.delete(id)
+  }
 
-    clear() {
-      this.$reset()
-    },
-
-    remove(id) {
-      this.messages.delete(id)
-    }
+  return {
+    messages,
+    nextId,
+    count,
+    hasMessages,
+    add,
+    get,
+    clear,
+    remove
   }
 })
 
