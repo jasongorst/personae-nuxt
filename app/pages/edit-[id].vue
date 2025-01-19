@@ -40,7 +40,7 @@
 <script setup>
 const route = useRoute()
 const router = useRouter()
-const alertStore = useAlertStore()
+const alert = useAlert()
 const { token } = useAuth()
 
 const fieldError = ref(null)
@@ -52,7 +52,7 @@ onBeforeRouteLeave(() => {
 
 function dismissFieldErrorAlert() {
   if (fieldErrorAlertId.value) {
-    alertStore.removeMessage(fieldErrorAlertId.value)
+    alert.remove(fieldErrorAlertId.value)
   }
 }
 
@@ -61,7 +61,7 @@ const { data: character } = await useApi(
   `/characters/${route.params.id}`,
   {
     onRequestError: () => {
-      alertStore.addMessage(
+      alert.add(
         "The character couldn't be loaded. The server cannot be reached.", {
           severity: "error",
           dismissOnLeave: true
@@ -70,7 +70,7 @@ const { data: character } = await useApi(
     },
 
     onResponseError: () => {
-      alertStore.addMessage(
+      alert.add(
         "The character couldn't be loaded. Something is wrong with the server.", {
           severity: "error",
           dismissOnLeave: true
@@ -95,7 +95,7 @@ const { execute: saveCharacter, status: savingStatus } = await useApi(
     },
 
     onRequestError: () => {
-      alertStore.addMessage(
+      alert.add(
         "The character couldn't be updated. The server cannot be reached.", {
           severity: "error",
           dismissOnLeave: true
@@ -104,7 +104,7 @@ const { execute: saveCharacter, status: savingStatus } = await useApi(
     },
 
     onResponse: async () => {
-      alertStore.addMessage(
+      alert.add(
         "The character has been updated.", {
           severity: "success",
           dismissedIn: 4000
@@ -115,7 +115,7 @@ const { execute: saveCharacter, status: savingStatus } = await useApi(
     },
 
     onResponseError: () => {
-      alertStore.addMessage(
+      alert.add(
         "The character couldn't be updated. Something is wrong with the server.", {
           severity: "error",
           dismissOnLeave: true
@@ -123,7 +123,7 @@ const { execute: saveCharacter, status: savingStatus } = await useApi(
     },
 
     onFieldError: ({ response }) => {
-      fieldErrorAlertId.value = alertStore.addMessage(
+      fieldErrorAlertId.value = alert.add(
         "There was a problem updating the character. See below.", {
           severity: "warning",
           dismissOnLeave: true
@@ -144,7 +144,7 @@ const { execute: deleteCharacter, status: deletingStatus } = await useApi(
     manual: true,
 
     onRequestError: () => {
-      alertStore.addMessage(
+      alert.add(
         "The character couldn't be deleted. The server cannot be reached.", {
           severity: "error",
           dismissOnLeave: true
@@ -153,7 +153,7 @@ const { execute: deleteCharacter, status: deletingStatus } = await useApi(
     },
 
     onResponse: async () => {
-      alertStore.addMessage(
+      alert.add(
         "The character has been deleted.", {
           severity: "success",
           dismissedIn: 4000
@@ -164,7 +164,7 @@ const { execute: deleteCharacter, status: deletingStatus } = await useApi(
     },
 
     onResponseError: () => {
-      alertStore.addMessage(
+      alert.add(
         "The character couldn't be deleted. Something is wrong with the server.", {
           severity: "error",
           dismissOnLeave: true

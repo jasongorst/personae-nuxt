@@ -1,7 +1,7 @@
 function getBlankFilter() {
   return _fromPairs(
     filterAttributes.map(
-      (attribute) => [attribute, []]
+      (attribute) => [ attribute, [] ]
     )
   )
 }
@@ -10,6 +10,7 @@ function getBlankFilter() {
 function isInFilter(character, filter) {
   let result = true
 
+  // noinspection FunctionWithInconsistentReturnsJS
   _forEach(filter, (values, attribute) => {
     if (!isEmpty(values) && !values.includes(character[attribute])) {
       result = false
@@ -22,7 +23,7 @@ function isInFilter(character, filter) {
   return result
 }
 
-export default defineStore("characters", {
+export const usePersonae = defineStore("personae", {
   state: () => ({
     characters: [],
     filter: getBlankFilter(),

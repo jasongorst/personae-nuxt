@@ -20,8 +20,8 @@
 <script setup>
 defineProps(["inputId"])
 
-const charactersStore = useCharactersStore()
-const { query } = storeToRefs(charactersStore)
+const personae = usePersonae()
+const { query } = storeToRefs(personae)
 </script>
 
 <style scoped>

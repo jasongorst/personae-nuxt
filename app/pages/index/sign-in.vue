@@ -58,12 +58,12 @@ definePageMeta({
   path: "/sign-in"
 })
 
-const dialogPanelRef = ref(null)
-const alertStore = useAlertStore()
+const alert = useAlert()
 const router = useRouter()
 const showSignInModal = useState("showSignInModal")
 const { status, signIn } = useAuth()
 const isLoading = computed(() => status.value === "loading")
+const dialogPanelRef = ref(null)
 
 const credentials = ref({
   email: null,
@@ -79,7 +79,7 @@ async function signInWithPassword() {
     await signIn(credentials.value, { redirect: false })
     closeModal()
 
-    alertStore.addMessage(
+    alert.add(
       "You are now signed in.", {
         severity: "success",
         dismissedIn: 4000
@@ -89,7 +89,7 @@ async function signInWithPassword() {
     closeModal()
     console.log(error)
 
-    alertStore.addMessage(
+    alert.add(
       error.data?.message || error.message, {
         severity: "error",
         dismissOnLeave: true

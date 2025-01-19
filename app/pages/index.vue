@@ -1,7 +1,7 @@
 <template>
   <NuxtPage />
 
-  <template v-if="isPositive(charactersStore.filteredCount)">
+  <template v-if="isPositive(personae.filteredCount)">
     <CharacterGrid />
 
     <CharacterToolbar />
@@ -12,7 +12,7 @@
       <div class="hero h-[calc((100vh-7rem)*2/3)] lg:h-[calc((100vh-7rem)*2/3)] mx-auto md:w-11/12 lg:w-5/6">
         <div class="hero-content bg-base-300 text-center py-6 px-8 md:py-8 md:px-12 text-3xl lg:text-4xl">
           <template v-if="isPresent(query)">
-            <span v-if="charactersStore.isFilterSet">
+            <span v-if="personae.isFilterSet">
 <!--          query set, filter set -->
               Sorry, none of the search results match the filter.
             </span>
@@ -24,7 +24,7 @@
           </template>
 
           <template v-else>
-            <span v-if="charactersStore.isFilterSet">
+            <span v-if="personae.isFilterSet">
 <!--          no query, filter set -->
               Sorry, no characters match the filter.
             </span>
@@ -36,14 +36,15 @@
 </template>
 
 <script setup>
+const alert = useAlert()
+const personae = usePersonae()
+const { characters, query } = storeToRefs(personae)
+
 const showSignInModal = useState("showSignInModal")
 
 callOnce(() => {
   showSignInModal.value = true
 })
-
-const charactersStore = useCharactersStore()
-const { characters, query } = storeToRefs(charactersStore)
 
 const { data, refresh: loadCharacters } = await useApi(
   "/characters",
@@ -54,7 +55,7 @@ const { data, refresh: loadCharacters } = await useApi(
     transform: (data) => deepParseTimestamps(deepConvertKeys(data, _camelCase)),
 
     onRequestError: () => {
-      alertStore.addMessage(
+      alert.add(
         "Couldn't load characters. The server cannot be reached.", {
           severity: "error",
           dismissOnLeave: true
@@ -63,7 +64,7 @@ const { data, refresh: loadCharacters } = await useApi(
     },
 
     onResponseError: () => {
-      alertStore.addMessage(
+      alert.add(
         "Couldn't load characters. Something is wrong with the server.", {
           severity: "error",
           dismissOnLeave: true
@@ -76,7 +77,7 @@ const { data, refresh: loadCharacters } = await useApi(
 watch(
   query,
   async () => {
-    charactersStore.resetFilter()
+    personae.resetFilter()
     await loadCharacters()
 
     if (!_isUndefined(data.value)) {

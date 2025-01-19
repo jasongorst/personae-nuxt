@@ -1,3 +1,4 @@
+<!--suppress HtmlUnknownTarget -->
 <template>
   <div
     v-if="isPresent(character)"
@@ -70,6 +71,7 @@
 </template>
 
 <script setup>
+const alert = useAlert()
 const route = useRoute()
 const { status } = useAuth()
 const isLoggedIn = computed(() => status.value === "authenticated")
@@ -78,7 +80,7 @@ const { data: character } = await useApi(
   `/characters/${route.params.id}`,
   {
     onRequestError: () => {
-      alertStore.addMessage(
+      alert.add(
         "The character couldn't be loaded. The server cannot be reached.", {
           severity: "error",
           dismissOnLeave: true
@@ -87,7 +89,7 @@ const { data: character } = await useApi(
     },
 
     onResponseError: () => {
-      alertStore.addMessage(
+      alert.add(
         "The character couldn't be loaded. Something is wrong with the server.", {
           severity: "error",
           dismissOnLeave: true

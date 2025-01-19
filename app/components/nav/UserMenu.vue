@@ -64,7 +64,7 @@
 
 <script setup>
 const userMenuRef = ref(null)
-const alertStore = useAlertStore()
+const alert = useAlert()
 const { status, data: user, signOut } = useAuth()
 
 const isLoading = computed(() => status.value === "loading")
@@ -73,7 +73,7 @@ const isLoggedIn = computed(() => status.value === "authenticated")
 async function useSignOut() {
   await signOut({ redirect: false })
 
-  alertStore.addMessage(
+  alert.add(
     "You've been signed out.", {
       severity: "success",
       dismissedIn: 4000

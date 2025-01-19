@@ -1,3 +1,4 @@
+<!--suppress HtmlUnknownTarget -->
 <template>
   <div>
     <table class="w-full table table-pin-rows table-sm xl:table-md table-zebra mb-4">
@@ -72,10 +73,10 @@
 </template>
 
 <script setup>
-const alertStore = useAlertStore()
+const alert = useAlert()
 const { token } = useAuth()
 
-const accountAttributes = ["id", "email", "status", "admin"]
+const accountAttributes = [ "id", "email", "status", "admin" ]
 
 const sort = ref({
   attribute: "id",
@@ -124,7 +125,7 @@ const { data: accounts } = await useApi(
     token: token,
 
     onRequestError: () => {
-      alertStore.addMessage(
+      alert.add(
         "Couldn't load accounts. The server cannot be reached.", {
           severity: "error",
           dismissOnLeave: true
@@ -133,7 +134,7 @@ const { data: accounts } = await useApi(
     },
 
     onResponseError: () => {
-      alertStore.addMessage(
+      alert.add(
         "Couldn't load accounts. Something is wrong with the server.", {
           severity: "error",
           dismissOnLeave: true

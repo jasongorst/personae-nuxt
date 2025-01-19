@@ -30,7 +30,7 @@
 
 <script setup>
 const router = useRouter()
-const alertStore = useAlertStore()
+const alert = useAlert()
 const { token } = useAuth()
 
 const fieldError = ref(null)
@@ -46,7 +46,7 @@ onBeforeRouteLeave(() => {
 
 function dismissFieldErrorAlert() {
   if (fieldErrorAlertId.value) {
-    alertStore.removeMessage(fieldErrorAlertId.value)
+    alert.remove(fieldErrorAlertId.value)
   }
 }
 
@@ -57,32 +57,32 @@ const { execute: saveCharacter, status: savingStatus } = await useApi(
     token: token,
     manual: true,
 
-    onRequest: ({ options }) => {
+    onRequest: () => {
       dismissFieldErrorAlert()
       fieldErrorAlertId.value = null
     },
 
     onRequestError: () => {
-      alertStore.addMessage("The character couldn't be created. The server cannot be reached.", {
+      alert.add("The character couldn't be created. The server cannot be reached.", {
         severity: "error",
         dismissOnLeave: true
       })
     },
 
     onResponse: async ({ response }) => {
-      alertStore.addMessage("The character has been created.", { severity: "success", dismissedIn: 4000 })
+      alert.add("The character has been created.", { severity: "success", dismissedIn: 4000 })
       await router.push(`show-${response._data.id}`)
     },
 
     onResponseError: () => {
-      alertStore.addMessage("The character couldn't be created. Something is wrong with the server.", {
+      alert.add("The character couldn't be created. Something is wrong with the server.", {
         severity: "error",
         dismissOnLeave: true
       })
     },
 
     onFieldError: ({ response }) => {
-      fieldErrorAlertId.value = alertStore.addMessage("There was a problem creating the character. See below.", {
+      fieldErrorAlertId.value = alert.add("There was a problem creating the character. See below.", {
         severity: "warning",
         dismissOnLeave: true
       })

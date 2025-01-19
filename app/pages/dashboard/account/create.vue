@@ -31,7 +31,7 @@
 
 <script setup>
 const router = useRouter()
-const alertStore = useAlertStore()
+const alert = useAlert()
 const { token } = useAuth()
 
 const fieldError = ref(null)
@@ -50,7 +50,7 @@ onBeforeRouteLeave(() => {
 
 function dismissFieldErrorAlert() {
   if (fieldErrorAlertId.value) {
-    alertStore.removeMessage(fieldErrorAlertId.value)
+    alert.remove(fieldErrorAlertId.value)
   }
 }
 
@@ -68,7 +68,7 @@ const { execute: saveAccount, status: savingStatus } = await useApi(
     },
 
     onRequestError: () => {
-      alertStore.addMessage(
+      alert.add(
         "The account couldn't be created. The server cannot be reached.", {
           severity: "error",
           dismissOnLeave: true
@@ -77,7 +77,7 @@ const { execute: saveAccount, status: savingStatus } = await useApi(
     },
 
     onResponse: async () => {
-      alertStore.addMessage(
+      alert.add(
         "The account has been created.", {
           severity: "success",
           dismissedIn: 4000
@@ -88,7 +88,7 @@ const { execute: saveAccount, status: savingStatus } = await useApi(
     },
 
     onResponseError: async () => {
-      alertStore.addMessage(
+      alert.add(
         "The account couldn't be created. Something is wrong with the server.", {
           severity: "error",
           dismissOnLeave: true
@@ -97,7 +97,7 @@ const { execute: saveAccount, status: savingStatus } = await useApi(
     },
 
     onFieldError: (response) => {
-      fieldErrorAlertId.value = alertStore.addMessage(
+      fieldErrorAlertId.value = alert.add(
         "There was a problem creating the account. See below.", {
           severity: "warning",
           dismissOnLeave: true

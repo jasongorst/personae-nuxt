@@ -27,7 +27,7 @@
 
       <tbody>
       <CharacterItem
-        v-for="character in charactersStore.filteredCharacters"
+        v-for="character in personae.filteredCharacters"
         :key="character.id"
         :character="character"
       />
@@ -37,7 +37,7 @@
 </template>
 
 <script setup>
-const charactersStore = useCharactersStore()
+const personae = usePersonae()
 
 const sort = ref({
   attribute: "createdAt",
@@ -57,7 +57,7 @@ function updateSort(attribute) {
     sort.value.sortDirection = "asc"
   }
 
-  charactersStore.sortCharacters(sort.value.attribute, sort.value.sortDirection)
+  personae.sortCharacters(sort.value.attribute, sort.value.sortDirection)
 }
 
 function attributeTooltip(attribute) {

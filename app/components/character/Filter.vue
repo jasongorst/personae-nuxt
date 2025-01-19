@@ -3,8 +3,8 @@
     <div class="p-6 md:p-8 w-72 h-full bg-base-200 text-base-content overflow-y-auto z-20">
       <button
         type="button"
-        v-if="charactersStore.isFilterSet"
-        @click="charactersStore.resetFilter"
+        v-if="personae.isFilterSet"
+        @click="personae.resetFilter"
         class="btn btn-sm btn-accent btn-block uppercase mb-6"
       >
         Clear Filter
@@ -29,7 +29,7 @@
           >
             <input
               :id="`${attribute}_${_snakeCase(value)}`"
-              v-model="charactersStore.filter[attribute]"
+              v-model="personae.filter[attribute]"
               type="checkbox"
               :value="value"
               class="checkbox checkbox-xs"
@@ -48,10 +48,10 @@
 </template>
 
 <script setup>
-const charactersStore = useCharactersStore()
+const personae = usePersonae()
 
-const characterAttributeMap = computed(() => attributeMap(charactersStore.characters))
-const filteredAttributeMap = computed(() => attributeMap(charactersStore.filteredCharacters))
+const characterAttributeMap = computed(() => attributeMap(personae.characters))
+const filteredAttributeMap = computed(() => attributeMap(personae.filteredCharacters))
 
 // sorted unique, non-null, non-empty values of (attributes of filterAttributes) in characters
 function attributeMap(characters) {

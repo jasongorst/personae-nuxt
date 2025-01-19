@@ -87,7 +87,7 @@
 <script setup>
 const route = useRoute()
 const router = useRouter()
-const alertStore = useAlertStore()
+const alert = useAlert()
 const sessionStore = useSessionStore()
 
 const nextRoute = route.query.next ? route.query.next : "/"
@@ -108,7 +108,7 @@ onBeforeRouteLeave(() => {
 
 function dismissFieldErrorAlert() {
   if (fieldErrorAlertId.value) {
-    alertStore.removeMessage(fieldErrorAlertId.value)
+    alert.remove(fieldErrorAlertId.value)
   }
 }
 
@@ -125,7 +125,7 @@ const { execute: signIn, status: signInStatus } = useApiCall(
     },
 
     successCb: async (response) => {
-      alertStore.addMessage(
+      alert.add(
         "You are now signed in.", {
           severity: "success",
           dismissedIn: 4000
@@ -138,7 +138,7 @@ const { execute: signIn, status: signInStatus } = useApiCall(
     },
 
     fieldErrorCb: (response) => {
-      fieldErrorAlertId.value = alertStore.addMessage(
+      fieldErrorAlertId.value = alert.add(
         "There was a problem signing you in. See below.", {
           severity: "warning",
           dismissOnLeave: true
@@ -152,7 +152,7 @@ const { execute: signIn, status: signInStatus } = useApiCall(
     },
 
     apiErrorCb: async () => {
-      alertStore.addMessage(
+      alert.add(
         "Unable to sign you in. Something is wrong with the server.", {
           severity: "error",
           dismissOnLeave: true
@@ -163,7 +163,7 @@ const { execute: signIn, status: signInStatus } = useApiCall(
     },
 
     fetchErrorCb: async () => {
-      alertStore.addMessage(
+      alert.add(
         "Unable to sign you in. The server cannot be reached.", {
           severity: "error",
           dismissOnLeave: true

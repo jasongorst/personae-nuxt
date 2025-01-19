@@ -46,7 +46,7 @@ const props = defineProps(["id"])
 
 const route = useRoute()
 const router = useRouter()
-const alertStore = useAlertStore()
+const alert = useAlert()
 const { data, token } = useAuth()
 
 const fieldError = ref(null)
@@ -71,7 +71,7 @@ onBeforeRouteLeave(() => {
 
 function dismissFieldErrorAlert() {
   if (fieldErrorAlertId.value) {
-    alertStore.removeMessage(fieldErrorAlertId.value)
+    alert.remove(fieldErrorAlertId.value)
   }
 }
 
@@ -82,7 +82,7 @@ const { data: account } = await useApi(
     token: token,
 
     onRequestError: () => {
-      alertStore.addMessage(
+      alert.add(
         "The account couldn't be loaded. The server cannot be reached.", {
           severity: "error",
           dismissOnLeave: true
@@ -91,7 +91,7 @@ const { data: account } = await useApi(
     },
 
     onResponseError: () => {
-      alertStore.addMessage(
+      alert.add(
         "The account couldn't be loaded. Something is wrong with the server.", {
           severity: "error",
           dismissOnLeave: true
@@ -116,7 +116,7 @@ const { execute: saveAccount, status: savingStatus } = useApi(
     },
 
     onRequestError: () => {
-      alertStore.addMessage(
+      alert.add(
         "The account couldn't be updated. The server cannot be reached.", {
           severity: "error",
           dismissOnLeave: true
@@ -125,7 +125,7 @@ const { execute: saveAccount, status: savingStatus } = useApi(
     },
 
     onResponse: async () => {
-      alertStore.addMessage(
+      alert.add(
         "The account has been updated.", {
           severity: "success",
           dismissedIn: 4000
@@ -136,7 +136,7 @@ const { execute: saveAccount, status: savingStatus } = useApi(
     },
 
     onResponseError: () => {
-      alertStore.addMessage(
+      alert.add(
         "The account couldn't be updated. Something is wrong with the server.", {
           severity: "error",
           dismissOnLeave: true
@@ -145,7 +145,7 @@ const { execute: saveAccount, status: savingStatus } = useApi(
     },
 
     onFieldError: ({ response }) => {
-      fieldErrorAlertId.value = alertStore.addMessage(
+      fieldErrorAlertId.value = alert.add(
         "There was a problem updating the account. See below.", {
           severity: "warning",
           dismissOnLeave: true
@@ -166,7 +166,7 @@ const { execute: deleteAccount, status: deletingStatus } = await useApi(
     manual: true,
 
     onRequestError: () => {
-      alertStore.addMessage(
+      alert.add(
         "The account couldn't be deleted. The server cannot be reached.", {
           severity: "error",
           dismissOnLeave: true
@@ -175,7 +175,7 @@ const { execute: deleteAccount, status: deletingStatus } = await useApi(
     },
 
     onResponse: async () => {
-      alertStore.addMessage(
+      alert.add(
         "The account has been deleted.", {
           severity: "success",
           dismissedIn: 4000
@@ -186,7 +186,7 @@ const { execute: deleteAccount, status: deletingStatus } = await useApi(
     },
 
     onResponseError: async () => {
-      alertStore.addMessage(
+      alert.add(
         "The account couldn't be deleted. Something is wrong with the server.", {
           severity: "error",
           dismissOnLeave: true
