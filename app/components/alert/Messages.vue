@@ -1,13 +1,13 @@
 <template>
-  <div class="toast toast-top toast-end w-full md:w-[24rem] lg:w-[28rem] xl:w-[32rem] absolute p-0 top-20 z-[9] whitespace-normal">
+  <div class="toast w-full md:w-[24rem] lg:w-[28rem] xl:w-[32rem] p-0 z-[9] whitespace-normal">
     <AlertItem
-      v-for="[id, message] in alertStore.messages"
+      v-for="[id, message] in alert.messages"
       :key="id"
       :severity="message.severity"
       :dismissable="message.dismissable"
       :dismissed-in="message.dismissedIn"
       :dismiss-on-leave="message.dismissOnLeave"
-      @dismiss="alertStore.removeMessage(id)"
+      @dismiss="alert.remove(id)"
     >
       {{ message.text }}
     </AlertItem>
@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-const alertStore = useAlertStore()
+const alert = useAlert()
 </script>
 
 <style scoped>

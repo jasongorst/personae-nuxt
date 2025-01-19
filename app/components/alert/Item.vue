@@ -1,9 +1,7 @@
 <template>
   <div
-    class="
-      alert relative border-2 text-start justify-items-start pr-8 hover:swap-active
-      grid grid-flow-col grid-cols-[1rem,_auto] gap-8
-    "
+    class="alert relative border-2 text-start justify-items-start pr-8 hover:swap-active
+      grid grid-flow-col grid-cols-[1rem,_auto] gap-8"
     :class="[{ 'alert-animate': dismissable, 'cursor-pointer': dismissable }, borderColor[severity]]"
     @click="dismiss"
   >
@@ -68,7 +66,7 @@ const props = defineProps({
   severity: {
     type: String,
     default: "info",
-    validator: (value) => (["info", "success", "warning", "error"].includes(value))
+    validator: (value) => ([ "info", "success", "warning", "error" ].includes(value))
   },
 
   dismissable: {
@@ -87,7 +85,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(["dismiss"])
+const emit = defineEmits([ "dismiss" ])
 
 const borderColor = {
   error: "border-error/50",
