@@ -1,76 +1,79 @@
-function getBlankFilter() {
-  return _fromPairs(
-    filterAttributes.map(
-      (attribute) => [ attribute, [] ]
-    )
-  )
-}
+export const usePersonae = defineStore("personae", () => {
+  // state
+  const characters = ref([])
+  const filter = ref(() => getBlankFilter())
+  const query = ref("")
 
-// true if, for each array of attributes in filter, the array is empty or contains character[attribute]
-function isInFilter(character, filter) {
-  let result = true
+  // getters
+  const filteredCharacters = computed(() => (
+    characters.value
+      .filter((character) => isInFilter(character, filter.value))
+  ))
 
-  // noinspection FunctionWithInconsistentReturnsJS
-  _forEach(filter, (values, attribute) => {
-    if (!isEmpty(values) && !values.includes(character[attribute])) {
-      result = false
+  const filteredCount = computed(() => filteredCharacters.value.length)
 
-      // exit forEach early
-      return false
+  const isFilterSet = computed(() => {
+    for (const attribute of filterAttributes) {
+      if (isPresent(filter.value[attribute])) {
+        return true
+      }
     }
+
+    return false
   })
 
-  return result
-}
+  const totalCount = computed(() => characters.value.length)
+  const isLoaded = computed(() => isPositive(totalCount.value))
 
-export const usePersonae = defineStore("personae", {
-  state: () => ({
-    characters: [],
-    filter: getBlankFilter(),
-    query: ""
-  }),
+  // actions
+  function resetFilter() {
+    filter.value = getBlankFilter()
+  }
 
-  getters: {
-    filteredCharacters(state) {
-      return state.characters.filter(
-        (character) => isInFilter(character, state.filter)
-      )
-    },
-
-    filteredCount() {
-      return this.filteredCharacters.length
-    },
-
-    isFilterSet(state) {
-      for (const attribute of filterAttributes) {
-        if (isPresent(state.filter[attribute])) {
-          return true
-        }
-      }
-
-      return false
-    },
-
-    isLoaded() {
-      return isPositive(this.totalCount)
-    },
-
-    totalCount(state) {
-      return state.characters.length
-    },
-  },
-
-  actions: {
-    resetFilter() {
-      this.filter = getBlankFilter()
-    },
-
-    sortCharacters(attribute, direction = "asc") {
-      if (direction === "asc") {
-        this.characters.sort(compareAsc(attribute))
-      } else {
-        this.characters.sort(compareDesc(attribute))
-      }
+  function sortCharacters(attribute, direction = "asc") {
+    if (direction === "asc") {
+      characters.value.sort(compareAsc(attribute))
+    } else {
+      characters.value.sort(compareDesc(attribute))
     }
+  }
+
+  // private
+  function getBlankFilter() {
+    return _fromPairs(
+      filterAttributes.map(
+        (attribute) => [ attribute, [] ]
+      )
+    )
+  }
+
+  // true if, for each array of attributes in filter, the array is empty or contains character[attribute]
+  function isInFilter(character, filter) {
+    let result = true
+
+    // noinspection FunctionWithInconsistentReturnsJS
+    _forEach(filter, (values, attribute) => {
+      if (!isEmpty(values) && !values.includes(character[attribute])) {
+        result = false
+
+        // exit forEach early
+        return false
+      }
+    })
+
+    return result
+  }
+
+  return {
+    characters,
+    filter,
+    query,
+    filteredCharacters,
+    filteredCount,
+    isFilterSet,
+    totalCount,
+    isLoaded,
+    resetFilter,
+    sortCharacters
   }
 })
