@@ -41,36 +41,27 @@ const personae = usePersonae()
 const { characters, query } = storeToRefs(personae)
 
 const showSignInModal = useState("showSignInModal")
-
-callOnce(() => {
-  showSignInModal.value = true
-})
+callOnce(() => showSignInModal.value = true)
 
 const { data, refresh: loadCharacters } = await useApi(
-  "/characters",
-  {
+  "/characters", {
     manual: true,
     query: { q: query },
-
     transform: (data) => deepParseTimestamps(deepConvertKeys(data, _camelCase)),
 
-    onRequestError: () => {
-      alert.add(
-        "Couldn't load characters. The server cannot be reached.", {
-          severity: "error",
-          dismissOnLeave: true
-        }
-      )
-    },
+    onRequestError: () => alert.add(
+      "Couldn't load characters. The server cannot be reached.", {
+        severity: "error",
+        dismissOnLeave: true
+      }
+    ),
 
-    onResponseError: () => {
-      alert.add(
-        "Couldn't load characters. Something is wrong with the server.", {
-          severity: "error",
-          dismissOnLeave: true
-        }
-      )
-    }
+    onResponseError: () => alert.add(
+      "Couldn't load characters. Something is wrong with the server.", {
+        severity: "error",
+        dismissOnLeave: true
+      }
+    )
   }
 )
 
