@@ -10,7 +10,7 @@
       </div>
 
       <NuxtLink
-        v-if="isSignedIn"
+        v-if="isLoggedIn"
         to="/create"
         class="justify-self-end btn btn-xs btn-secondary uppercase"
       >
@@ -39,14 +39,11 @@
 <script setup>
 const props = defineProps(["totalCount"])
 
-const charactersStore = useCharactersStore()
-const { filteredCount, totalCount, query } = storeToRefs(charactersStore)
+const personae = usePersonae()
+const { filteredCount, totalCount, query } = storeToRefs(personae)
 
-//const sessionStore = useSessionStore()
-//const { isSignedIn } = storeToRefs(sessionStore)
-
-// dummy isSignedIn
-const isSignedIn = ref(true)
+const { status } = useAuth()
+const isLoggedIn = computed(() => status.value === "authenticated")
 </script>
 
 <style scoped>
