@@ -44,23 +44,14 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@pinia/nuxt",
     "@sidebase/nuxt-auth",
-    "nuxt-auth-utils",
     "nuxt-headlessui",
     "nuxt-lodash"
   ],
 
   runtimeConfig: {
+    // placeholders, overridden by env vars
     auth: { baseUrl: "" },
-    dbUrl: "file:server/db/dev.sqlite3",
     public: { useApi: { baseURL: "" } }
-  },
-
-  nitro: {
-    storage: {
-      redis: {
-        driver: "redis"
-      }
-    }
   },
 
   vite: {
@@ -75,9 +66,6 @@ export default defineNuxtConfig({
 
   // module configs
   auth: {
-    // nuxt-auth-utils
-    webAuthn: true,
-
     // @sidebase/nuxt-auth
     isEnabled: true,
     globalAppMiddleware: {
@@ -117,7 +105,7 @@ export default defineNuxtConfig({
   },
 
   headlessui: {
-    prefix: "H"
+    prefix: "Headless"
   },
 
   lodash: {

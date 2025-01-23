@@ -7,43 +7,33 @@
     "dev": "nuxt dev",
     "preview": "nuxt preview",
     "cleanup": "nuxt cleanup",
-    "postinstall": "nuxt prepare",
-    "generate": "drizzle-kit generate",
-    "migrate": "drizzle-kit migrate"
+    "postinstall": "nuxt prepare"
   },
   "dependencies": {
     "@headlessui/tailwindcss": "^0.2.1",
     "@iconify-json/fa-solid": "^1.2.1",
     "@iconify-json/fa6-regular": "^1.2.3",
     "@iconify-json/fa6-solid": "^1.2.3",
-    "@libsql/client": "^0.14.0",
     "@lostisworld/tailwind-mask": "^1.0.1",
     "@nuxt/icon": "^1.10.3",
-    "@nuxtjs/tailwindcss": "^6.12.2",
+    "@nuxtjs/tailwindcss": "^6.13.1",
     "@pinia/nuxt": "^0.9.0",
     "@sidebase/nuxt-auth": "^0.10.0",
-    "@simplewebauthn/browser": "^11.0.0",
-    "@simplewebauthn/server": "^11.0.0",
-    "@tailwindcss/typography": "^0.5.15",
-    "consola": "^3.3.3",
+    "@tailwindcss/typography": "^0.5.16",
     "daisyui": "^4.12.23",
-    "drizzle-kit": "^0.30.1",
-    "drizzle-orm": "^0.38.3",
-    "ioredis": "^5.4.2",
-    "nuxt": "^3.15.0",
-    "nuxt-auth-utils": "^0.5.7",
+    "nuxt": "^3.15.2",
     "nuxt-headlessui": "^1.2.0",
     "nuxt-lodash": "^2.5.3",
-    "pinia": "^2.3.0",
+    "pinia": "^2.3.1",
     "trix": "^2.1.12",
-    "uuid": "^11.0.3",
+    "uuid": "^11.0.5",
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^1.7.0",
+    "@nuxt/devtools": "2.0.0-beta.3",
     "@nuxt/types": "^2.18.1",
-    "@types/node": "^22.10.2",
+    "@types/node": "^22.10.7",
     "lodash-es": "^4.17.21"
   },
-  "packageManager": "pnpm@9.15.2"
+  "packageManager": "pnpm@9.15.4"
 }
