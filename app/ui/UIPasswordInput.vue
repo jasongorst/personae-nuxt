@@ -1,5 +1,5 @@
 <template>
-  <UIFormControl
+  <UIOldFormControl
     :class="wrapperClass"
     :label-for="id"
     :label-class="labelClass"
@@ -37,7 +37,7 @@
     <template #error v-if="$slots.error">
       <slot name="error" />
     </template>
-  </UIFormControl>
+  </UIOldFormControl>
 </template>
 
 <script setup>

@@ -1,46 +1,51 @@
 <template>
-  <UIFormControl
-    :id="id"
-    :tooltip="disabled ? disabledTooltip : null"
-    :disabled="disabled"
-    :label-class="[ ...classListToArray(labelClass), { 'label-disabled': disabled } ]"
+  <UIOldFormControl
+    :class="[
+      ...classListToArray(wrapperClass),
+      { 'disabled-tooltip': (disabled && isPresent(disabledTooltip)) }
+    ]"
+    :data-tip="disabledTooltip"
     :error-label-class="errorLabelClass"
+    :label-class="[ ...classListToArray(labelClass), { 'label-disabled': disabled } ]"
+    :label-for="id"
   >
-    <UITextField
+    <UIOldTextField
+      :id="id"
       v-model="model"
       :class="{ 'input-error': $slots.error }"
       :datalist="datalist"
+      :disabled="disabled"
       :size="size"
       :type="type"
       v-bind="$attrs"
     />
 
-    <template v-if="$slots.label" #label>
+    <template #label>
       <slot name="label" />
     </template>
 
     <template v-if="$slots.error" #error>
       <slot name="error" />
     </template>
-  </UIFormControl>
+  </UIOldFormControl>
 </template>
 
 <script setup>
 defineOptions({
   // disable attribute fallthrough to root component
-  //   (assigned to UITextField with v-bind="$attrs")
+  //   (they're assigned to the UITextField.vue with v-bind="$attrs")
   inheritAttrs: false
 })
 
 const model = defineModel()
 
 const props = defineProps({
-  // id of input
+  // id of UITextField.vue
   id: {
     type: String,
     default: () => uuid()
   },
-  // type of input
+  // type of UITextField.vue input
   type: {
     type: String,
     default: "text",
@@ -48,7 +53,7 @@ const props = defineProps({
       return [ "email", "text" ].includes(value)
     }
   },
-  // size of input (daisyui sizes)
+  // size of UITextField.vue (daisyui sizes)
   size: {
     type: String,
     default: "md",
@@ -56,32 +61,32 @@ const props = defineProps({
       return [ "lg", "md", "sm", "xs" ].includes(value)
     }
   },
+  // class of UiFormControl
+  wrapperClass: {
+    type: [ Array, String ],
+    default: ""
+  },
+  // class of label
+  labelClass: {
+    type: [ Array, String ],
+    default: "text-secondary"
+  },
   // array of option values for datalist
   datalist: {
     type: Array,
     default: []
   },
-  // class for form control
-  wrapperClass: {
-    type: [ Array, String ],
-    default: ""
-  },
-  // class for label
-  labelClass: {
-    type: [ Array, String ],
-    default: "text-secondary"
-  },
-  // class for error label
+  // class of error label
   errorLabelClass: {
     type: [ Array, String ],
     default: "text-error"
   },
-  // disable input
+  // disabled UITextField.vue
   disabled: {
     type: Boolean,
     default: false
   },
-  // tooltip content to show if disabled
+  // tooltip content for data-tip attribute
   disabledTooltip: {
     type: String,
     default: ""
@@ -89,6 +94,17 @@ const props = defineProps({
 })
 </script>
 
-<style scoped>
+<style>
+.disabled-tooltip {
+  @apply tooltip tooltip-info tooltip-bottom tooltip-late;
+}
 
+.label-disabled {
+  @apply text-base-content/40 cursor-not-allowed;
+}
+
+.tooltip-late:hover:before,
+.tooltip-late:hover:after {
+  @apply delay-500;
+}
 </style>

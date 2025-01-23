@@ -4,14 +4,14 @@
     v-model="model"
     :class="['input', 'input-bordered', inputSize[size], { 'cursor-not-allowed': disabled }]"
     :disabled="disabled"
-    :list="isPresent(datalist) ? datalistId : null"
+    :list="isPresent(datalist) ? `${id}_list` : null"
     :type="type"
     v-bind="$attrs"
   />
 
   <datalist
     v-if="isPresent(datalist)"
-    :id="datalistId"
+    :id="`${id}_list`"
   >
     <option
       v-for="option in datalist"
@@ -58,8 +58,6 @@ const props = defineProps({
     default: false
   }
 })
-
-const datalistId = computed(() => `${props.id}_list`)
 
 const inputSize = {
   lg: "input-lg",

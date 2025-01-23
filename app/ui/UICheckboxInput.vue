@@ -1,5 +1,5 @@
 <template>
-  <UIFormControl
+  <UIOldFormControl
     :class="[
       ...classListToArray(wrapperClass),
       { 'disabled-tooltip': (disabled && isPresent(disabledTooltip)) }
@@ -25,7 +25,7 @@
     <template #error v-if="$slots.error">
       <slot name="error" />
     </template>
-  </UIFormControl>
+  </UIOldFormControl>
 </template>
 
 <script setup>

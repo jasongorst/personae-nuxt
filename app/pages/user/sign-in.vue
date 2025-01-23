@@ -4,7 +4,7 @@
       Sign In
     </h1>
 
-    <UITextInput
+    <UIOldTextInput
       v-model="credentials.email"
       id="login"
       type="email"
@@ -20,7 +20,7 @@
       <template #error v-if="_has(fieldError, 'email')">
         {{ fieldError.email }}
       </template>
-    </UITextInput>
+    </UIOldTextInput>
 
     <UIPasswordInput
       v-model="credentials.password"

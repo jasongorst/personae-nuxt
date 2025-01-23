@@ -1,14 +1,28 @@
 <template>
-  <div class="form-control">
+  <div
+    :class="[
+      'form-control',
+      { 'form-control-tooltip': isPresent(tooltip) }
+    ]"
+    :data-tip="tooltip"
+  >
     <label
       v-if="$slots.label"
-      :class="['label', 'label-text', ...classListToArray(labelClass)]"
-      :for="labelFor"
+      :class="[
+        'label',
+        'label-text',
+        ...classListToArray(labelClass),
+        { 'label-disabled': disabled }
+      ]"
+      :for="id"
     >
       <slot name="label" />
     </label>
 
-    <slot />
+    <slot
+      :id="id"
+      :disabled="disabled"
+    />
 
     <label
       v-if="$slots.error"
@@ -26,8 +40,20 @@
 
 <script setup>
 const props = defineProps({
-  labelFor: {
-    type: String
+  // id for child component
+  id: {
+    type: String,
+    default: () => uuid()
+  },
+  // disabled child component
+  disabled: {
+    type: Boolean,
+    default: false
+  },
+  // tooltip content
+  tooltip: {
+    type: String,
+    default: ""
   },
   labelClass: {
     type: [ Array, String ],
@@ -41,5 +67,16 @@ const props = defineProps({
 </script>
 
 <style scoped>
+.form-control-tooltip {
+  @apply tooltip tooltip-info tooltip-bottom tooltip-late;
+}
 
+.label-disabled {
+  @apply text-base-content/40 cursor-not-allowed;
+}
+
+.tooltip-late:hover:before,
+.tooltip-late:hover:after {
+  @apply delay-500;
+}
 </style>

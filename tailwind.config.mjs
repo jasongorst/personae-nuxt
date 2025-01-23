@@ -7,10 +7,9 @@ export default {
   plugins: [
     daisyui,
     headlessUITailwindCSS,
-    tailwindTypography({
-      prefix: "H"
-    })
+    tailwindTypography
   ],
+
   daisyui: {
     themes: [
       // first theme is the default (for light mode)
@@ -52,9 +51,9 @@ export default {
       "nord",
       "sunset"
     ],
+
     darkMode: "media",
     darkTheme: "business",
     logs: false
   }
 }
-

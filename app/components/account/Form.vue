@@ -1,5 +1,5 @@
 <template>
-  <UITextInput
+  <UIOldTextInput
     v-model="account.email"
     id="email"
     type="email"
@@ -12,7 +12,7 @@
     <template #error v-if="_has(fieldError, 'email')">
       {{ fieldError.email }}
     </template>
-  </UITextInput>
+  </UIOldTextInput>
 
   <UIPasswordConfirm
     v-model="account.password"

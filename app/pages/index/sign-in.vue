@@ -1,17 +1,17 @@
 <template>
   <ClientOnly>
-    <HDialog
+    <HeadlessDialog
       :open="showSignInModal"
       :initial-focus="dialogPanelRef"
       @close="closeModal"
       class="modal modal-open modal-bottom sm:modal-middle"
     >
-      <HDialogPanel
+      <HeadlessDialogPanel
         ref="dialogPanelRef"
         class="modal-box card"
       >
         <div class="card-body">
-          <UITextInput
+          <UIOldTextInput
             v-model="credentials.email"
             id="password_email"
             type="email"
@@ -23,7 +23,7 @@
             <template #label>
               Email Address
             </template>
-          </UITextInput>
+          </UIOldTextInput>
 
           <UIPasswordInput
             v-model="credentials.password"
@@ -48,8 +48,8 @@
             </UILoadingButton>
           </div>
         </div>
-      </HDialogPanel>
-    </HDialog>
+      </HeadlessDialogPanel>
+    </HeadlessDialog>
   </ClientOnly>
 </template>
 
