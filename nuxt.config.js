@@ -1,3 +1,5 @@
+import tailwindcss from "@tailwindcss/vite"
+
 export default defineNuxtConfig({
   app: {
     head: {
@@ -25,23 +27,19 @@ export default defineNuxtConfig({
     "~/components"
   ],
 
+  css: [ "~/assets/css/main.css" ],
+
   devServer: { port: 3001 },
 
   devtools: {
     enabled: true,
-
-    timeline: {
-      enabled: true
-    }
+    timeline: { enabled: true }
   },
 
-  future: {
-    compatibilityVersion: 4
-  },
+  future: { compatibilityVersion: 4 },
 
   modules: [
     "@nuxt/icon",
-    "@nuxtjs/tailwindcss",
     "@pinia/nuxt",
     "@sidebase/nuxt-auth",
     "nuxt-headlessui",
@@ -55,6 +53,8 @@ export default defineNuxtConfig({
   },
 
   vite: {
+    plugins: [ tailwindcss() ],
+
     vue: {
       template: {
         compilerOptions: {
@@ -66,35 +66,44 @@ export default defineNuxtConfig({
 
   // module configs
   auth: {
-    // @sidebase/nuxt-auth
     isEnabled: true,
+
     globalAppMiddleware: {
       unauthenticatedOnly: false,
       navigateAuthenticatedTo: "/",
       navigateUnauthenticatedTo: "/",
       addDefaultCallbackUrl: false
     },
+
     originEnvKey: "NUXT_AUTH_BASE_URL",
+
     provider: {
-      type: "local",
-      pages: {
+      type: "local", pages: {
         login: "/"
       },
+
       endpoints: {
         signUp: false,
         signIn: { path: "/login", method: "post" },
         signOut: { path: "/logout", method: "post" },
         getSession: { path: "/session", method: "get" }
       },
+
       token: {
         headerName: "Authorization",
         type: "Bearer",
         signInResponseTokenPointer: "/access_token"
       },
+
       refresh: {
         isEnabled: true,
-        endpoint: { path: "/jwt-refresh", method: "post" },
+        endpoint: {
+          path: "/jwt-refresh",
+          method: "post"
+        },
+
         refreshOnlyToken: false,
+
         token: {
           signInResponseRefreshTokenPointer: "/refresh_token",
           refreshResponseTokenPointer: "/access_token",
@@ -102,10 +111,6 @@ export default defineNuxtConfig({
         }
       }
     }
-  },
-
-  headlessui: {
-    prefix: "Headless"
   },
 
   lodash: {
