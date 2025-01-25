@@ -1,5 +1,11 @@
 <template>
   <div class="drawer-side">
+    <label
+      aria-label="close filter sidebar"
+      for="filter-drawer-toggle"
+      class="drawer-overlay"
+    />
+
     <div class="p-6 md:p-8 w-72 h-full bg-base-200 text-base-content overflow-y-auto z-20">
       <button
         type="button"
@@ -71,20 +77,26 @@ function isInAttributeMap(value, attribute, attributeMap) {
 </script>
 
 <style scoped>
-.drawer-side {
-  @apply static w-full -translate-x-[18rem];
-  transition: transform 300ms cubic-bezier(0, 0, 0.58, 1);
+/*
+@reference "~/assets/css/main.css";
 
-  & > *:not(&.drawer-overlay) {
-    @apply translate-x-0;
-  }
+@layer components {
+  .drawer-side {
+    @apply static w-full -translate-x-[18rem];
+    transition: transform 300ms cubic-bezier(0, 0, 0.58, 1);
 
-  & ul {
-    @apply pb-6;
+    & > *:not(&.drawer-overlay) {
+      @apply translate-x-0;
+    }
 
-    &:last-child {
-      @apply pb-0;
+    & ul {
+      @apply pb-6;
+
+      &:last-child {
+        @apply pb-0;
+      }
     }
   }
 }
+*/
 </style>
