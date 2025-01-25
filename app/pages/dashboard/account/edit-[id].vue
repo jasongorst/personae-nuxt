@@ -198,14 +198,18 @@ const { execute: deleteAccount, status: deletingStatus } = await useApi(
 </script>
 
 <style>
-.tooltip-late:hover:before,
-.tooltip-late:hover:after {
-  @apply delay-500;
-}
+@reference "~/assets/css/main.css";
 
-.loading-button-disabled {
-  @apply tooltip tooltip-info tooltip-bottom tooltip-late;
-  @apply no-animation cursor-not-allowed !pointer-events-auto;
-  @apply before:font-light before:normal-case before:!text-info-content;
+@layer components {
+  .tooltip-late:hover:before,
+  .tooltip-late:hover:after {
+    @apply delay-500;
+  }
+
+  .loading-button-disabled {
+    @apply tooltip tooltip-info tooltip-bottom tooltip-late;
+    @apply no-animation cursor-not-allowed !pointer-events-auto;
+    @apply before:font-light before:normal-case before:!text-info-content;
+  }
 }
 </style>

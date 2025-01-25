@@ -118,10 +118,14 @@ const currentRoute = computed(() => route.path)
 </script>
 
 <style scoped>
-.drawer-toggle:checked {
-  & ~ .drawer-content {
-    & .filter-icon {
-      @apply swap-active;
+@reference "~/assets/css/main.css";
+
+@layer components {
+  .drawer-toggle:checked {
+    & ~ .drawer-content {
+      & .filter-icon {
+        @apply swap-active;
+      }
     }
   }
 }

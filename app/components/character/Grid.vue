@@ -2,7 +2,7 @@
   <div>
     <table class="w-full table table-pin-rows table-sm xl:table-md table-zebra mb-4">
       <thead>
-      <tr class="bg-base-300">
+      <tr class="bg-base-300 z-0">
         <th
           v-for="attribute of listAttributes"
           :key="attribute"
@@ -74,14 +74,25 @@ function attributeTooltip(attribute) {
 </script>
 
 <style scoped>
-.tooltip-near {
-  --tooltip-offset: calc(100% + 1px - 0.4125rem + var(--tooltip-tail, 0px));
-  --tooltip-tail: 0.1875rem;
-  --tooltip-tail-offset: calc(100% + 0.0625rem - 0.4125rem - var(--tooltip-tail));
-}
+@reference "~/assets/css/main.css";
 
-.tooltip-late:hover:before,
-.tooltip-late:hover:after {
-  @apply delay-500;
+@layer components {
+  .tooltip-near {
+    /* daisyUI 5 */
+    --tt-off: calc(100% + 0.5rem);
+    --tt-tail: calc(100% + 1px + 0.25rem);
+
+    /* daisyUI 4 */
+    /*
+    --tooltip-offset: calc(100% + 1px - 0.4125rem + var(--tooltip-tail, 0px));
+    --tooltip-tail: 0.1875rem;
+    --tooltip-tail-offset: calc(100% + 0.0625rem - 0.4125rem - var(--tooltip-tail));
+    */
+  }
+
+  .tooltip-late:hover:before,
+  .tooltip-late:hover:after {
+    @apply delay-500;
+  }
 }
 </style>

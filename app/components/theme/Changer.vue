@@ -98,12 +98,16 @@ function setLocalTheme(theme) {
 </script>
 
 <style scoped>
-.theme-changer {
-  @apply before:sticky before:top-0 before:left-0 before:w-full before:h-2 before:-mb-2 before:bg-gradient-to-b before:from-primary before:to-transparent before:border-0 before:border-white;
-  @apply after:sticky after:bottom-0 after:left-0 after:w-full after:h-2 after:-mt-2 after:bg-gradient-to-t after:from-primary after:to-transparent after:border-0 after:border-white;
-}
+@reference "~/assets/css/main.css";
 
-.hide-dropdown-arrow {
-  @apply after:hidden;
+@layer components {
+  .theme-changer {
+    @apply before:sticky before:top-0 before:left-0 before:w-full before:h-2 before:-mb-2 before:bg-gradient-to-b before:from-primary before:to-transparent before:border-0 before:border-white;
+    @apply after:sticky after:bottom-0 after:left-0 after:w-full after:h-2 after:-mt-2 after:bg-gradient-to-t after:from-primary after:to-transparent after:border-0 after:border-white;
+  }
+
+  .hide-dropdown-arrow {
+    @apply after:hidden;
+  }
 }
 </style>

@@ -66,17 +66,20 @@ const props = defineProps({
 })
 </script>
 
-<style scoped>
-.form-control-tooltip {
-  @apply tooltip tooltip-info tooltip-bottom tooltip-late;
-}
+<style scoped>@reference "~/assets/css/main.css";
 
-.label-disabled {
-  @apply text-base-content/40 cursor-not-allowed;
-}
+@layer components {
+  .form-control-tooltip {
+    @apply tooltip tooltip-info tooltip-bottom tooltip-late;
+  }
 
-.tooltip-late:hover:before,
-.tooltip-late:hover:after {
-  @apply delay-500;
+  .label-disabled {
+    @apply text-base-content/40 cursor-not-allowed;
+  }
+
+  .tooltip-late:hover:before,
+  .tooltip-late:hover:after {
+    @apply delay-500;
+  }
 }
 </style>

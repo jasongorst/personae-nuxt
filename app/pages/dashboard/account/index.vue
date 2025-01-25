@@ -146,20 +146,23 @@ const { data: accounts } = await useApi(
 </script>
 
 <style scoped>
-.tooltip-near {
-  --tooltip-offset: calc(100% + 1px - 0.4125rem + var(--tooltip-tail, 0px));
-  --tooltip-tail: 0.1875rem;
-  --tooltip-tail-offset: calc(100% + 0.0625rem - 0.4125rem - var(--tooltip-tail));
-}
+@reference "~/assets/css/main.css";
 
-.tooltip-late:hover:before,
-.tooltip-late:hover:after {
-  @apply delay-500;
-}
+@layer components {
+  .tooltip-near {
+    --tooltip-offset: calc(100% + 1px - 0.4125rem + var(--tooltip-tail, 0px));
+    --tooltip-tail: 0.1875rem;
+    --tooltip-tail-offset: calc(100% + 0.0625rem - 0.4125rem - var(--tooltip-tail));
+  }
 
-.accounts-toolbar {
-  @apply before:block before:sticky before:bottom-20 before:w-full before:h-4 before:bg-gradient-to-t before:from-base-100 before:to-transparent;
+  .tooltip-late:hover:before,
+  .tooltip-late:hover:after {
+    @apply delay-500;
+  }
 
-  @apply after:block after:sticky after:bottom-0 after:w-full after:h-4 after:bg-base-100;
+  .accounts-toolbar {
+    @apply before:block before:sticky before:bottom-20 before:w-full before:h-4 before:bg-gradient-to-t before:from-base-100 before:to-transparent;
+    @apply after:block after:sticky after:bottom-0 after:w-full after:h-4 after:bg-base-100;
+  }
 }
 </style>

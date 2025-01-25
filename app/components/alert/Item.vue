@@ -147,17 +147,21 @@ function dismiss() {
 </script>
 
 <style scoped>
-.alert-animate {
-  animation: button-pop var(--animation-btn, 0.25s) ease-out;
+@reference "~/assets/css/main.css";
 
-  &:hover .btn-ghost {
-    @apply bg-base-content border-opacity-0 bg-opacity-20;
-  }
+@layer components {
+  .alert-animate {
+    animation: button-pop var(--animation-btn, 0.25s) ease-out;
 
-  &:active:hover,
-  &:active:focus {
-    animation: button-pop 0s ease-out;
-    transform: scale(var(--btn-focus-scale, 0.97));
+    &:hover .btn-ghost {
+      @apply bg-base-content border-current/0 bg-current/20;
+    }
+
+    &:active:hover,
+    &:active:focus {
+      animation: button-pop 0s ease-out;
+      transform: scale(var(--btn-focus-scale, 0.97));
+    }
   }
 }
 </style>
