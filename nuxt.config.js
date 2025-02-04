@@ -38,6 +38,15 @@ export default defineNuxtConfig({
 
   future: { compatibilityVersion: 4 },
 
+  imports: {
+    presets: [
+      {
+        from: "tailwind-merge",
+        imports: [ "twJoin", "twMerge" ]
+      }
+    ]
+  },
+
   modules: [
     "@nuxt/icon",
     "@pinia/nuxt",
