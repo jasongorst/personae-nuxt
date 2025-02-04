@@ -2,11 +2,11 @@
   <div class="drawer-side">
     <label
       aria-label="close filter sidebar"
-      for="filter-drawer-toggle"
       class="drawer-overlay"
+      @click="showFilter = false"
     />
 
-    <div class="p-6 md:p-8 w-72 h-full bg-base-200 text-base-content overflow-y-auto z-20">
+    <div class="p-6 w-64 h-full bg-base-200 text-base-content overflow-y-auto z-20">
       <button
         type="button"
         v-if="personae.isFilterSet"
@@ -19,11 +19,12 @@
       <ul
         v-for="[attribute, values] in characterAttributeMap"
         :key="attribute"
-        class="menu p-0"
+        class="w-full menu p-0 not-last:pb-6"
       >
         <li class="menu-title text-base-content inline-flex flex-shrink-0 flex-wrap items-center justify-center text-center w-full py-1 mb-2 border-t-2 border-b-2 border-primary text-sm uppercase font-bold">
           {{ attribute }}
         </li>
+
         <li
           v-for="value in values"
           :key="value"
@@ -31,7 +32,7 @@
         >
           <label
             :for="`${attribute}_${_snakeCase(value)}`"
-            class="label cursor-pointer justify-start gap-2 py-1 px-2 -mx-2"
+            class="cursor-pointer justify-start gap-2 py-1 px-2 -mx-2"
           >
             <input
               :id="`${attribute}_${_snakeCase(value)}`"
@@ -40,9 +41,10 @@
               :value="value"
               class="checkbox checkbox-xs"
             >
+
             <span
-              :class="{ 'opacity-60': !isInAttributeMap(value, attribute, filteredAttributeMap) }"
-              class="label-text text-sm"
+              :class="{ 'text-current/60': !isInAttributeMap(value, attribute, filteredAttributeMap) }"
+              class="text-sm"
             >
               {{ value }}
             </span>
@@ -54,6 +56,7 @@
 </template>
 
 <script setup>
+const showFilter = useState("show-filter")
 const personae = usePersonae()
 
 const characterAttributeMap = computed(() => attributeMap(personae.characters))
@@ -87,14 +90,6 @@ function isInAttributeMap(value, attribute, attributeMap) {
 
     & > *:not(&.drawer-overlay) {
       @apply translate-x-0;
-    }
-
-    & ul {
-      @apply pb-6;
-
-      &:last-child {
-        @apply pb-0;
-      }
     }
   }
 }

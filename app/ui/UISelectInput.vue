@@ -52,7 +52,7 @@ const props = defineProps({
       return ["lg", "md", "sm", "xs"].includes(value)
     }
   },
-  // class of UiFormControl
+  // class of UIFieldset
   wrapperClass: {
     type: [Array, String]
   },
@@ -94,11 +94,6 @@ const props = defineProps({
 
   .label-disabled {
     @apply text-base-content/40 cursor-not-allowed;
-  }
-
-  .tooltip-late:hover:before,
-  .tooltip-late:hover:after {
-    @apply delay-500;
   }
 }
 </style>

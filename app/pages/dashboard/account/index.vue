@@ -35,7 +35,7 @@
         <td
           v-for="attribute of accountAttributes"
           :key="attribute"
-          class="!p-0"
+          class="p-0!"
         >
           <NuxtLink
             :to="`/dashboard/account/edit-${account.id}`"
@@ -153,11 +153,6 @@ const { data: accounts } = await useApi(
     --tooltip-offset: calc(100% + 1px - 0.4125rem + var(--tooltip-tail, 0px));
     --tooltip-tail: 0.1875rem;
     --tooltip-tail-offset: calc(100% + 0.0625rem - 0.4125rem - var(--tooltip-tail));
-  }
-
-  .tooltip-late:hover:before,
-  .tooltip-late:hover:after {
-    @apply delay-500;
   }
 
   .accounts-toolbar {

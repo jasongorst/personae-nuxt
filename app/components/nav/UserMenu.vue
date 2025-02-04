@@ -3,7 +3,7 @@
     class="dropdown dropdown-bottom dropdown-end"
     ref="userMenuRef"
   >
-    <summary class="btn btn-ghost">
+    <summary class="btn btn-primary">
       <Icon
         v-if="isLoggedIn"
         name="fa6-solid:circle-user"

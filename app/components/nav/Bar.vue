@@ -3,11 +3,10 @@
     <div class="md:hidden">
       <details
         id="hamburger-menu-dropdown"
+        ref="hamburgerMenuRef"
         class="dropdown"
       >
-        <summary
-          class="btn btn-ghost normal-case"
-        >
+        <summary class="btn btn-primary normal-case">
           <Icon name="fa6-solid:bars" />
         </summary>
 
@@ -19,9 +18,11 @@
           </li>
 
           <li v-if="currentRoute === '/'">
-            <button type="button">
+            <button
+              type="button"
+              @click="showFilter = true"
+            >
               <label
-                for="filter-drawer-toggle"
                 class="drawer-button"
               >
                 Filter
@@ -49,13 +50,14 @@
       </details>
     </div>
 
-    <div class="btn btn-ghost normal-case text-lg">
+    <div class="btn btn-primary normal-case text-lg">
       <NuxtLink
         to="/"
         class="whitespace-nowrap"
       >
         <Icon name="fa6-solid:masks-theater" />
-        Dramatis Personae
+<!--        Dramatis Personae-->
+        Personae/DaisyUI 5
       </NuxtLink>
     </div>
 
@@ -65,10 +67,10 @@
         type="button"
       >
         <label
-          for="filter-drawer-toggle"
-          class="drawer-button btn btn-ghost normal-case"
+          class="drawer-button btn btn-primary normal-case"
+          @click="showFilterSidebar"
         >
-          <span class="hidden min-[1568px]:inline-grid min-[1568px]:swap filter-icon">
+          <span id="filter_icon" class="inline-grid swap">
             <Icon
               class="swap-off"
               name="fa6-solid:arrow-right-to-bracket"
@@ -97,7 +99,7 @@
         <a
           href="https://rae.evilpaws.org/"
           rel="nofollow"
-          class="btn btn-ghost normal-case"
+          class="btn btn-primary normal-case"
           @click="confirm('Ready to leave?', $event)"
         >
           <span class="md:hidden lg:inline">
@@ -113,20 +115,17 @@
 </template>
 
 <script setup>
+const showFilter = useState("show-filter")
 const route = useRoute()
 const currentRoute = computed(() => route.path)
+const hamburgerMenuRef = ref(null)
+
+async function showFilterSidebar() {
+  hamburgerMenuRef.value.open = false
+  showFilter.value = true
+}
 </script>
 
 <style scoped>
-@reference "~/assets/css/main.css";
 
-@layer components {
-  .drawer-toggle:checked {
-    & ~ .drawer-content {
-      & .filter-icon {
-        @apply swap-active;
-      }
-    }
-  }
-}
 </style>

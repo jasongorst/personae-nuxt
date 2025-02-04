@@ -1,13 +1,13 @@
 <template>
   <div>
-    <table class="w-full table table-pin-rows table-sm xl:table-md table-zebra mb-4">
+    <table class="w-full table table-pin-rows table-md table-zebra mb-4">
       <thead>
       <tr class="bg-base-300 z-0">
         <th
           v-for="attribute of listAttributes"
           :key="attribute"
           :data-tip="attributeTooltip(attribute)"
-          class="text-secondary select-none tooltip tooltip-bottom tooltip-near tooltip-late tooltip-primary font-light hover:text-primary table-cell"
+          class="text-secondary select-none tooltip tooltip-bottom tooltip-primary font-light hover:text-primary table-cell tooltip-late"
           @click="updateSort(attribute)"
         >
           <span class="uppercase font-bold">
@@ -88,11 +88,13 @@ function attributeTooltip(attribute) {
     --tooltip-tail: 0.1875rem;
     --tooltip-tail-offset: calc(100% + 0.0625rem - 0.4125rem - var(--tooltip-tail));
     */
-  }
 
-  .tooltip-late:hover:before,
-  .tooltip-late:hover:after {
-    @apply delay-500;
+    /* daisyUI 4 default */
+    /*
+    --tooltip-offset: calc(100% + 1px + var(--tooltip-tail, 0px));
+    --tooltip-tail: 0.1875rem;
+    --tooltip-tail-offset: calc(100% + 0.0625rem - var(--tooltip-tail));
+    */
   }
 }
 </style>

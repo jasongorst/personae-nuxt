@@ -55,9 +55,4 @@ const isLoggedIn = computed(() => status.value === "authenticated")
     @apply after:block after:sticky after:bottom-0 after:w-full after:h-4 after:bg-base-100;
   }
 }
-
-.tooltip-late:hover:before,
-.tooltip-late:hover:after {
-  @apply delay-500;
-}
 </style>
