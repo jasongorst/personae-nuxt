@@ -10,7 +10,7 @@
     <package-manager value="pnpm" />
     <envs />
     <EXTENSION ID="com.intellij.lang.javascript.buildTools.npm.rc.StartBrowserRunConfigurationExtension">
-      <browser name="075132f6-5dae-493e-9857-820a162b8de8" start="true" with-js-debugger="true" url="http://localhost:3001/" />
+      <browser name="075132f6-5dae-493e-9857-820a162b8de8" with-js-debugger="true" url="http://localhost:3001/" />
     </EXTENSION>
     <method v="2" />
   </configuration>
