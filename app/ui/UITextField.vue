@@ -1,12 +1,12 @@
 <template>
   <input
-    :id="id"
     v-model="model"
-    :class="['input', 'input-bordered', inputSize[size], { 'cursor-not-allowed': disabled }]"
+    :id="id"
+    :class="inputClass"
     :disabled="disabled"
     :list="isPresent(datalist) ? datalistId : null"
     :type="type"
-    v-bind="$attrs"
+    v-bind="attrs"
   />
 
   <datalist
@@ -18,6 +18,7 @@
       :key="option"
       :value="option"
     >
+      {{ option }}
     </option>
   </datalist>
 </template>
@@ -26,7 +27,12 @@
 const model = defineModel()
 
 const props = defineProps({
-  // id of input
+  // class of input element
+  class: {
+    type: [ Array, Object, String ],
+    default: () => ""
+  },
+  // id of input element
   id: {
     type: String,
     default: () => uuid()
@@ -44,7 +50,7 @@ const props = defineProps({
     type: String,
     default: "md",
     validator(value) {
-      return [ "lg", "md", "sm", "xs" ].includes(value)
+      return [ "xl", "lg", "md", "sm", "xs" ].includes(value)
     }
   },
   // array of option values for datalist
@@ -52,21 +58,28 @@ const props = defineProps({
     type: Array,
     default: []
   },
-  // disabled
+  // disabled input
   disabled: {
     type: Boolean,
     default: false
   }
 })
 
+const attrs = useAttrs()
+const inputAttrs = computed(() => _omit(attrs, [ "class", "disabled", "id", "type", "list", "size" ]))
+
 const datalistId = computed(() => `${props.id}_list`)
 
 const inputSize = {
+  xl: "input-xl",
   lg: "input-lg",
   md: "input-md",
   sm: "input-sm",
   xs: "input-xs"
 }
+
+const defaultClass = [ "input", "w-full", inputSize[props.size], props.disabled && "cursor-not-allowed" ]
+const inputClass = computed(() => twMerge(defaultClass, props.class))
 </script>
 
 <style scoped>

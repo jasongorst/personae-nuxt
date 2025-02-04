@@ -1,19 +1,23 @@
 <template>
-  <UIOldFormControl
+  <UIFieldset
     :class="wrapperClass"
-    :label-for="id"
-    :label-class="labelClass"
-    :error-label-class="errorLabelClass"
+    :legend-class="legendClass"
+    :error-class="errorClass"
   >
     <div
-      class="join gap-0 focus-within:outline-base-content/20 focus-within:outline focus-within:outline-2 focus-within:outline-offset-2"
-      :class="[{ 'focus:!outline-error': $slots.error, 'focus-within:!outline-error': $slots.error }]"
+      class="join gap-0 group border-solid border-(--color-base-content)/20 border-(length:--border)
+        rounded-(--radius-field) focus-within:border-(--color-base-content) focus-within:outline-2
+        focus-within:outline-solid focus-within:outline-offset-2 focus-within:outline-(--color-base-content)
+      "
+      :class="[
+        $slots.error && 'border-(--color-error)', $slots.error && 'focus-within:border-(--color-error)',
+        $slots.error && 'focus-within:outline-(--color-error)'
+      ]"
     >
       <input
         v-model="password"
-        class="input input-bordered grow border-r-0 rounded-r-none focus:!outline-none focus-within:!outline-none"
-        :class="[inputSize[props.size], { 'input-error': $slots.error }]"
         :id="id"
+        :class="inputClass"
         @change="emit('change')"
         :type="inputType"
         v-bind="$attrs"
@@ -21,42 +25,50 @@
 
       <button
         @click="toggleVisibility"
-        class="btn join-item btn-neutral rounded-r-sm border-base-content/20 hover:border-base-content/20 !border-l-0 focus:!outline-none"
-        :class="[buttonSize[size], { '!border-error': $slots.error }]"
+        class="join-item btn btn-neutral active:translate-0! border-none focus:outline-none
+          [transition-property:color,background-color,box-shadow]"
+        :class="[ buttonSize[size], $slots.error && 'border-error!' ]"
         tabindex="-1"
         type="button"
       >
-        <Icon :name="icon" />
+        <Icon
+          :name="icon"
+          class="w-5!"
+        />
       </button>
     </div>
 
-    <template #label>
-      <slot name="label" />
+    <template v-if="$slots.legend" #legend>
+      <slot name="legend" />
     </template>
 
     <template #error v-if="$slots.error">
       <slot name="error" />
     </template>
-  </UIOldFormControl>
+  </UIFieldset>
 </template>
 
 <script setup>
 defineOptions({
   // disable attribute fallthrough to root component
-  //   (they're assigned to the <input> with v-bind="$attrs")
   inheritAttrs: false
 })
 
 const password = defineModel({ type: String })
 
 const props = defineProps({
-  // id of <input>
+  // class merged with input
+  class: {
+    type: [ Array, Object, String ],
+    default: () => ""
+  },
+  // id of input
   id: {
     type: String,
     default: () => uuid()
   },
-  // password text visible on load
-  startsVisible: {
+  // password text visible
+  visible: {
     type: Boolean,
     default: false
   },
@@ -65,30 +77,37 @@ const props = defineProps({
     type: String,
     default: "md",
     validator(value) {
-      return ["lg", "md", "sm", "xs"].includes(value)
+      return [ "xl", "lg", "md", "sm", "xs" ].includes(value)
     }
   },
-  // class of div.form-control
+  // class of fieldset
   wrapperClass: {
-    type: [Array, String]
+    type: [ Array, String ],
+    default: () => ""
   },
-  // class of label.label
-  labelClass: {
-    type: [Array, String],
-    default: "text-secondary"
+  // class for legend
+  legendClass: {
+    type: [ Array, String ],
+    default: () => ""
   },
-  // class of error span.label-text-alt
-  errorLabelClass: {
-    type: [Array, String],
-    default: "text-error"
+  // class for error
+  errorClass: {
+    type: [ Array, String ],
+    default: () => ""
   }
 })
 
 const emit = defineEmits(["change"])
 
-const isVisible = ref(props.startsVisible)
+const attrs = useAttrs()
+const slots = useSlots()
+
+const inputAttrs = computed(() => _omit(attrs, [ "class", "disabled", "id", "type", "list", "size" ]))
+
+const isVisible = ref(props.visible)
 
 const inputSize = {
+  xl: "input-xl",
   lg: "input-lg",
   md: "input-md",
   sm: "input-sm",
@@ -96,11 +115,18 @@ const inputSize = {
 }
 
 const buttonSize = {
+  xl: "btn-xl",
   lg: "btn-lg",
   md: "btn-md",
   sm: "btn-sm",
   xs: "btn-xs"
 }
+
+const defaultClass = [
+  "input", inputSize[props.size], "grow", "join-item", "border-none", "focus:outline-none", slots.error && "input-error"
+]
+
+const inputClass = computed(() => twMerge(defaultClass, props.class))
 
 const icon = computed(() => {
   if (isVisible.value) {

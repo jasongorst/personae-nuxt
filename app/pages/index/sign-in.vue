@@ -11,7 +11,7 @@
         class="modal-box card"
       >
         <div class="card-body">
-          <UIOldTextInput
+          <UITextInput
             v-model="credentials.email"
             id="password_email"
             type="email"
@@ -20,10 +20,14 @@
             autocomplete="email"
             required
           >
-            <template #label>
+            <template #legend>
               Email Address
             </template>
-          </UIOldTextInput>
+
+<!--            <template #error>-->
+<!--              Something is wrong here.-->
+<!--            </template>-->
+          </UITextInput>
 
           <UIPasswordInput
             v-model="credentials.password"
@@ -32,14 +36,18 @@
             autocomplete="current-password"
             required
           >
-            <template #label>
+            <template #legend>
               Password
             </template>
+
+<!--            <template #error>-->
+<!--              Here too.-->
+<!--            </template>-->
           </UIPasswordInput>
 
           <div class="form-control pt-3">
             <UILoadingButton
-              class="btn"
+              class="btn btn-block"
               @click="signInWithPassword"
               :is-loading="isLoading"
               :disabled="!credentials.email || !credentials.password"

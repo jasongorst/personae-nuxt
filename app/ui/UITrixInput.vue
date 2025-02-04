@@ -41,7 +41,7 @@ const props = defineProps({
     type: String,
     default: () => uuid()
   },
-  // class of UiFormControl
+  // class of UIFieldset
   wrapperClass: {
     type: [Array, String]
   },

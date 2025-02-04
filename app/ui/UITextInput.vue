@@ -1,40 +1,46 @@
 <template>
-  <UIFormControl
-    :id="id"
-    :tooltip="disabled ? disabledTooltip : null"
+  <UIFieldset
+    :class="wrapperClass"
     :disabled="disabled"
-    :label-class="[ ...classListToArray(labelClass), { 'label-disabled': disabled } ]"
-    :error-label-class="errorLabelClass"
+    :tooltip="tooltip"
+    :legend-class="legendClass"
+    :error-class="errorClass"
   >
     <UITextField
       v-model="model"
-      :class="{ 'input-error': $slots.error }"
+      :id="id"
+      :class="textFieldClass"
       :datalist="datalist"
       :size="size"
       :type="type"
-      v-bind="$attrs"
+      :disabled="disabled"
+      v-bind="textFieldAttrs"
     />
 
-    <template v-if="$slots.label" #label>
-      <slot name="label" />
+    <template v-if="$slots.legend" #legend>
+      <slot name="legend" />
     </template>
 
     <template v-if="$slots.error" #error>
       <slot name="error" />
     </template>
-  </UIFormControl>
+  </UIFieldset>
 </template>
 
 <script setup>
 defineOptions({
   // disable attribute fallthrough to root component
-  //   (assigned to UITextField with v-bind="$attrs")
   inheritAttrs: false
 })
 
-const model = defineModel()
+const model = defineModel({ type: String })
 
 const props = defineProps({
+  // class merged with UITextField
+  class: {
+    type: [ Array, Object, String ],
+    default: () => ""
+  },
   // id of input
   id: {
     type: String,
@@ -53,7 +59,7 @@ const props = defineProps({
     type: String,
     default: "md",
     validator(value) {
-      return [ "lg", "md", "sm", "xs" ].includes(value)
+      return [ "xl", "lg", "md", "sm", "xs" ].includes(value)
     }
   },
   // array of option values for datalist
@@ -61,32 +67,40 @@ const props = defineProps({
     type: Array,
     default: []
   },
-  // class for form control
-  wrapperClass: {
-    type: [ Array, String ],
-    default: ""
-  },
-  // class for label
-  labelClass: {
-    type: [ Array, String ],
-    default: "text-secondary"
-  },
-  // class for error label
-  errorLabelClass: {
-    type: [ Array, String ],
-    default: "text-error"
-  },
   // disable input
   disabled: {
     type: Boolean,
     default: false
   },
-  // tooltip content to show if disabled
-  disabledTooltip: {
+  // class of fieldset
+  wrapperClass: {
+    type: [ Array, String ],
+    default: () => ""
+  },
+  // tooltip content
+  tooltip: {
     type: String,
-    default: ""
+    default: null
+  },
+  // class for legend
+  legendClass: {
+    type: [ Array, String ],
+    default: () => ""
+  },
+  // class for error
+  errorClass: {
+    type: [ Array, String ],
+    default: () => ""
   }
 })
+
+const attrs = useAttrs()
+const slots = useSlots()
+
+const textFieldAttrs = computed(() => _omit(attrs, [ "class", "disabled", "id", "type", "list", "size" ]))
+
+const defaultClass = [ slots.error && "input-error" ]
+const textFieldClass = computed(() => twMerge(defaultClass, props.class))
 </script>
 
 <style scoped>
