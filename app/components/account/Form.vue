@@ -50,7 +50,7 @@
     v-model="account.admin"
     id="admin"
     size="sm"
-    wrapper-class="!flex flex-row gap-3 pt-3 items-center"
+    wrapper-class="flex! flex-row gap-3 pt-3 items-center"
     :disabled="isOwnAccount"
     disabled-tooltip="Please don't remove your own admin flag."
   >

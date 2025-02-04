@@ -3,12 +3,12 @@
     <input
       v-model.lazy.trim="query"
       :id="inputId"
-      class="input input-sm w-40 lg:w-48 border-0 join-item text-base-content focus:!outline-none focus-within:!outline-none"
+      class="input w-40 lg:w-48 border-0 join-item text-base-content focus:outline-none! focus-within:outline-none!"
       placeholder="Search"
       type="search"
     >
     <button
-      class="btn btn-sm btn-neutral border-0 join-item focus:!outline-none"
+      class="btn btn-neutral border-0 join-item focus:outline-none!"
       tabindex="-1"
       type="button"
     >

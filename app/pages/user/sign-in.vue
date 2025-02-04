@@ -42,7 +42,7 @@
       class="toggle-success"
       id="remember-me"
       size="sm"
-      wrapper-class="!flex flex-row gap-3 pt-3 items-center"
+      wrapper-class="flex! flex-row gap-3 pt-3 items-center"
       label-class="cursor-pointer"
     >
       <template #label>

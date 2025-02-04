@@ -1,6 +1,6 @@
 trix-toolbar {
   .trix-button {
-    @apply btn btn-sm btn-secondary !border-none rounded-sm block py-0 px-3;
+    @apply btn btn-sm btn-secondary border-none! rounded-sm block py-0 px-3;
 
     &.trix-active {
       @apply btn-active;
@@ -27,7 +27,7 @@ trix-toolbar {
     @apply w-8;
 
     &::before {
-      @apply !bg-none bg-secondary-content;
+      @apply bg-none! bg-secondary-content;
     }
   }
 
@@ -89,7 +89,7 @@ trix-toolbar {
 }
 
 .trix-dialog {
-  @apply !bg-base-100 !shadow-xl !border !border-base-content/20;
+  @apply bg-base-100! shadow-xl! border! border-base-content/20!;
 
   & .trix-input {
     @apply input input-sm input-bordered;
