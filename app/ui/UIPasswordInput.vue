@@ -27,7 +27,7 @@
         @click="toggleVisibility"
         class="join-item btn btn-neutral active:translate-0! border-none focus:outline-none
           [transition-property:color,background-color,box-shadow]"
-        :class="[ buttonSize[size], $slots.error && 'border-error!' ]"
+        :class="[ buttonSize[size] ]"
         tabindex="-1"
         type="button"
       >
