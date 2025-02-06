@@ -5,19 +5,13 @@
     :error-class="errorClass"
   >
     <div
-      class="join gap-0 group border-solid border-(--color-base-content)/20 border-(length:--border)
-        rounded-(--radius-field) focus-within:border-(--color-base-content) focus-within:outline-2
-        focus-within:outline-solid focus-within:outline-offset-2 focus-within:outline-(--color-base-content)
-      "
-      :class="[
-        $slots.error && 'border-(--color-error)', $slots.error && 'focus-within:border-(--color-error)',
-        $slots.error && 'focus-within:outline-(--color-error)'
-      ]"
+      class="input w-full gap-0 pr-0"
+      :class="[inputSize[props.size], $slots.error && 'input-error']"
     >
       <input
         v-model="password"
         :id="id"
-        :class="inputClass"
+        class="grow border-none focus:outline-none"
         @change="emit('change')"
         :type="inputType"
         v-bind="$attrs"
@@ -25,7 +19,7 @@
 
       <button
         @click="toggleVisibility"
-        class="join-item btn btn-neutral active:translate-0! border-none focus:outline-none
+        class="btn btn-neutral h-full active:translate-0! border-none focus:outline-none
           [transition-property:color,background-color,box-shadow]"
         :class="[ buttonSize[size] ]"
         tabindex="-1"
@@ -123,7 +117,7 @@ const buttonSize = {
 }
 
 const defaultClass = [
-  "input", inputSize[props.size], "grow", "join-item", "border-none", "focus:outline-none", slots.error && "input-error"
+  "grow", "border-none", "focus:outline-none"
 ]
 
 const inputClass = computed(() => twMerge(defaultClass, props.class))
