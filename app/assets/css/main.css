@@ -69,3 +69,7 @@
 @utility tooltip-late {
   @apply hover:before:delay-500! hover:after:delay-500!;
 }
+
+@utility tooltip-bottom-near {
+  @apply before:-translate-y-2.5 after:-translate-y-2.5;
+}

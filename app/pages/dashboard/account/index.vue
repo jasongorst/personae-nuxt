@@ -8,7 +8,7 @@
           v-for="attribute of accountAttributes"
           :key="attribute"
           :data-tip="attributeTooltip(attribute)"
-          class="text-secondary select-none tooltip tooltip-bottom tooltip-near tooltip-late tooltip-primary font-light hover:text-primary table-cell"
+          class="text-secondary select-none tooltip tooltip-bottom tooltip-bottom-near tooltip-late tooltip-primary font-light hover:text-primary table-cell"
           @click="updateSort(attribute)"
         >
           <span class="uppercase font-bold">
@@ -149,12 +149,6 @@ const { data: accounts } = await useApi(
 @reference "~/assets/css/main.css";
 
 @layer components {
-  .tooltip-near {
-    --tooltip-offset: calc(100% + 1px - 0.4125rem + var(--tooltip-tail, 0px));
-    --tooltip-tail: 0.1875rem;
-    --tooltip-tail-offset: calc(100% + 0.0625rem - 0.4125rem - var(--tooltip-tail));
-  }
-
   .accounts-toolbar {
     @apply before:block before:sticky before:bottom-20 before:w-full before:h-4 before:bg-gradient-to-t before:from-base-100 before:to-transparent;
     @apply after:block after:sticky after:bottom-0 after:w-full after:h-4 after:bg-base-100;

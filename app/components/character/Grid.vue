@@ -7,7 +7,7 @@
           v-for="attribute of listAttributes"
           :key="attribute"
           :data-tip="attributeTooltip(attribute)"
-          class="text-secondary select-none tooltip tooltip-bottom tooltip-primary font-light hover:text-primary table-cell tooltip-late"
+          class="text-secondary select-none font-light table-cell text-center tooltip tooltip-bottom tooltip-primary tooltip-late tooltip-bottom-near hover:text-primary"
           @click="updateSort(attribute)"
         >
           <span class="uppercase font-bold">
@@ -74,27 +74,5 @@ function attributeTooltip(attribute) {
 </script>
 
 <style scoped>
-@reference "~/assets/css/main.css";
 
-@layer components {
-  .tooltip-near {
-    /* daisyUI 5 */
-    --tt-off: calc(100% + 0.5rem);
-    --tt-tail: calc(100% + 1px + 0.25rem);
-
-    /* daisyUI 4 */
-    /*
-    --tooltip-offset: calc(100% + 1px - 0.4125rem + var(--tooltip-tail, 0px));
-    --tooltip-tail: 0.1875rem;
-    --tooltip-tail-offset: calc(100% + 0.0625rem - 0.4125rem - var(--tooltip-tail));
-    */
-
-    /* daisyUI 4 default */
-    /*
-    --tooltip-offset: calc(100% + 1px + var(--tooltip-tail, 0px));
-    --tooltip-tail: 0.1875rem;
-    --tooltip-tail-offset: calc(100% + 0.0625rem - var(--tooltip-tail));
-    */
-  }
-}
 </style>
