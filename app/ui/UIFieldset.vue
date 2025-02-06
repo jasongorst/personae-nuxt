@@ -68,7 +68,7 @@ const attrs = useAttrs()
 const slotAttrs = computed(() => _omit(attrs, [ "class", "disabled", "id" ]))
 
 const defaultClass = {
-  fieldset: [ "fieldset", isPresent(props.tooltip) && "fieldset-tooltip" ],
+  fieldset: [ "fieldset", "p-0", isPresent(props.tooltip) && "fieldset-tooltip" ],
   legend: [ "fieldset-legend", "text-secondary", "text-sm", props.disabled && "legend-disabled" ],
   error: [ "fieldset-label", "text-error", "text-xs" ]
 }
