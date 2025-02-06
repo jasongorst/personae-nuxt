@@ -8,53 +8,49 @@
     >
       <HeadlessDialogPanel
         ref="dialogPanelRef"
-        class="modal-box card"
+        class="modal-box card p-0"
       >
-        <div class="card-body">
-          <UITextInput
-            v-model="credentials.email"
-            id="password_email"
-            type="email"
-            size="md"
-            placeholder="Email address"
-            autocomplete="email"
-            required
+        <div class="card-body gap-2">
+          <form
+            @submit.prevent="signInWithPassword"
           >
-            <template #legend>
-              Email Address
-            </template>
-
-<!--            <template #error>-->
-<!--              Something is wrong here.-->
-<!--            </template>-->
-          </UITextInput>
-
-          <UIPasswordInput
-            v-model="credentials.password"
-            id="password_password"
-            placeholder="Password"
-            autocomplete="current-password"
-            required
-          >
-            <template #legend>
-              Password
-            </template>
-
-<!--            <template #error>-->
-<!--              Here too.-->
-<!--            </template>-->
-          </UIPasswordInput>
-
-          <div class="form-control pt-3">
-            <UILoadingButton
-              class="btn btn-block"
-              @click="signInWithPassword"
-              :is-loading="isLoading"
-              :disabled="!credentials.email || !credentials.password"
+            <UITextInput
+              v-model="credentials.email"
+              id="password_email"
+              type="email"
+              size="md"
+              placeholder="Email address"
+              autocomplete="email"
+              required
             >
-              Sign In
-            </UILoadingButton>
-          </div>
+              <template #legend>
+                Email Address
+              </template>
+            </UITextInput>
+
+            <UIPasswordInput
+              v-model="credentials.password"
+              id="password_password"
+              placeholder="Password"
+              autocomplete="current-password"
+              required
+            >
+              <template #legend>
+                Password
+              </template>
+            </UIPasswordInput>
+
+            <div class="form-control pt-4">
+              <UILoadingButton
+                type="submit"
+                class="btn btn-block"
+                :is-loading="isLoading"
+                :disabled="!credentials.email || !credentials.password"
+              >
+                Sign In
+              </UILoadingButton>
+            </div>
+          </form>
         </div>
       </HeadlessDialogPanel>
     </HeadlessDialog>
