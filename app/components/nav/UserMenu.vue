@@ -15,9 +15,9 @@
       />
     </summary>
 
-    <ul class="dropdown-content menu w-52 mt-3 p-2 shadow bg-primary rounded-box z-10 whitespace-nowrap">
+    <ul class="dropdown-content menu gap-1 w-52 shadow bg-primary z-10 whitespace-nowrap">
       <template v-if="isLoggedIn">
-        <li class="menu-title text-primary-content/55 whitespace-nowrap">
+        <li class="menu-title py-1.5 text-primary-content/60 whitespace-nowrap">
           {{ user.email }}
         </li>
 
