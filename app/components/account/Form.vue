@@ -1,72 +1,70 @@
 <template>
-  <UIOldTextInput
-    v-model="account.email"
+  <UITextInput
     id="email"
-    type="email"
+    v-model="account.email"
     size="sm"
+    type="email"
   >
-    <template #label>
+    <template #legend>
       Email
     </template>
 
-    <template #error v-if="_has(fieldError, 'email')">
+    <template v-if="_has(fieldError, 'email')" #error>
       {{ fieldError.email }}
     </template>
-  </UIOldTextInput>
+  </UITextInput>
 
   <UIPasswordConfirm
-    v-model="account.password"
     id="password"
+    v-model="account.password"
     size="sm"
   >
-    <template #label>
+    <template #legend>
       {{ action === "edit" ? "New Password" : "Password" }}
     </template>
 
-    <template #error v-if="_has(fieldError, 'password')">
+    <template v-if="_has(fieldError, 'password')" #error>
       {{ fieldError.password }}
     </template>
   </UIPasswordConfirm>
 
   <UISelectInput
-    v-model="account.status"
     id="status"
+    v-model="account.status"
+    :disabled="isOwnAccount"
+    :options="statusValues"
+    disabled-tooltip="Please don't change your own status."
     size="sm"
     wrapper-class="flex flex-col"
-    :options="statusValues"
-    :disabled="isOwnAccount"
-    disabled-tooltip="Please don't change your own status."
   >
     <template #label>
       Status
     </template>
 
-    <template #error v-if="_has(fieldError, 'status')">
+    <template v-if="_has(fieldError, 'status')" #error>
       {{ fieldError.status }}
     </template>
   </UISelectInput>
 
   <UICheckboxInput
-    v-model="account.admin"
     id="admin"
-    size="sm"
-    wrapper-class="flex! flex-row gap-3 pt-3 items-center"
+    v-model="account.admin"
     :disabled="isOwnAccount"
     disabled-tooltip="Please don't remove your own admin flag."
+    size="sm"
+    wrapper-class="flex! flex-row gap-3 pt-3 items-center"
   >
     <template #label>
       Admin?
     </template>
 
-    <template #error v-if="_has(fieldError, 'admin')">
+    <template v-if="_has(fieldError, 'admin')" #error>
       {{ fieldError.admin }}
     </template>
   </UICheckboxInput>
 </template>
 
 <script setup>
-//import { useSessionStore } from "@/stores/useSessionStore.js"
-
 const account = defineModel()
 
 const props = defineProps({
@@ -74,7 +72,7 @@ const props = defineProps({
     type: String,
     default: "create",
     validator(value) {
-      return ["create", "edit"].includes(value)
+      return [ "create", "edit" ].includes(value)
     }
   },
   fieldError: {
@@ -83,19 +81,13 @@ const props = defineProps({
   }
 })
 
-const statusValues = ["unverified", "verified", "closed"]
+const { data } = useAuth()
+const statusValues = [ "unverified", "verified", "closed" ]
 
-//const sessionStore = useSessionStore()
-//const { getAccount } = storeToRefs(sessionStore)
-
-//const isOwnAccount = computed(
-//  () => getAccount.value && (getAccount.value.email === account.value.email)
-//)
-
-// dummy sessionStore
 const isOwnAccount = computed(
-  () => (account.value.email === "jason@evilpaws.org")
+  () => (data.value?.email === account.value.email)
 )
+
 </script>
 
 <style scoped>
