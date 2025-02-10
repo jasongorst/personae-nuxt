@@ -10,7 +10,7 @@
       size="sm"
       :datalist="options?.[attribute]"
     >
-      <template #label>
+      <template #legend>
         {{ _startCase(attribute) }}
       </template>
 
@@ -27,7 +27,7 @@
       v-model="character[attribute]"
       :id="attribute"
     >
-      <template #label>
+      <template #legend>
         {{ _startCase(attribute) }}
       </template>
 
@@ -40,7 +40,7 @@
 
 <script setup>
 const character = defineModel()
-const props = defineProps(["fieldError"])
+const props = defineProps([ "fieldError" ])
 
 const { data: options } = await useApi("/characters/options")
 </script>
