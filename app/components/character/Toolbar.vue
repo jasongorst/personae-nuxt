@@ -37,7 +37,7 @@
 </template>
 
 <script setup>
-const props = defineProps(["totalCount"])
+const props = defineProps([ "totalCount" ])
 
 const personae = usePersonae()
 const { filteredCount, totalCount, query } = storeToRefs(personae)

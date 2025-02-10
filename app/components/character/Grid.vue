@@ -17,7 +17,7 @@
           <span class="inline-block w-0 overflow-x-visible text-accent">
             <Icon
               v-if="sort.attribute === attribute"
-              :name="sort.sortDirection === 'asc' ? 'fa6-solid:arrow-down-a-z' : 'fa6-solid:arrow-down-z-a'"
+              :name="sort.direction === 'asc' ? 'fa6-solid:arrow-down-a-z' : 'fa6-solid:arrow-down-z-a'"
               class="w-[1.25em] h-[1em] -mt-[0.1667em]"
             />
           </span>
@@ -41,28 +41,28 @@ const personae = usePersonae()
 
 const sort = ref({
   attribute: "createdAt",
-  sortDirection: "asc"
+  direction: "asc"
 })
 
 function updateSort(attribute) {
   if (sort.value.attribute === attribute) {
-    if (sort.value.sortDirection === "asc") {
-      sort.value.sortDirection = "desc"
+    if (sort.value.direction === "asc") {
+      sort.value.direction = "desc"
     } else {
       sort.value.attribute = "createdAt"
-      sort.value.sortDirection = "asc"
+      sort.value.direction = "asc"
     }
   } else {
     sort.value.attribute = attribute
-    sort.value.sortDirection = "asc"
+    sort.value.direction = "asc"
   }
 
-  personae.sortCharacters(sort.value.attribute, sort.value.sortDirection)
+  personae.sortCharacters(sort.value.attribute, sort.value.direction)
 }
 
 function attributeTooltip(attribute) {
   if (sort.value.attribute === attribute) {
-    if (sort.value.sortDirection === "asc") {
+    if (sort.value.direction === "asc") {
       return "Click to reverse sort order."
     } else {
       return "Click for default order."
