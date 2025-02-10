@@ -19,7 +19,7 @@
 
       <button
         @click="toggleVisibility"
-        class="btn btn-neutral h-full active:translate-0! border-none focus:outline-none
+        class="btn btn-neutral h-full border-none focus:outline-none active:translate-0!
           [transition-property:color,background-color,box-shadow]"
         :class="[ buttonSize[size] ]"
         tabindex="-1"

@@ -8,13 +8,13 @@
       @change="comparePasswords"
       :id="id"
       :size="size"
-      :label-class="labelClass"
+      :legend-class="legendClass"
       :placeholder="placeholder"
       :autocomplete="autocomplete"
       v-bind="$attrs"
     >
-      <template #label>
-        <slot name="label">
+      <template #legend>
+        <slot name="legend">
           Password
         </slot>
       </template>
@@ -25,17 +25,17 @@
     </UIPasswordInput>
 
     <UIPasswordInput
-      v-model="UIPasswordConfirm"
+      v-model="passwordConfirm"
       @change="comparePasswords"
       :id="`${id}_confirm`"
       :size="size"
-      :label-class="labelClass"
+      :legend-class="legendClass"
       :placeholder="confirmPlaceholder"
       :autocomplete="autocomplete"
       v-bind="$attrs"
     >
-      <template #label>
-        <slot name="confirmLabel">
+      <template #legend>
+        <slot name="confirmLegend">
           Confirm Password
         </slot>
       </template>
@@ -77,12 +77,12 @@ const props = defineProps({
     type: [Array, String]
   },
   // class of label.label
-  labelClass: {
+  legendClass: {
     type: [Array, String],
     default: "text-secondary"
   },
   // class of error span.label-text-alt
-  errorLabelClass: {
+  errorClass: {
     type: [Array, String],
     default: "text-error"
   },
@@ -104,15 +104,15 @@ const props = defineProps({
 const emit = defineEmits(["hasMismatchError"])
 
 const password = ref(null)
-const UIPasswordConfirm = ref(null)
+const passwordConfirm = ref(null)
 const hasMismatchedPasswords = ref(false)
 
 function comparePasswords() {
-  if (isBlank(UIPasswordConfirm.value)) {
-    // reset if UIPasswordConfirm is blank
+  if (isBlank(passwordConfirm.value)) {
+    // reset if passwordConfirm is blank
     confirmedPassword.value = ""
     hasMismatchedPasswords.value = false
-  } else if (password.value === UIPasswordConfirm.value) {
+  } else if (password.value === passwordConfirm.value) {
     confirmedPassword.value = password.value
     hasMismatchedPasswords.value = false
   } else {
