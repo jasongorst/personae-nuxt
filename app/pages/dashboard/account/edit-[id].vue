@@ -42,7 +42,7 @@
 </template>
 
 <script setup>
-const props = defineProps(["id"])
+const props = defineProps([ "id" ])
 
 const route = useRoute()
 const router = useRouter()
@@ -62,7 +62,7 @@ const accountBody = computed(() => ({
 }))
 
 const isOwnAccount = computed(
- () => (data.value?.user?.email === account.value.email)
+  () => (data.value?.email === account.value.email)
 )
 
 onBeforeRouteLeave(() => {
@@ -203,7 +203,7 @@ const { execute: deleteAccount, status: deletingStatus } = await useApi(
 @layer components {
   .loading-button-disabled {
     @apply tooltip tooltip-info tooltip-bottom tooltip-late;
-    @apply no-animation cursor-not-allowed pointer-events-auto!;
+    @apply transition-none cursor-not-allowed pointer-events-auto!;
     @apply before:font-light before:normal-case before:text-info-content!;
   }
 }
