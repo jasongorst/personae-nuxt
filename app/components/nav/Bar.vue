@@ -10,7 +10,7 @@
           <Icon name="fa6-solid:bars" />
         </summary>
 
-        <ul class="dropdown-content menu mt-3 p-2 shadow bg-primary rounded-box z-10 whitespace-nowrap">
+        <ul class="dropdown-content menu gap-1 w-52 shadow bg-primary z-10 whitespace-nowrap">
           <li>
             <NuxtLink to="/">
               Home
@@ -31,8 +31,12 @@
           </li>
 
           <li v-if="currentRoute === '/'">
-            <div>
-              <NavSearch input-id="dropdown_search" />
+            <div class="p-0 active:text-primary-content! active:bg-primary!">
+              <NavSearch
+                id="dropdown_search"
+                size="sm"
+                wrapper-class="w-full hover:outline-2 hover:outline-primary-content/50"
+              />
             </div>
           </li>
 
@@ -91,7 +95,8 @@
       <div class="hidden md:flex md:pr-4">
         <NavSearch
           v-if="currentRoute === '/'"
-          input-id="navbar_search"
+          id="navbar_search"
+          size="md"
         />
       </div>
 
