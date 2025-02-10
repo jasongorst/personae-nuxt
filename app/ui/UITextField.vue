@@ -6,7 +6,7 @@
     :disabled="disabled"
     :list="isPresent(datalist) ? datalistId : null"
     :type="type"
-    v-bind="attrs"
+    v-bind="inputAttrs"
   />
 
   <datalist
