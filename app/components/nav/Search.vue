@@ -1,14 +1,18 @@
 <template>
-  <div class="join gap-0 focus-within:outline-base-content/20 focus-within:outline focus-within:outline-2 focus-within:outline-offset-2">
+  <div :class="wrapperDivClass">
     <input
       v-model.lazy.trim="query"
-      :id="inputId"
-      class="input w-40 lg:w-48 border-0 join-item text-base-content focus:outline-none! focus-within:outline-none!"
+      :id="id"
+      :class="inputClass"
       placeholder="Search"
       type="search"
+      v-bind="inputAttrs"
     >
+
     <button
-      class="btn btn-neutral border-0 join-item focus:outline-none!"
+      class="btn btn-neutral rounded-l-none h-full border-none outline-transparent active:translate-0!
+        [transition-property:color,background-color,box-shadow]"
+      :class="[ buttonSize[size] ]"
       tabindex="-1"
       type="button"
     >
@@ -18,10 +22,59 @@
 </template>
 
 <script setup>
-defineProps(["inputId"])
+const props = defineProps({
+  // class of input element
+  class: {
+    type: [ Array, Object, String ],
+    default: () => ""
+  },
+  // id of input element
+  id: {
+    type: String,
+    default: () => uuid()
+  },
+  // size of input (daisyui sizes)
+  size: {
+    type: String,
+    default: "md",
+    validator(value) {
+      return [ "xl", "lg", "md", "sm", "xs" ].includes(value)
+    }
+  },
+  // class of wrapper div
+  wrapperClass: {
+    type: [ Array, String ],
+    default: () => ""
+  }
+})
 
+const attrs = useAttrs()
 const personae = usePersonae()
 const { query } = storeToRefs(personae)
+
+const inputAttrs = computed(() => _omit(attrs, [ "class", "id", "size" ]))
+
+const inputSize = {
+  xl: "input-xl",
+  lg: "input-lg",
+  md: "input-md",
+  sm: "input-sm",
+  xs: "input-xs"
+}
+
+const buttonSize = {
+  xl: "btn-xl",
+  lg: "btn-lg",
+  md: "btn-md",
+  sm: "btn-sm",
+  xs: "btn-xs"
+}
+
+const defaultWrapperClass = [ "input", inputSize[props.size], "w-52", "lg:w-60", "pr-0" ]
+const wrapperDivClass = computed(() => twMerge(defaultWrapperClass, props.wrapperClass))
+
+const defaultInputClass = [ "grow" ]
+const inputClass = computed(() => twMerge(defaultInputClass, props.class))
 </script>
 
 <style scoped>
