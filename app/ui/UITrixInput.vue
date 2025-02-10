@@ -1,59 +1,63 @@
 <template>
-  <UIOldFormControl
+  <UIFieldset
     :class="wrapperClass"
-    :label-for="id"
-    :label-class="labelClass"
-    :error-label-class="errorLabelClass"
+    :legend-class="legendClass"
+    :error-class="errorClass"
   >
     <UITrixEditor
       v-model="model"
-      :class="{ 'textarea-error': $slots.error }"
-      :input-id="id"
-      :input-name="`${id}_content`"
+      :class="trixEditorClass"
+      :id="id"
+      :name="`${id}_content`"
       :placeholder="placeholder"
       :autofocus="autofocus"
       :config="config"
-      v-bind="$attrs"
+      v-bind="trixEditorAttrs"
     />
 
-    <template #label>
-      <slot name="label" />
+    <template #legend>
+      <slot name="legend" />
     </template>
 
     <template #error v-if="$slots.error">
       <slot name="error" />
     </template>
-  </UIOldFormControl>
+  </UIFieldset>
 </template>
 
 <script setup>
 defineOptions({
   // disable attribute fallthrough to root component
-  //   (they're assigned to the UiTrixEditor with v-bind="$attrs")
   inheritAttrs: false
 })
 
 const model = defineModel()
 
 const props = defineProps({
-  // id of hidden UiTrixEditor hidden input
+  // class merged with UITrixEditor
+  class: {
+    type: [ Array, Object, String ],
+    default: () => ""
+  },
+  // id of hidden input
   id: {
     type: String,
     default: () => uuid()
   },
-  // class of UIFieldset
+  // class of fieldset
   wrapperClass: {
-    type: [Array, String]
+    type: [ Array, String ],
+    default: () => ""
   },
-  // class of label
-  labelClass: {
+  // class for legend
+  legendClass: {
     type: [Array, String],
-    default: "text-secondary"
+    default: ""
   },
-  // class of error label
-  errorLabelClass: {
-    type: [Array, String],
-    default: "text-error"
+  // class for error
+  errorClass: {
+    type: [ Array, String ],
+    default: () => ""
   },
   // editor placeholder content
   placeholder: {
@@ -74,6 +78,14 @@ const props = defineProps({
     default: () => {}
   }
 })
+
+const attrs = useAttrs()
+const slots = useSlots()
+
+const trixEditorAttrs = computed(() => _omit(attrs, [ "class", "id" ]))
+
+const defaultClass = [ slots.error && "textarea-error" ]
+const trixEditorClass = computed(() => twMerge(defaultClass, props.class))
 </script>
 
 <style scoped>
