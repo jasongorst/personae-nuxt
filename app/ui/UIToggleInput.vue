@@ -1,93 +1,91 @@
 <template>
-  <UIOldFormControl
-    :class="[
-      ...classListToArray(wrapperClass),
-      { 'disabled-tooltip': (disabled && isPresent(disabledTooltip)) }
-    ]"
-    :data-tip="disabledTooltip"
-    :label-for="id"
-    :label-class="[...classListToArray(labelClass), 'cursor-pointer', { 'label-disabled': disabled }]"
-    :error-label-class="errorLabelClass"
+  <UIFieldset
+    :class="wrapperClass"
+    :disabled="disabled"
+    :tooltip="tooltip"
+    :label-class="labelClass"
+    :error-class="errorClass"
   >
     <UIToggleField
       v-model="model"
-      :class="{ 'toggle-error': $slots.error }"
       :id="id"
+      :class="toggleFieldClass"
       :size="size"
       :disabled="disabled"
-      v-bind="$attrs"
+      v-bind="toggleFieldAttrs"
     />
 
-    <template #label>
+    <template v-if="$slots.label" #label>
       <slot name="label" />
     </template>
 
-    <template #error v-if="$slots.error">
+    <template v-if="$slots.error" #error>
       <slot name="error" />
     </template>
-  </UIOldFormControl>
+  </UIFieldset>
 </template>
 
 <script setup>
 defineOptions({
-  // disable attribute fallthrough to root component
-  //   (they're assigned to the UiToggleField with v-bind="$attrs")
   inheritAttrs: false
 })
 
 const model = defineModel()
 
 const props = defineProps({
-  // id of UiToggleField
+  // class merged with UIToggleField
+  class: {
+    type: [ Array, Object, String ],
+    default: () => ""
+  },
+  // id of input
   id: {
     type: String,
     default: () => uuid()
   },
-  // size of UiToggleField (daisyui sizes)
+  // size of input (daisyui sizes)
   size: {
     type: String,
     default: "md",
     validator(value) {
-      return ["lg", "md", "sm", "xs"].includes(value)
+      return [ "xl", "lg", "md", "sm", "xs" ].includes(value)
     }
   },
-  // class of UIFieldset
-  wrapperClass: {
-    type: [Array, String]
-  },
-  // class of label
-  labelClass: {
-    type: [Array, String],
-    default: "text-secondary"
-  },
-  // class of error label
-  errorLabelClass: {
-    type: [Array, String],
-    default: "text-error"
-  },
-  // disabled UiToggleField
+  // disable input
   disabled: {
     type: Boolean,
     default: false
   },
-  // tooltip content for data-tip attribute
-  disabledTooltip: {
+  // class of fieldset
+  wrapperClass: {
+    type: [Array, String]
+  },
+  // tooltip content
+  tooltip: {
     type: String,
-    default: ""
+    default: null
+  },
+  // class for label
+  labelClass: {
+    type: [ Array, String ],
+    default: () => ""
+  },
+  // class for error
+  errorClass: {
+    type: [ Array, String ],
+    default: () => ""
   }
 })
+
+const attrs = useAttrs()
+const slots = useSlots()
+
+const toggleFieldAttrs = computed(() => _omit(attrs, [ "class", "disabled", "id", "size" ]))
+
+const defaultClass = [ slots.error && "toggle-error" ]
+const toggleFieldClass = computed(() => twMerge(defaultClass, props.class))
 </script>
 
-<style>
-@reference "~/assets/css/main.css";
+<style scoped>
 
-@layer components {
-  .disabled-tooltip {
-    @apply tooltip tooltip-info tooltip-bottom tooltip-late;
-  }
-
-  .label-disabled {
-    @apply text-base-content/40 cursor-not-allowed;
-  }
-}
 </style>

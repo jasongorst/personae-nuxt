@@ -32,7 +32,6 @@
 import Trix from "trix"
 
 defineOptions({
-  // disable attribute fallthrough to root component
   inheritAttrs: false
 })
 

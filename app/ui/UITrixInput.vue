@@ -1,7 +1,7 @@
 <template>
   <UIFieldset
     :class="wrapperClass"
-    :legend-class="legendClass"
+    :label-class="labelClass"
     :error-class="errorClass"
   >
     <UITrixEditor
@@ -15,8 +15,8 @@
       v-bind="trixEditorAttrs"
     />
 
-    <template #legend>
-      <slot name="legend" />
+    <template #label>
+      <slot name="label" />
     </template>
 
     <template #error v-if="$slots.error">
@@ -27,7 +27,6 @@
 
 <script setup>
 defineOptions({
-  // disable attribute fallthrough to root component
   inheritAttrs: false
 })
 
@@ -49,8 +48,8 @@ const props = defineProps({
     type: [ Array, String ],
     default: () => ""
   },
-  // class for legend
-  legendClass: {
+  // class for label
+  labelClass: {
     type: [Array, String],
     default: ""
   },

@@ -8,13 +8,13 @@
       @change="comparePasswords"
       :id="id"
       :size="size"
-      :legend-class="legendClass"
+      :label-class="labelClass"
       :placeholder="placeholder"
       :autocomplete="autocomplete"
       v-bind="$attrs"
     >
-      <template #legend>
-        <slot name="legend">
+      <template #label>
+        <slot name="label">
           Password
         </slot>
       </template>
@@ -29,13 +29,13 @@
       @change="comparePasswords"
       :id="`${id}_confirm`"
       :size="size"
-      :legend-class="legendClass"
+      :label-class="labelClass"
       :placeholder="confirmPlaceholder"
       :autocomplete="autocomplete"
       v-bind="$attrs"
     >
-      <template #legend>
-        <slot name="confirmLegend">
+      <template #label>
+        <slot name="confirmLabel">
           Confirm Password
         </slot>
       </template>
@@ -51,8 +51,6 @@
 
 <script setup>
 defineOptions({
-  // disable attribute fallthrough to root component
-  //   (they're assigned to the <input> with v-bind="$attrs")
   inheritAttrs: false
 })
 
@@ -77,7 +75,7 @@ const props = defineProps({
     type: [Array, String]
   },
   // class of label.label
-  legendClass: {
+  labelClass: {
     type: [Array, String],
     default: "text-secondary"
   },

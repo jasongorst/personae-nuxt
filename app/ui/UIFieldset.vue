@@ -1,14 +1,15 @@
 <template>
-  <fieldset
+  <div
     :class="fieldsetClass"
     :data-tip="tooltip"
   >
-    <legend
-      v-if="$slots.legend"
-      :class="legendClass"
+    <label
+      v-if="$slots.label"
+      :class="labelClass"
+      for="id"
     >
-      <slot name="legend" />
-    </legend>
+      <slot name="label" />
+    </label>
 
     <slot
       :id="id"
@@ -22,12 +23,11 @@
     >
       <slot name="error" />
     </p>
-  </fieldset>
+  </div>
 </template>
 
 <script setup>
 defineOptions({
-  // disable attribute fallthrough to root component
   inheritAttrs: false
 })
 
@@ -52,8 +52,8 @@ const props = defineProps({
     type: String,
     default: null
   },
-  // class of legend
-  legendClass: {
+  // class of label
+  labelClass: {
     type: [ Array, String ],
     default: () => ""
   },
@@ -68,13 +68,13 @@ const attrs = useAttrs()
 const slotAttrs = computed(() => _omit(attrs, [ "class", "disabled", "id" ]))
 
 const defaultClass = {
-  fieldset: [ "fieldset", "p-0", isPresent(props.tooltip) && "fieldset-tooltip" ],
-  legend: [ "fieldset-legend", "text-secondary", "text-sm", props.disabled && "legend-disabled" ],
+  fieldset: [ "fieldset", "pt-2", "first-of-type:pt-0", "pb-0", isPresent(props.tooltip) && "fieldset-tooltip" ],
+  label: [ "fieldset-legend", "text-secondary", "text-sm", "py-0", props.disabled && "label-disabled" ],
   error: [ "fieldset-label", "text-error", "text-xs" ]
 }
 
 const fieldsetClass = computed(() => twMerge(defaultClass.fieldset, props.class))
-const legendClass = computed(() => twMerge(defaultClass.legend, props.legendClass))
+const labelClass = computed(() => twMerge(defaultClass.label, props.labelClass))
 const errorClass = computed(() => twMerge(defaultClass.error, props.errorClass))
 </script>
 
@@ -86,7 +86,7 @@ const errorClass = computed(() => twMerge(defaultClass.error, props.errorClass))
     @apply tooltip tooltip-info tooltip-bottom tooltip-late;
   }
 
-  .legend-disabled {
+  .label-disabled {
     @apply text-base-content/40 cursor-not-allowed;
   }
 }

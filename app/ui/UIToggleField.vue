@@ -2,10 +2,10 @@
   <input
     v-model="model"
     :id="id"
-    type="checkbox"
-    :class="['toggle', toggleSize[size], { 'cursor-not-allowed': disabled }]"
+    :class="inputClass"
     :disabled="disabled"
-    v-bind="$attrs"
+    type="checkbox"
+    v-bind="inputAttrs"
   />
 </template>
 
@@ -13,7 +13,12 @@
 const model = defineModel()
 
 const props = defineProps({
-  // id of <input>
+  // class of input element
+  class: {
+    type: [ Array, Object, String ],
+    default: () => ""
+  },
+  // id of input element
   id: {
     type: String,
     default: () => uuid()
@@ -23,7 +28,7 @@ const props = defineProps({
     type: String,
     default: "md",
     validator(value) {
-      return ["lg", "md", "sm", "xs"].includes(value)
+      return [ "xl", "lg", "md", "sm", "xs" ].includes(value)
     }
   },
   // disabled
@@ -33,12 +38,19 @@ const props = defineProps({
   }
 })
 
+const attrs = useAttrs()
+const inputAttrs = computed(() => _omit(attrs, [ "class", "disabled", "id", "size" ]))
+
 const toggleSize = {
+  xl: "toggle-xl",
   lg: "toggle-lg",
   md: "toggle-md",
   sm: "toggle-sm",
   xs: "toggle-xs"
 }
+
+const defaultClass = [ "toggle", toggleSize[props.size], props.disabled && "cursor-not-allowed" ]
+const inputClass = computed(() => twMerge(defaultClass, props.class))
 </script>
 
 <style scoped>

@@ -1,7 +1,7 @@
 <template>
   <UIFieldset
     :class="wrapperClass"
-    :legend-class="legendClass"
+    :label-class="labelClass"
     :error-class="errorClass"
   >
     <div
@@ -32,8 +32,8 @@
       </button>
     </div>
 
-    <template v-if="$slots.legend" #legend>
-      <slot name="legend" />
+    <template v-if="$slots.label" #label>
+      <slot name="label" />
     </template>
 
     <template #error v-if="$slots.error">
@@ -44,7 +44,6 @@
 
 <script setup>
 defineOptions({
-  // disable attribute fallthrough to root component
   inheritAttrs: false
 })
 
@@ -79,8 +78,8 @@ const props = defineProps({
     type: [ Array, String ],
     default: () => ""
   },
-  // class for legend
-  legendClass: {
+  // class for label
+  labelClass: {
     type: [ Array, String ],
     default: () => ""
   },

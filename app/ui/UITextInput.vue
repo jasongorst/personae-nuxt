@@ -3,7 +3,7 @@
     :class="wrapperClass"
     :disabled="disabled"
     :tooltip="tooltip"
-    :legend-class="legendClass"
+    :label-class="labelClass"
     :error-class="errorClass"
   >
     <UITextField
@@ -17,8 +17,8 @@
       v-bind="textFieldAttrs"
     />
 
-    <template v-if="$slots.legend" #legend>
-      <slot name="legend" />
+    <template v-if="$slots.label" #label>
+      <slot name="label" />
     </template>
 
     <template v-if="$slots.error" #error>
@@ -29,7 +29,6 @@
 
 <script setup>
 defineOptions({
-  // disable attribute fallthrough to root component
   inheritAttrs: false
 })
 
@@ -82,8 +81,8 @@ const props = defineProps({
     type: String,
     default: null
   },
-  // class for legend
-  legendClass: {
+  // class for label
+  labelClass: {
     type: [ Array, String ],
     default: () => ""
   },
