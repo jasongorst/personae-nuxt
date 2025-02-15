@@ -3,7 +3,7 @@
     <td
       v-for="attribute of listAttributes"
       :key="`${character.id}_${attribute}`"
-      class="p-0!"
+      class="p-0! whitespace-nowrap"
     >
       <NuxtLink
         :to="`/show-${character.id}`"
