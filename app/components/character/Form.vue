@@ -10,7 +10,7 @@
       size="sm"
       :datalist="options?.[attribute]"
     >
-      <template #legend>
+      <template #label>
         {{ _startCase(attribute) }}
       </template>
 
@@ -27,7 +27,7 @@
       v-model="character[attribute]"
       :id="attribute"
     >
-      <template #legend>
+      <template #label>
         {{ _startCase(attribute) }}
       </template>
 
