@@ -7,7 +7,7 @@
         action="edit"
       />
 
-      <div class="card-actions pt-3 flex-row-reverse">
+      <div class="card-actions pt-4 flex-row-reverse">
         <UILoadingButton
           @click="saveAccount"
           :is-loading="savingStatus === 'pending'"

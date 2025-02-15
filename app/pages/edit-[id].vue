@@ -6,7 +6,7 @@
         :field-error="fieldError"
       />
 
-      <div class="card-actions mt-6 flex-row-reverse">
+      <div class="card-actions mt-4 flex-row-reverse">
         <UILoadingButton
           @click="saveCharacter"
           :is-loading="savingStatus === 'pending'"
