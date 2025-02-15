@@ -1,26 +1,28 @@
 <template>
-  <input
-    v-model="model"
-    :id="id"
-    :class="inputClass"
-    :disabled="disabled"
-    :list="isPresent(datalist) ? datalistId : null"
-    :type="type"
-    v-bind="inputAttrs"
-  />
+  <div>
+    <input
+      v-model="model"
+      :id="id"
+      :class="inputClass"
+      :disabled="disabled"
+      :list="isPresent(datalist) ? datalistId : null"
+      :type="type"
+      v-bind="inputAttrs"
+    />
 
-  <datalist
-    v-if="isPresent(datalist)"
-    :id="datalistId"
-  >
-    <option
-      v-for="option in datalist"
-      :key="option"
-      :value="option"
+    <datalist
+      v-if="isPresent(datalist)"
+      :id="datalistId"
     >
-      {{ option }}
-    </option>
-  </datalist>
+      <option
+        v-for="option in datalist"
+        :key="option"
+        :value="option"
+      >
+        {{ option }}
+      </option>
+    </datalist>
+  </div>
 </template>
 
 <script setup>
