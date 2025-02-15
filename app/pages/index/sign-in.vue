@@ -13,9 +13,11 @@
         <div class="card-body gap-2">
           <form
             @submit.prevent="signInWithPassword"
+            class="contents"
           >
             <UITextInput
               v-model="credentials.email"
+              label-class="pt-0"
               id="password_email"
               type="email"
               size="md"
@@ -23,7 +25,7 @@
               autocomplete="email"
               required
             >
-              <template #legend>
+              <template #label>
                 Email Address
               </template>
             </UITextInput>
@@ -35,21 +37,19 @@
               autocomplete="current-password"
               required
             >
-              <template #legend>
+              <template #label>
                 Password
               </template>
             </UIPasswordInput>
 
-            <div class="form-control pt-4">
-              <UILoadingButton
-                type="submit"
-                class="btn btn-block"
-                :is-loading="isLoading"
-                :disabled="!credentials.email || !credentials.password"
-              >
-                Sign In
-              </UILoadingButton>
-            </div>
+            <UILoadingButton
+              type="submit"
+              class="btn btn-block mt-3"
+              :is-loading="isLoading"
+              :disabled="!credentials.email || !credentials.password"
+            >
+              Sign In
+            </UILoadingButton>
           </form>
         </div>
       </HeadlessDialogPanel>
