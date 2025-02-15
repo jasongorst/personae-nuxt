@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
   let response
 
   try {
-    response = await $fetch(
+    response = await event.$fetch(
       "http://localhost:3000/characters", {
         method: "post",
         body: deepConvertKeys(character, snakeCase)

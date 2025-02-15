@@ -3,7 +3,7 @@ export default defineEventHandler(async (event) => {
   let response
 
   try {
-    response = await $fetch(`http://localhost:3000/characters/${id}`, { method: "delete" })
+    response = await event.$fetch(`http://localhost:3000/characters/${id}`, { method: "delete" })
   } catch(error) {
     throw createError({ statusCode: 500, statusMessage: error.message })
   }
