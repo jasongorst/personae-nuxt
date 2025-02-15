@@ -5,7 +5,7 @@
     size="sm"
     type="email"
   >
-    <template #legend>
+    <template #label>
       Email
     </template>
 
@@ -19,7 +19,7 @@
     v-model="account.password"
     size="sm"
   >
-    <template #legend>
+    <template #label>
       {{ action === "edit" ? "New Password" : "Password" }}
     </template>
 
@@ -33,9 +33,8 @@
     v-model="account.status"
     :disabled="isOwnAccount"
     :options="statusValues"
-    disabled-tooltip="Please don't change your own status."
+    :tooltip="isOwnAccount ? 'Please don\'t change your own status.' : null"
     size="sm"
-    wrapper-class="flex flex-col"
   >
     <template #label>
       Status
@@ -50,9 +49,9 @@
     id="admin"
     v-model="account.admin"
     :disabled="isOwnAccount"
-    disabled-tooltip="Please don't remove your own admin flag."
+    :tooltip="isOwnAccount ? 'Please don\'t remove your own admin flag.' : null"
     size="sm"
-    wrapper-class="flex! flex-row gap-3 pt-3 items-center"
+    wrapper-class="flex flex-row gap-2 items-center pt-4"
   >
     <template #label>
       Admin?
