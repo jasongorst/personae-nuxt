@@ -1,7 +1,15 @@
 <template>
   <NuxtPage />
 
-  <template v-if="isPositive(personae.filteredCount)">
+  <template v-if="status === 'pending'">
+    <div class="hero min-h-[calc(100vh-5rem)] lg:min-h-[calc(100vh-5.5rem)]">
+      <div class="hero-content text-center">
+        <span class="loading loading-dots loading-lg"></span>
+      </div>
+    </div>
+  </template>
+
+  <template v-else-if="isPositive(personae.filteredCount)">
     <CharacterGrid />
 
     <CharacterToolbar />
@@ -43,7 +51,7 @@ const { characters, query } = storeToRefs(personae)
 const showSignInModal = useState("showSignInModal")
 callOnce(() => showSignInModal.value = true)
 
-const { data, refresh: loadCharacters } = await useApi(
+const { data, status, refresh: loadCharacters } = await useApi(
   "/characters", {
     manual: true,
     query: { q: query },
