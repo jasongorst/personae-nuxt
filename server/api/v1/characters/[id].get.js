@@ -1,9 +1,14 @@
 export default defineEventHandler(async (event) => {
+  const config = useRuntimeConfig(event)
   const id = getRouterParam(event, 'id')
   let character
 
   try {
-    character = await $fetch(`http://localhost:3000/characters/${id}`)
+    character = await event.$fetch(
+      `/characters/${id}`, {
+        baseURL: config.public.api.baseURL
+      }
+    )
   } catch(error) {
     throw createError({ statusCode: 500, statusMessage: error.message })
   }

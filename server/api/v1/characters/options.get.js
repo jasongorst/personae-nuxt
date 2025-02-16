@@ -1,8 +1,13 @@
-export default defineEventHandler(async () => {
+export default defineEventHandler(async (event) => {
+  const config = useRuntimeConfig(event)
   let options
 
   try {
-    options = await $fetch("http://localhost:3000/characters/options")
+    options = await event.$fetch(
+      "/characters/options", {
+        baseURL: config.public.api.baseURL
+      }
+    )
   } catch(error) {
     throw createError({ statusCode: 500, statusMessage: error.message })
   }
