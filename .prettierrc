@@ -1,4 +1,0 @@
-{
-  "tailwindStylesheet": "./app/css/main.css",
-  "tailwindFunctions": [ "twJoin", "twMerge" ]
-}
