@@ -149,6 +149,32 @@ function emitTrixAttachmentRemove(file) {
 
 @reference "~/assets/css/main.css";
 
+@utility btn-active {
+  --btn-bg: color-mix(in oklab, var(--btn-color, var(--color-base-200)), #000 7%);
+  --btn-shadow: 0 0 0 0 oklch(0% 0 0/0), 0 0 0 0 oklch(0% 0 0/0);
+  isolation: isolate;
+}
+
+@utility btn-disabled {
+  &:not(.btn-link, .btn-ghost) {
+    @apply bg-base-content/10;
+    box-shadow: none;
+  }
+
+  @apply pointer-events-none;
+  --btn-border: #0000;
+  --btn-noise: none;
+  --btn-fg: color-mix(in oklch, var(--color-base-content) 20%, #0000);
+
+  @media (hover: hover) {
+    &:hover {
+      @apply bg-neutral/20 pointer-events-none;
+      --btn-border: #0000;
+      --btn-fg: color-mix(in oklch, var(--color-base-content) 20%, #0000);
+    }
+  }
+}
+
 trix-toolbar {
   .trix-button-group {
     @apply join border-none!;
@@ -158,32 +184,15 @@ trix-toolbar {
     @apply btn btn-sm btn-secondary border-none! first:rounded-l-sm last:rounded-r-sm;
 
     &.trix-active {
-      --btn-bg: color-mix(in oklab, var(--btn-color, var(--color-base-200)), #000 7%);
-      --btn-shadow: 0 0 0 0 oklch(0% 0 0/0), 0 0 0 0 oklch(0% 0 0/0);
-      isolation: isolate;
+      @apply btn-active;
     }
 
-    &:disabled {
+    &:is(:disabled, [disabled]) {
+      @apply btn-disabled;
       @apply bg-base-100 border-base-100 outline-base-100;
 
       &::before {
         @apply bg-base-content;
-      }
-
-      &:not(.btn-link, .btn-ghost) {
-        @apply bg-base-content/10;
-        box-shadow: none;
-      }
-
-      @apply pointer-events-none;
-      --btn-border: #0000;
-      --btn-noise: none;
-      --btn-fg: color-mix(in oklch, var(--color-base-content) 20%, #0000);
-
-      &:hover {
-        @apply bg-neutral/20 pointer-events-none;
-        --btn-border: #0000;
-        --btn-fg: color-mix(in oklch, var(--color-base-content) 20%, #0000);
       }
     }
   }
