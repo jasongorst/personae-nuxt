@@ -5,11 +5,11 @@
       class="bg-base-100 rounded-btn text-base-content block w-full cursor-pointer font-sans"
     >
       <span class="grid grid-cols-5 grid-rows-3">
-        <span class="col-span-5 row-span-3 row-start-1 flex items-center gap-2 px-4 py-3">
+        <span class="col-span-5 row-span-3 row-start-1 flex items-center pl-2 pr-4 py-3 gap-1">
           <Icon
-            name="fa6-solid:check"
-            class="h-3 w-3 shrink-0"
-            :class="{ invisible: !isActive }"
+            name="ph:check-bold"
+            size="1rem"
+            :class="[ 'shrink-0', !isActive && 'invisible' ]"
           />
 
           <span class="flex-grow text-sm">

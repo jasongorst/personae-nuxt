@@ -22,14 +22,14 @@
           ></span>
 
           <span class="inline-grid w-4 h-4 place-content-center swap-on">
-            <Icon name="fa6-solid:xmark" />
+            <Icon name="ph:x-bold" />
           </span>
         </span>
 
         <!-- dismissable && dismissedIn == 0 -->
         <Icon
           v-else
-          name="fa6-solid:xmark"
+          name="ph:x-bold"
         />
       </button>
     </template>
@@ -102,10 +102,10 @@ const iconColor = {
 }
 
 const iconName = {
-  error: "fa6-solid:triangle-exclamation",
-  warning: "fa6-solid:circle-exclamation",
-  success: "fa6-solid:circle-check",
-  info: "fa6-solid:circle-info"
+  error: "ph:warning-fill",
+  warning: "ph:warning-circle-fill",
+  success: "ph:check-circle-fill",
+  info: "ph:info-fill"
 }
 
 const ticks = ref(props.dismissedIn)

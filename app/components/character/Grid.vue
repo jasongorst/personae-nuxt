@@ -6,20 +6,21 @@
         v-for="attribute of listAttributes"
         :key="attribute"
         :data-tip="attributeTooltip(attribute)"
-        class="text-secondary select-none font-light table-cell text-center tooltip tooltip-bottom tooltip-primary tooltip-late tooltip-bottom-near hover:text-primary"
+        class="text-secondary select-none font-light table-cell tooltip tooltip-bottom tooltip-primary tooltip-late tooltip-bottom-close hover:text-primary"
         @click="updateSort(attribute)"
       >
-        <span class="uppercase font-bold">
-          {{ _startCase(attribute) }}
-        </span>
+        <div class="uppercase font-bold flex flex-row gap-0.25 items-center">
+          <div>{{ _startCase(attribute) }}</div>
 
-        <span class="inline-block w-0 overflow-x-visible text-accent">
-          <Icon
-            v-if="sort.attribute === attribute"
-            :name="sort.direction === 'asc' ? 'fa6-solid:arrow-down-a-z' : 'fa6-solid:arrow-down-z-a'"
-            class="w-[1.25em] h-[1em] -mt-[0.1667em]"
-          />
-        </span>
+          <div class="w-0 overflow-x-visible">
+            <Icon
+              v-if="sort.attribute === attribute"
+              :name="sort.direction === 'asc' ? 'ph:sort-ascending-bold' : 'ph:sort-descending-bold'"
+              size="1.125rem"
+              class="block! text-accent"
+            />
+          </div>
+        </div>
       </th>
     </tr>
     </thead>

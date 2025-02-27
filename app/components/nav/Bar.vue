@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar bg-primary text-primary-content">
+  <div class="navbar bg-primary text-primary-content gap-4">
     <div class="md:hidden">
       <details
         id="hamburger-menu-dropdown"
@@ -7,26 +7,22 @@
         class="dropdown"
       >
         <summary class="btn btn-primary normal-case">
-          <Icon name="fa6-solid:bars" />
+          <Icon
+            name="ph:list-bold"
+            size="1.125rem"
+          />
         </summary>
 
-        <ul class="dropdown-content menu gap-1 w-52 shadow bg-primary z-10 whitespace-nowrap">
+        <ul
+          class="dropdown-content menu gap-1 w-52 shadow bg-primary z-10 whitespace-nowrap"
+        >
           <li>
-            <NuxtLink to="/">
-              Home
-            </NuxtLink>
+            <NuxtLink to="/"> Home </NuxtLink>
           </li>
 
           <li v-if="currentRoute === '/'">
-            <button
-              type="button"
-              @click="showFilter = true"
-            >
-              <label
-                class="drawer-button"
-              >
-                Filter
-              </label>
+            <button type="button" @click="showFilter = true">
+              Filter
             </button>
           </li>
 
@@ -42,12 +38,17 @@
 
           <li>
             <a
+              class="flex flex-row gap-1"
               href="https://rae.evilpaws.org/"
               rel="nofollow"
               @click="confirm('Ready to leave?', $event)"
             >
               rae.evilpaws.org
-              <Icon name="fa-solid:external-link-alt" />
+
+              <Icon
+                name="ph:arrow-square-out-bold"
+                size="1.25rem"
+              />
             </a>
           </li>
         </ul>
@@ -55,62 +56,50 @@
     </div>
 
     <div class="btn btn-primary normal-case text-lg">
-      <NuxtLink
-        to="/"
-        class="whitespace-nowrap"
-      >
-        <Icon name="fa6-solid:masks-theater" />
-<!--        Dramatis Personae-->
+      <NuxtLink to="/" class="whitespace-nowrap">
+        <Icon name="personae" />
+        <!--        Dramatis Personae-->
         Personae/DaisyUI 5
       </NuxtLink>
     </div>
 
-    <div class="hidden md:flex">
+    <div class="hidden md:flex grow gap-2">
+      <NavSearch
+        v-if="currentRoute === '/'"
+        id="navbar_search"
+        size="md"
+        wrapper-class="grow"
+      />
+
       <button
         v-if="currentRoute === '/'"
         type="button"
+        class="btn btn-primary normal-case"
+        @click="showFilter = !showFilter"
       >
-        <label
-          class="drawer-button btn btn-primary normal-case"
-          @click="showFilterSidebar"
-        >
-          <span id="filter_icon" class="inline-grid swap">
-            <Icon
-              class="swap-off"
-              name="fa6-solid:arrow-right-to-bracket"
-            />
+        <Icon
+          name="ph:funnel-simple-bold"
+          size="1.25rem"
+        />
 
-            <Icon
-              class="swap-on rotate-180"
-              name="fa6-solid:arrow-right-to-bracket"
-            />
-          </span><!--
-
-       -->Filter
-        </label>
+        Filter
       </button>
     </div>
 
-    <div class="flex grow justify-end">
-      <div class="hidden md:flex md:pr-4">
-        <NavSearch
-          v-if="currentRoute === '/'"
-          id="navbar_search"
-          size="md"
-        />
-      </div>
-
+    <div class="flex justify-end">
       <div class="hidden md:flex">
         <a
           href="https://rae.evilpaws.org/"
           rel="nofollow"
-          class="btn btn-primary normal-case"
+          class="btn btn-primary normal-case flex-row gap-1"
           @click="confirm('Ready to leave?', $event)"
         >
-          <span class="md:hidden lg:inline">
-            rae.evilpaws.org
-          </span>
-          <Icon name="fa-solid:external-link-alt" />
+          <div class="hidden lg:block">rae.evilpaws.org</div>
+
+          <Icon
+            name="ph:arrow-square-out-bold"
+            size="1.25rem"
+          />
         </a>
       </div>
 
@@ -120,17 +109,15 @@
 </template>
 
 <script setup>
-const showFilter = useState("show-filter")
-const route = useRoute()
-const currentRoute = computed(() => route.path)
-const hamburgerMenuRef = ref(null)
+const showFilter = useState("show-filter");
+const route = useRoute();
+const currentRoute = computed(() => route.path);
+const hamburgerMenuRef = ref(null);
 
 async function showFilterSidebar() {
-  hamburgerMenuRef.value.open = false
-  showFilter.value = true
+  hamburgerMenuRef.value.open = false;
+  showFilter.value = true;
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

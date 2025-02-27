@@ -8,20 +8,21 @@
           v-for="attribute of accountAttributes"
           :key="attribute"
           :data-tip="attributeTooltip(attribute)"
-          class="text-secondary select-none tooltip tooltip-bottom tooltip-bottom-near tooltip-late tooltip-primary font-light hover:text-primary table-cell"
+          class="text-secondary select-none font-light table-cell tooltip tooltip-bottom tooltip-primary tooltip-late tooltip-bottom-close hover:text-primary"
           @click="updateSort(attribute)"
         >
-          <span class="uppercase font-bold">
-            {{ _startCase(attribute) }}
-          </span>
+          <div class="uppercase font-bold flex flex-row gap-0.25 items-center">
+            <div>{{ _startCase(attribute) }}</div>
 
-          <span class="inline-block w-0 overflow-x-visible text-accent">
-            <Icon
-              v-if="sort.attribute === attribute"
-              :name="sort.sortDirection === 'asc' ? 'fa6-solid:arrow-down-a-z' : 'fa6-solid:arrow-down-z-a'"
-              class="w-[1.25em] h-[1em] -mt-[0.1667em]"
-            />
-          </span>
+            <div class="w-0 overflow-x-visible">
+              <Icon
+                v-if="sort.attribute === attribute"
+                :name="sort.direction === 'asc' ? 'ph:sort-ascending-bold' : 'ph:sort-descending-bold'"
+                size="1.125rem"
+                class="block! text-accent"
+              />
+            </div>
+          </div>
         </th>
       </tr>
       </thead>
@@ -66,7 +67,11 @@
         class="justify-self-end btn btn-xs btn-secondary uppercase"
       >
         Add
-        <Icon name="fa6-solid:plus" />
+
+        <Icon
+          name="ph:plus-bold"
+          size="0.85rem"
+        />
       </NuxtLink>
     </div>
   </div>
@@ -80,27 +85,27 @@ const accountAttributes = [ "id", "email", "status", "admin" ]
 
 const sort = ref({
   attribute: "id",
-  sortDirection: "asc",
+  direction: "asc"
 })
 
 function updateSort(attribute) {
   if (sort.value.attribute === attribute) {
-    if (sort.value.sortDirection === "asc") {
-      sort.value.sortDirection = "desc"
+    if (sort.value.direction === "asc") {
+      sort.value.direction = "desc"
     } else {
       sort.value.attribute = "id"
-      sort.value.sortDirection = "asc"
+      sort.value.direction = "asc"
     }
   } else {
     sort.value.attribute = attribute
-    sort.value.sortDirection = "asc"
+    sort.value.direction = "asc"
   }
 
   sortAccounts()
 }
 
 function sortAccounts() {
-  if (sort.value.sortDirection === "asc") {
+  if (sort.value.direction === "asc") {
     accounts.value.sort(compareAsc(sort.value.attribute))
   } else {
     accounts.value.sort(compareDesc(sort.value.attribute))
@@ -109,7 +114,7 @@ function sortAccounts() {
 
 function attributeTooltip(attribute) {
   if (sort.value.attribute === attribute) {
-    if (sort.value.sortDirection === "asc") {
+    if (sort.value.direction === "asc") {
       return "Click to reverse sort order."
     } else {
       return "Click for default order."

@@ -16,7 +16,10 @@
       tabindex="-1"
       type="button"
     >
-      <Icon name="fa6-solid:magnifying-glass" />
+      <Icon
+        name="ph:magnifying-glass-bold"
+        size="1rem"
+      />
     </button>
   </div>
 </template>

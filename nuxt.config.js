@@ -39,12 +39,10 @@ export default defineNuxtConfig({
   future: { compatibilityVersion: 4 },
 
   imports: {
-    presets: [
-      {
-        from: "tailwind-merge",
-        imports: [ "twJoin", "twMerge" ]
-      }
-    ]
+    presets: [ {
+      from: "tailwind-merge",
+      imports: [ "twJoin", "twMerge" ]
+    } ]
   },
 
   modules: [
@@ -70,7 +68,7 @@ export default defineNuxtConfig({
     vue: {
       template: {
         compilerOptions: {
-          isCustomElement: (tag) => (tag.startsWith("trix-") || tag.startsWith("action-text-"))
+          isCustomElement: (tag) => tag.startsWith("trix-") || tag.startsWith("action-text-")
         }
       }
     }
@@ -90,9 +88,8 @@ export default defineNuxtConfig({
     originEnvKey: "NUXT_AUTH_BASE_URL",
 
     provider: {
-      type: "local", pages: {
-        login: "/"
-      },
+      type: "local",
+      pages: { login: "/" },
 
       endpoints: {
         signUp: false,
@@ -123,6 +120,37 @@ export default defineNuxtConfig({
         }
       }
     }
+  },
+
+  icon: {
+    // defaults
+    size: "1em",
+    class: "inline",
+    mode: "svg",
+
+    aliases: {
+      personae: "fa6-solid:masks-theater"
+    },
+
+    clientBundle: {
+      // list of icons to include in the client bundle
+      icons: [],
+
+      // scan all components in the project and include icons
+      scan: true,
+
+      // include all custom collections in the client bundle
+      includeCustomCollections: true,
+
+      // guard for uncompressed bundle size, will fail the build if exceeds
+      sizeLimitKb: 256
+    },
+
+    customCollections: [ {
+      prefix: "jg",
+      dir: "./assets/icons",
+      normalizeIconName: false
+    } ]
   },
 
   lodash: {

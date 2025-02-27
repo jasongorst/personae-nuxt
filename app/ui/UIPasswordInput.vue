@@ -27,7 +27,7 @@
       >
         <Icon
           :name="icon"
-          class="w-5!"
+          size="1.25rem"
         />
       </button>
     </div>
@@ -123,9 +123,9 @@ const inputClass = computed(() => twMerge(defaultClass, props.class))
 
 const icon = computed(() => {
   if (isVisible.value) {
-    return "fa6-regular:eye-slash"
+    return "ph:eye-slash-bold"
   } else {
-    return "fa6-regular:eye"
+    return "ph:eye-bold"
   }
 })
 

@@ -5,13 +5,8 @@
   >
     <summary class="btn btn-primary">
       <Icon
-        v-if="isLoggedIn"
-        name="fa6-solid:circle-user"
-      />
-
-      <Icon
-        v-else
-        name="fa6-regular:circle-user"
+        :name="isLoggedIn ? 'ph:user-circle-fill' : 'ph:user-circle-light'"
+        size="1.25rem"
       />
     </summary>
 
