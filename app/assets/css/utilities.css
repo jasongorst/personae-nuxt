@@ -1,0 +1,18 @@
+@utility tooltip-delay-* {
+  &:hover {
+    /*noinspection CssInvalidPropertyValue,IncorrectFormatting*/
+    @media (hover: hover) {
+      &::before, &::after {
+        transition-delay: --value(integer)ms !important;
+      }
+    }
+  }
+}
+
+@utility tooltip-late {
+  @apply tooltip-delay-500;
+}
+
+@utility tooltip-bottom-close {
+  @apply before:-translate-y-2.5 after:-translate-y-2.5;
+}

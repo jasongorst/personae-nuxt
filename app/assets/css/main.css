@@ -2,47 +2,7 @@
 @plugin "@tailwindcss/typography";
 
 @plugin "daisyui" {
-  themes:
-    /* light themes */
-    light,
-    bumblebee,
-    emerald,
-    fantasy --default,
-    cmyk,
-    winter,
-    corporate,
-    wireframe,
-    lofi,
-
-    /* colored themes */
-    pastel,
-    acid,
-    silk,
-    cupcake,
-    autumn,
-    garden,
-    nord,
-    lemonade,
-    caramellatte,
-    retro,
-    valentine,
-    cyberpunk,
-    aqua,
-    synthwave,
-    coffee,
-
-    /* dark themes */
-    dim,
-    sunset,
-    abyss,
-    night,
-    dracula,
-    dark,
-    halloween,
-    business --prefersdark,
-    forest,
-    luxury,
-    black
+  themes: ebee, emerald, fantasy --default, cmyk, winter, corporate, wireframe, lofi, pastel, light, bumbl acid, silk, cupcake, autumn, garden, nord, lemonade, caramellatte, retro, valentine, cyberpunk, aqua, synthwave, coffee, dim, sunset, abyss, night, dracula, dark, halloween, business --prefersdark, forest, luxury, black;
 }
 
 /*
@@ -53,8 +13,6 @@
   If we ever want to remove these styles, we need to add an explicit border
   color utility to any element that depends on these defaults.
 */
-
-/*
 @layer base {
   *,
   ::after,
@@ -64,55 +22,8 @@
     border-color: var(--color-gray-200, currentColor);
   }
 }
-*/
 
-@utility tooltip-late {
-  @apply hover:before:delay-500! hover:after:delay-500!;
-}
-
-@utility tooltip-bottom-near {
-  @apply before:-translate-y-2.5 after:-translate-y-2.5;
-}
-
-@layer components {
-
-  .trix-content {
-    & a[href] {
-      @apply link link-secondary;
-    }
-
-    & pre {
-      @apply bg-base-200 text-base-content;
-    }
-
-    .attachment__caption {
-      @apply text-base-content/60;
-    }
-
-    .attachment--preview {
-      .attachment__caption {
-        @apply text-base-content/60;
-      }
-    }
-
-    .attachment--file {
-      @apply text-base-content/40 border border-base-content/40;
-    }
-
-    .attachment-gallery {
-      > action-text-attachment,
-      > .attachment {
-        @apply py-0 px-2 max-w-[33%];
-        flex: 1 0 33%;
-      }
-
-      &.attachment-gallery--2,
-      &.attachment-gallery--4 {
-        > action-text-attachment,
-        > .attachment {
-          @apply basis-1/2 max-w-[50%];
-        }
-      }
-    }
-  }
-}
+@import "./base.css";
+@import "./utilities.css";
+@import "./components.css";
+@source "./safelist.txt";
