@@ -76,7 +76,7 @@ const { data, status, refresh: loadCharacters } = await useApi(
 watch(
   query,
   async () => {
-    personae.resetFilter()
+    personae.clearFilter()
     await loadCharacters()
 
     if (!_isUndefined(data.value)) {
