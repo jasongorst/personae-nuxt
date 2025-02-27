@@ -143,8 +143,10 @@ function emitTrixAttachmentRemove(file) {
 }
 </script>
 
+<!--suppress CssUnknownTarget -->
 <style>
 @import "trix/dist/trix.css";
+
 @reference "~/assets/css/main.css";
 
 trix-toolbar {
@@ -153,7 +155,7 @@ trix-toolbar {
   }
 
   .trix-button {
-    @apply btn btn-sm btn-secondary border-none! py-0 px-3 first:rounded-l-sm last:rounded-r-sm;
+    @apply btn btn-sm btn-secondary border-none! first:rounded-l-sm last:rounded-r-sm;
 
     &.trix-active {
       --btn-bg: color-mix(in oklab, var(--btn-color, var(--color-base-200)), #000 7%);
@@ -195,63 +197,64 @@ trix-toolbar {
 
     &::before {
       @apply bg-none! bg-secondary-content;
+      mask: center / 75% no-repeat;
     }
   }
 
   .trix-button--icon-attach::before {
-    mask: url("~/assets/images/attach.svg") center no-repeat;
+    mask-image: url("~/assets/images/link-bold.svg");
   }
 
   .trix-button--icon-bold::before {
-    mask: url("~/assets/images/bold.svg") center no-repeat;
+    mask-image: url("~/assets/images/text-b-bold.svg");
   }
 
   .trix-button--icon-italic::before {
-    mask: url("~/assets/images/italic.svg") center no-repeat;
+    mask-image: url("~/assets/images/text-italic-bold.svg");
   }
 
   .trix-button--icon-link::before {
-    mask: url("~/assets/images/link.svg") center no-repeat;
+    mask-image: url("~/assets/images/link-bold.svg");
   }
 
   .trix-button--icon-strike::before {
-    mask: url("~/assets/images/strike.svg") center no-repeat;
+    mask-image: url("~/assets/images/text-strikethrough-bold.svg");
   }
 
   .trix-button--icon-quote::before {
-    mask: url("~/assets/images/quote.svg") center no-repeat;
+    mask-image: url("~/assets/images/quotes-bold.svg");
   }
 
   .trix-button--icon-heading-1::before {
-    mask: url("~/assets/images/heading_1.svg") center no-repeat;
+    mask-image: url("~/assets/images/text-h-bold.svg");
   }
 
   .trix-button--icon-code::before {
-    mask: url("~/assets/images/code.svg") center no-repeat;
+    mask-image: url("~/assets/images/code-bold.svg");
   }
 
   .trix-button--icon-bullet-list::before {
-    mask: url("~/assets/images/bullets.svg") center no-repeat;
+    mask-image: url("~/assets/images/list-bullets-bold.svg");
   }
 
   .trix-button--icon-number-list::before {
-    mask: url("~/assets/images/numbers.svg") center no-repeat;
+    mask-image: url("~/assets/images/list-numbers-bold.svg");
   }
 
   .trix-button--icon-undo::before {
-    mask: url("~/assets/images/undo.svg") center no-repeat;
+    mask-image: url("~/assets/images/arrow-counter-clockwise-bold.svg");
   }
 
   .trix-button--icon-redo::before {
-    mask: url("~/assets/images/redo.svg") center no-repeat;
+    mask-image: url("~/assets/images/arrow-clockwise-bold.svg");
   }
 
   .trix-button--icon-decrease-nesting-level::before {
-    mask: url("~/assets/images/nesting_level_decrease.svg") center no-repeat;
+    mask-image: url("~/assets/images/text-outdent-bold.svg");
   }
 
   .trix-button--icon-increase-nesting-level::before {
-    mask: url("~/assets/images/nesting_level_increase.svg") center no-repeat;
+    mask-image: url("~/assets/images/text-indent-bold.svg");
   }
 
   .trix-dialog {
