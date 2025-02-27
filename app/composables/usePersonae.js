@@ -26,8 +26,20 @@ export const usePersonae = defineStore("personae", () => {
   const isLoaded = computed(() => isPositive(totalCount.value))
 
   // actions
-  function resetFilter() {
+  function addFilter(attribute, attributeValue) {
+    filter.value[attribute] = _union(filter.value[attribute], [ attributeValue ])
+  }
+
+  function clearFilter() {
     filter.value = getBlankFilter()
+  }
+
+  function clearFilterAttribute(attribute) {
+    filter.value[attribute] = []
+  }
+
+  function removeFilter(attribute, attributeValue) {
+    filter.value[attribute] = _without(filter.value[attribute], attributeValue)
   }
 
   function sortCharacters(attribute, direction = "asc") {
@@ -73,7 +85,10 @@ export const usePersonae = defineStore("personae", () => {
     isFilterSet,
     totalCount,
     isLoaded,
-    resetFilter,
+    addFilter,
+    clearFilter,
+    clearFilterAttribute,
+    removeFilter,
     sortCharacters
   }
 })
