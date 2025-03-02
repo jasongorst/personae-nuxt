@@ -54,7 +54,7 @@ export default defineNuxtConfig({
   ],
 
   runtimeConfig: {
-    // placeholders, overridden by env vars
+    // placeholders to be overridden by env vars
     auth: { baseUrl: "" },
     public: {
       useApi: { baseURL: "" },
