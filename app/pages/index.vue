@@ -2,14 +2,10 @@
   <NuxtPage />
 
   <template v-if="status === 'pending'">
-    <div class="hero min-h-[calc(100vh-5rem)] lg:min-h-[calc(100vh-5.5rem)]">
-      <div class="hero-content text-center">
-        <span class="loading loading-dots loading-lg"></span>
-      </div>
-    </div>
+    <CharacterSkeleton />
   </template>
 
-  <template v-else-if="isPositive(personae.filteredCount)">
+  <template v-else-if="isPositive(filteredCount)">
     <CharacterGrid />
 
     <CharacterToolbar />
@@ -17,28 +13,7 @@
 
   <template v-else>
     <ClientOnly>
-      <div class="hero h-[calc((100vh-7rem)*2/3)] lg:h-[calc((100vh-7rem)*2/3)] mx-auto md:w-11/12 lg:w-5/6">
-        <div class="hero-content bg-base-300 text-center py-6 px-8 md:py-8 md:px-12 text-3xl lg:text-4xl">
-          <template v-if="isPresent(query)">
-            <span v-if="personae.isFilterSet">
-<!--          query set, filter set -->
-              Sorry, none of the search results match the filter.
-            </span>
-
-            <span v-else>
-<!--          query set, no filter -->
-              Sorry, no characters match <em>{{ query }}</em>.
-            </span>
-          </template>
-
-          <template v-else>
-            <span v-if="personae.isFilterSet">
-<!--          no query, filter set -->
-              Sorry, no characters match the filter.
-            </span>
-          </template>
-        </div>
-      </div>
+      <CharacterEmpty />
     </ClientOnly>
   </template>
 </template>
@@ -46,7 +21,8 @@
 <script setup>
 const alert = useAlert()
 const personae = usePersonae()
-const { characters, query } = storeToRefs(personae)
+const { characters, filteredCount, isFilterSet, query } = storeToRefs(personae)
+const { clearFilter } = usePersonae()
 
 const showSignInModal = useState("showSignInModal")
 callOnce(() => showSignInModal.value = true)
@@ -76,7 +52,7 @@ const { data, status, refresh: loadCharacters } = await useApi(
 watch(
   query,
   async () => {
-    personae.clearFilter()
+    clearFilter()
     await loadCharacters()
 
     if (!_isUndefined(data.value)) {
