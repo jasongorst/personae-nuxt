@@ -64,26 +64,26 @@
     </div>
 
     <div class="hidden md:flex grow gap-2">
-      <NavSearch
-        v-if="currentRoute === '/'"
-        id="navbar_search"
-        size="md"
-        wrapper-class="grow"
-      />
-
-      <button
-        v-if="currentRoute === '/'"
-        type="button"
-        class="btn btn-primary normal-case"
-        @click="showFilter = !showFilter"
-      >
-        <Icon
-          name="ph:funnel-simple-bold"
-          size="1.25rem"
+      <template v-if="currentRoute === '/' || currentRoute === '/sign-in'">
+        <NavSearch
+          id="navbar_search"
+          size="md"
+          wrapper-class="grow"
         />
 
-        Filter
-      </button>
+        <button
+          type="button"
+          class="btn btn-primary normal-case"
+          @click="showFilter = !showFilter"
+        >
+          <Icon
+            name="ph:funnel-simple-bold"
+            size="1.25rem"
+          />
+
+          Filter
+        </button>
+      </template>
     </div>
 
     <div class="flex justify-end">
@@ -109,14 +109,14 @@
 </template>
 
 <script setup>
-const showFilter = useState("show-filter");
-const route = useRoute();
-const currentRoute = computed(() => route.path);
-const hamburgerMenuRef = ref(null);
+const showFilter = useState("show-filter")
+const route = useRoute()
+const currentRoute = computed(() => route.path)
+const hamburgerMenuRef = ref(null)
 
 async function showFilterSidebar() {
-  hamburgerMenuRef.value.open = false;
-  showFilter.value = true;
+  hamburgerMenuRef.value.open = false
+  showFilter.value = true
 }
 </script>
 
