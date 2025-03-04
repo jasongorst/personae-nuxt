@@ -10,7 +10,7 @@
       </thead>
 
       <tbody>
-      <template v-for="_row in _range(0, 99)">
+      <template v-for="_row in 100">
         <tr class="odd:bg-base-100">
           <td class="px-3 py-2 xl:px-4 xl:py-3">
             &nbsp;
