@@ -6,6 +6,8 @@
   </template>
 
   <template v-else-if="isPositive(filteredCount)">
+    <CharacterSummary />
+
     <CharacterGrid />
 
     <CharacterToolbar />
