@@ -52,7 +52,7 @@ const { data, token } = useAuth()
 const fieldError = ref(null)
 const fieldErrorAlertId = ref(null)
 
-const accountAttributes = ["email", "password", "status", "admin"]
+const accountAttributes = [ "email", "password", "status", "admin" ]
 
 const accountBody = computed(() => ({
   account: _pick(

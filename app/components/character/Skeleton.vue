@@ -1,5 +1,8 @@
 <template>
-  <div class="skeleton w-full mb-4 max-h-[calc(100vh-8.5rem)] overflow-y-hidden">
+  <div
+    class="skeleton w-full mb-4 max-h-[calc(100vh-8.5rem)] overflow-y-hidden"
+    data-testid="skeleton"
+  >
     <table class="w-full table table-md">
       <thead>
       <tr>
@@ -10,6 +13,7 @@
       </thead>
 
       <tbody>
+      <!--suppress JSUnusedLocalSymbols -->
       <template v-for="_row in 100">
         <tr class="odd:bg-base-100">
           <td class="px-3 py-2 xl:px-4 xl:py-3">

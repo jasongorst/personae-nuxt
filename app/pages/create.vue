@@ -1,5 +1,8 @@
 <template>
-  <div class="card bg-base-300 shadow-xl mx-auto max-w-prose">
+  <div
+    class="card bg-base-300 shadow-xl mx-auto max-w-prose"
+    data-testid="create"
+  >
     <div class="card-body">
       <CharacterForm
         v-model="character"
