@@ -6,7 +6,7 @@ export default function deepParseTimestamps(object) {
       if (["createdAt", "updatedAt"].includes(key)) {
         return Date.parse(value)
       } else {
-        return value
+        return deepParseTimestamps(value)
       }
     })
   } else {
