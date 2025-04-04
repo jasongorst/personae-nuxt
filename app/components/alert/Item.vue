@@ -1,19 +1,23 @@
 <template>
   <div
-    class="alert relative border-2 text-start justify-items-start pr-8 hover:swap-active
-      grid grid-flow-col grid-cols-[1rem,_auto] gap-8"
-    :class="[{ 'alert-animate': dismissable, 'cursor-pointer': dismissable }, borderColor[severity]]"
+    class="alert relative border-2 text-start justify-items-start pr-8
+      grid grid-flow-col grid-cols-[1rem,_auto] gap-8
+      hover:swap-active"
+    :class="[ borderColor[severity], (dismissable && 'alert-animate cursor-pointer') ]"
     @click="dismiss"
+    data-testid="wrapper"
   >
     <template v-if="dismissable">
       <button
         class="absolute right-1 top-1 btn btn-square btn-xs btn-ghost"
         type="button"
+        data-testid="button"
       >
         <!-- dismissable && dismissedIn > 0 -->
         <span
           v-if="isPositive(dismissedIn)"
           class="swap"
+          data-testid="swap"
         >
           <span
             class="swap-off radial-progress"
@@ -26,36 +30,50 @@
           </span>
         </span>
 
-        <!-- dismissable && dismissedIn == 0 -->
+        <!-- dismissable && dismissedIn <= 0 -->
         <Icon
           v-else
           name="ph:x-bold"
+          data-testid="close-icon"
         />
       </button>
     </template>
 
     <template v-else>
-      <div class="absolute right-1 top-1 h-6 w-6 p-0 flex justify-center items-center text-xs leading-none">
+      <div
+        class="absolute right-1 top-1 h-6 w-6 p-0 flex justify-center items-center
+          text-xs leading-none"
+      >
         <!-- !dismissable && dismissedIn > 0 -->
         <div
           v-if="isPositive(dismissedIn)"
           class="radial-progress"
           :style="progressStyle"
           role="progressbar"
+          data-testid="progressbar"
         ></div>
 
         <!-- !dismissable && dismissedIn == 0 (this shouldn't happen) -->
-        <template v-else>
+        <div
+          v-else
+          class="bg-error text-error-content"
+        >
           This alert is here forever. Sorry.
-        </template>
+        </div>
       </div>
     </template>
 
-    <div :class="iconColor[severity]">
+    <div
+      :class="iconColor[severity]"
+      data-testid="icon-wrapper"
+    >
       <Icon :name="iconName[severity]" />
     </div>
 
-    <div class="-indent-4">
+    <div
+      class="-indent-4"
+      data-testid="slot"
+    >
       <slot></slot>
     </div>
   </div>
@@ -71,12 +89,17 @@ const props = defineProps({
 
   dismissable: {
     type: Boolean,
-    default: true
+    default: true,
+    // ensure dismissable if dismissedIn is zero
+    validator: (value, props) => (value || _isNil(props.dismissedIn) || isPositive(props.dismissedIn))
   },
 
   dismissedIn: {
     type: Number,
-    default: 0
+    // 0 if dismissable, 4000 otherwise
+    default: (rawProps) => (_isNil(rawProps.dismissable) || rawProps.dismissable) ? 0 : 4000,
+    // ensure dismissedIn > 0 unless dismissable
+    validator: (value, props) => (props.dismissable || _isNil(value) || isPositive(value))
   },
 
   dismissOnLeave: {
@@ -125,14 +148,14 @@ const progressStyle = computed(() => ({
 if (isPositive(props.dismissedIn)) {
   onMounted(() => {
     intervalID.value = setInterval(() => {
-      ticks.value = ticks.value - tickInterval
+      ticks.value -= tickInterval
     }, tickInterval)
   })
 
   onUnmounted(() => clearInterval(intervalID.value))
 
-  watch(progress, (newProgress) => {
-    if (newProgress < 0.1) {
+  watch(ticks, (newTicks) => {
+    if (!isPositive(newTicks)) {
       emit("dismiss")
       clearInterval(intervalID.value)
     }
@@ -149,6 +172,7 @@ function dismiss() {
 <style scoped>
 @reference "~/assets/css/main.css";
 
+/*noinspection CssUnresolvedCustomProperty*/
 @layer components {
   .alert-animate {
     animation: button-pop var(--animation-btn, 0.25s) ease-out;
