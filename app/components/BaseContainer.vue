@@ -3,7 +3,7 @@
     <div>
       <NavBar />
 
-      <CharacterFilter />
+      <FilterList />
     </div>
 
     <div class="sticky top-0 lg:-mt-2 w-full h-0 flex flex-row-reverse z-[1000]">
