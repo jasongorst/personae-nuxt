@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar bg-primary text-primary-content gap-4">
+  <div class="navbar bg-primary text-primary-content gap-2">
     <div class="md:hidden">
       <details
         id="hamburger-menu-dropdown"
@@ -56,10 +56,14 @@
     </div>
 
     <div class="btn btn-primary normal-case text-lg">
-      <NuxtLink to="/" class="whitespace-nowrap">
+      <NuxtLink
+        class="whitespace-nowrap"
+        to="/"
+        data-testid="title"
+      >
         <Icon name="personae" />
-        <!--        Dramatis Personae-->
-        Personae/DaisyUI 5
+
+        Dramatis Personae
       </NuxtLink>
     </div>
 
@@ -86,7 +90,7 @@
       </template>
     </div>
 
-    <div class="flex justify-end">
+    <div class="flex justify-end gap-2">
       <div class="hidden md:flex">
         <a
           href="https://rae.evilpaws.org/"
@@ -120,4 +124,6 @@ async function showFilterSidebar() {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>
