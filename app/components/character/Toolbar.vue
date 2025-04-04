@@ -2,7 +2,10 @@
   <div class="sticky bottom-0 w-full -mt-4 character-toolbar">
     <div class="bg-primary text-primary-content p-4 text-sm flex flex-row gap-8 items-center justify-between">
       <div class="flex flex-col gap-2">
-        <div class="whitespace-nowrap">
+        <div
+          class="whitespace-nowrap"
+          data-testid="count"
+        >
           Showing
           <strong class="font-bold">{{ filteredCount }}</strong>
           of
@@ -56,12 +59,8 @@
 </template>
 
 <script setup>
-const props = defineProps([ "totalCount" ])
-
-const showFilter = useState("show-filter")
 const personae = usePersonae()
-const { removeFilter } = personae
-const { filter, filteredCount, isFilterSet, totalCount, query } = storeToRefs(personae)
+const { filteredCount, totalCount, query } = storeToRefs(personae)
 
 const { status } = useAuth()
 const isLoggedIn = computed(() => status.value === "authenticated")
