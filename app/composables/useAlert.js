@@ -4,8 +4,8 @@ export const useAlert = defineStore("alert", () => {
   const nextId = ref(1)
 
   // getters
-  const count = () => messages.value.size
-  const hasMessages = () =>isPositive(count.value)
+  const count = computed(() => messages.value.size)
+  const hasMessages = computed(() => isPositive(count.value))
 
   // actions
   function add(text, {
@@ -19,6 +19,8 @@ export const useAlert = defineStore("alert", () => {
     // if neither dismissable nor auto-dismissed, make the alert dismissable
     if (!dismissable && dismissedIn === 0) {
       dismissable = true
+
+      console.warn(`added eternal alert, changed to dismissable [id: ${id}]`)
     }
 
     messages.value.set(id, {
