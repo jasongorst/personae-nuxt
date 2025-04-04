@@ -1,5 +1,7 @@
 import tailwindcss from "@tailwindcss/vite"
 
+const mockAuthModule = process.env.VITEST ? ['./test/mocks/setup.js'] : []
+
 export default defineNuxtConfig({
   app: {
     head: {
@@ -47,10 +49,12 @@ export default defineNuxtConfig({
 
   modules: [
     "@nuxt/icon",
+    "@nuxt/test-utils/module",
     "@pinia/nuxt",
     "@sidebase/nuxt-auth",
     "nuxt-headlessui",
-    "nuxt-lodash"
+    "nuxt-lodash",
+    ...mockAuthModule
   ],
 
   runtimeConfig: {
