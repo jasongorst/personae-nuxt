@@ -8,8 +8,12 @@
         v-for="[attribute, attributeValues] in characterAttributeMap"
         :key="attribute"
         class="menu w-full bg-base-200"
+        data-testid="attribute"
       >
-        <li class="menu-title py-1 mb-2 border-y-2 border-primary text-center text-sm uppercase font-bold text-base-content">
+        <li
+          class="menu-title py-1 mb-2 border-y-2 border-primary text-center text-sm uppercase font-bold text-base-content"
+          data-testid="title"
+        >
           {{ attribute }}
         </li>
 
@@ -27,9 +31,13 @@
               v-model="filter[attribute]"
               :value="attributeValue"
               size="xs"
+              data-testid="checkbox"
             />
 
-            <span class="text-sm whitespace-nowrap">
+            <span
+              class="text-sm whitespace-nowrap"
+              data-testid="value"
+            >
               {{ attributeValue }}
             </span>
           </label>
@@ -41,6 +49,7 @@
           <button
             @click="clearFilterAttribute(attribute)"
             class="btn btn-sm btn-soft btn-secondary uppercase h-8 mt-1"
+            data-testid="clear"
           >
             Clear
           </button>
@@ -62,19 +71,14 @@ const filteredAttributeMap = computed(() => attributeMap(filteredCharacters.valu
 
 // sorted unique, non-null, non-empty values of (attributes of filterAttributes) in collection
 function attributeMap(collection) {
-  const result = new Map()
-
-  for (const attribute of filterAttributes) {
-    result
-      .set(
-        attribute,
-        _uniq(collection.map((character) => character[attribute]))
-          .filter(isPresent)
-          .sort()
-      )
-  }
-
-  return result
+  return new Map(
+    filterAttributes.map((attribute) => [
+      attribute,
+      _uniq(collection.map((character) => character[attribute]))
+        .filter(isPresent)
+        .sort()
+    ])
+  )
 }
 
 function isInAttributeMap(attributeValue, attribute, attributeMap) {
