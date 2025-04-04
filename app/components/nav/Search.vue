@@ -12,7 +12,7 @@
     <button
       class="btn btn-neutral rounded-l-none h-full border-none outline-transparent active:translate-0!
         [transition-property:color,background-color,box-shadow]"
-      :class="[ buttonSize[size] ]"
+      :class="buttonSize[size]"
       tabindex="-1"
       type="button"
     >
@@ -28,7 +28,7 @@
 const props = defineProps({
   // class of input element
   class: {
-    type: [ Array, Object, String ],
+    type: [ Array, String ],
     default: () => ""
   },
   // id of input element
@@ -41,7 +41,7 @@ const props = defineProps({
     type: String,
     default: "md",
     validator(value) {
-      return [ "xl", "lg", "md", "sm", "xs" ].includes(value)
+      return uiSizes.includes(value)
     }
   },
   // class of wrapper div
@@ -56,22 +56,8 @@ const personae = usePersonae()
 const { query } = storeToRefs(personae)
 
 const inputAttrs = computed(() => _omit(attrs, [ "class", "id", "size" ]))
-
-const inputSize = {
-  xl: "input-xl",
-  lg: "input-lg",
-  md: "input-md",
-  sm: "input-sm",
-  xs: "input-xs"
-}
-
-const buttonSize = {
-  xl: "btn-xl",
-  lg: "btn-lg",
-  md: "btn-md",
-  sm: "btn-sm",
-  xs: "btn-xs"
-}
+const inputSize = prefixUiSizes("input")
+const buttonSize = prefixUiSizes("btn")
 
 const defaultWrapperClass = [ "input", inputSize[props.size], "w-52", "lg:w-60", "pr-0" ]
 const wrapperDivClass = computed(() => twMerge(defaultWrapperClass, props.wrapperClass))
