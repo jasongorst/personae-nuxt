@@ -1,12 +1,17 @@
 <!--suppress HtmlUnknownTarget -->
 <template>
+  <div v-if="apiStatus === 'pending'">
+    <!--    TODO: loading indicator-->
+  </div>
+
   <div
-    v-if="isPresent(character)"
+    v-else
     class="card bg-base-300 shadow-xl max-w-prose mx-auto"
+    data-testid="show"
   >
     <div class="card-body">
       <template
-        v-for="attribute of detailAttributes"
+        v-for="attribute in detailAttributes"
         :key="attribute"
       >
         <p v-if="isPresent(character[attribute])">
@@ -18,7 +23,7 @@
       </template>
 
       <template
-        v-for="attribute of richTextAttributes"
+        v-for="attribute in richTextAttributes"
         :key="attribute"
       >
         <template v-if="isPresent(character[attribute])">
@@ -76,7 +81,7 @@ const route = useRoute()
 const { status } = useAuth()
 const isLoggedIn = computed(() => status.value === "authenticated")
 
-const { data: character } = await useApi(
+const { data: character, status: apiStatus } = await useApi(
   `/characters/${route.params.id}`,
   {
     onRequestError: () => {
