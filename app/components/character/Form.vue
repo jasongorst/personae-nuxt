@@ -1,6 +1,6 @@
 <template>
   <template
-    v-for="attribute of detailAttributes"
+    v-for="attribute in detailAttributes"
     :key="attribute"
   >
     <UITextInput
@@ -9,6 +9,7 @@
       type="text"
       size="sm"
       :datalist="options?.[attribute]"
+      :data-testid="`input_${attribute}`"
     >
       <template #label>
         {{ _startCase(attribute) }}
@@ -22,10 +23,11 @@
 
   <ClientOnly>
     <UITrixInput
-      v-for="attribute of richTextAttributes"
+      v-for="attribute in richTextAttributes"
       :key="attribute"
       v-model="character[attribute]"
       :id="attribute"
+      :data-testid="`trix_${attribute}`"
     >
       <template #label>
         {{ _startCase(attribute) }}
