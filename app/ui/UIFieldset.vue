@@ -34,7 +34,7 @@ defineOptions({
 const props = defineProps({
   // class of fieldset element
   class: {
-    type: [ Array, Object, String ],
+    type: [ Array, String ],
     default: () => ""
   },
   // id for child component

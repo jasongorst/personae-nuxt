@@ -15,7 +15,7 @@ const model = defineModel()
 const props = defineProps({
   // class of input element
   class: {
-    type: [ Array, Object, String ],
+    type: [ Array, String ],
     default: () => ""
   },
   // id of input element
@@ -28,7 +28,7 @@ const props = defineProps({
     type: String,
     default: "md",
     validator(value) {
-      return [ "xl", "lg", "md", "sm", "xs" ].includes(value)
+      return uiSizes.includes(value)
     }
   },
   // disabled
@@ -40,14 +40,7 @@ const props = defineProps({
 
 const attrs = useAttrs()
 const inputAttrs = computed(() => _omit(attrs, [ "class", "disabled", "id", "size" ]))
-
-const checkboxSize = {
-  xl: "checkbox-xl",
-  lg: "checkbox-lg",
-  md: "checkbox-md",
-  sm: "checkbox-sm",
-  xs: "checkbox-xs"
-}
+const checkboxSize = prefixUiSizes("checkbox")
 
 const defaultClass = [ "checkbox", checkboxSize[props.size], props.disabled && "cursor-not-allowed" ]
 const inputClass = computed(() => twMerge(defaultClass, props.class))

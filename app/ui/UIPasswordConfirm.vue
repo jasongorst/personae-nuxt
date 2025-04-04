@@ -57,31 +57,32 @@ defineOptions({
 const confirmedPassword = defineModel({ type: String })
 
 const props = defineProps({
-  // id of <input>
+  // id of input
   id: {
     type: String,
     default: () => uuid()
   },
-  // size of input (daisyui sizes)
+  // size of input
   size: {
     type: String,
     default: "md",
     validator(value) {
-      return ["lg", "md", "sm", "xs"].includes(value)
+      return uiSizes.includes(value)
     }
   },
-  // class of outer div
+  // class for outer div
   wrapperClass: {
-    type: [Array, String]
+    type: [ Array, String ],
+    default: () => ""
   },
-  // class of label.label
+  // class for label
   labelClass: {
-    type: [Array, String],
+    type: [ Array, String ],
     default: "text-secondary"
   },
-  // class of error span.label-text-alt
+  // class for error
   errorClass: {
-    type: [Array, String],
+    type: [ Array, String ],
     default: "text-error"
   },
   // value of autocomplete attribute
@@ -99,7 +100,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(["hasMismatchError"])
+const emit = defineEmits([ "hasMismatchError" ])
 
 const password = ref(null)
 const passwordConfirm = ref(null)

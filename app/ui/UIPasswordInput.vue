@@ -52,7 +52,7 @@ const password = defineModel({ type: String })
 const props = defineProps({
   // class merged with input
   class: {
-    type: [ Array, Object, String ],
+    type: [ Array, String ],
     default: () => ""
   },
   // id of input
@@ -65,12 +65,12 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
-  // size of input (daisyui sizes)
+  // size of input
   size: {
     type: String,
     default: "md",
     validator(value) {
-      return [ "xl", "lg", "md", "sm", "xs" ].includes(value)
+      return uiSizes.includes(value)
     }
   },
   // class of fieldset
@@ -99,26 +99,10 @@ const inputAttrs = computed(() => _omit(attrs, [ "class", "disabled", "id", "typ
 
 const isVisible = ref(props.visible)
 
-const inputSize = {
-  xl: "input-xl",
-  lg: "input-lg",
-  md: "input-md",
-  sm: "input-sm",
-  xs: "input-xs"
-}
+const inputSize = prefixUiSizes("input")
+const buttonSize = prefixUiSizes("btn")
 
-const buttonSize = {
-  xl: "btn-xl",
-  lg: "btn-lg",
-  md: "btn-md",
-  sm: "btn-sm",
-  xs: "btn-xs"
-}
-
-const defaultClass = [
-  "grow", "border-none", "focus:outline-none"
-]
-
+const defaultClass = [ "grow", "border-none", "focus:outline-none" ]
 const inputClass = computed(() => twMerge(defaultClass, props.class))
 
 const icon = computed(() => {

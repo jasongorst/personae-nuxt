@@ -35,7 +35,7 @@ const model = defineModel()
 const props = defineProps({
   // class merged with UIToggleField
   class: {
-    type: [ Array, Object, String ],
+    type: [ Array, String ],
     default: () => ""
   },
   // id of input
@@ -48,7 +48,7 @@ const props = defineProps({
     type: String,
     default: "md",
     validator(value) {
-      return [ "xl", "lg", "md", "sm", "xs" ].includes(value)
+      return uiSizes.includes(value)
     }
   },
   // disable input

@@ -31,7 +31,7 @@ const model = defineModel()
 const props = defineProps({
   // class of input element
   class: {
-    type: [ Array, Object, String ],
+    type: [ Array, String ],
     default: () => ""
   },
   // id of input element
@@ -52,7 +52,7 @@ const props = defineProps({
     type: String,
     default: "md",
     validator(value) {
-      return [ "xl", "lg", "md", "sm", "xs" ].includes(value)
+      return uiSizes.includes(value)
     }
   },
   // array of option values for datalist
@@ -69,16 +69,8 @@ const props = defineProps({
 
 const attrs = useAttrs()
 const inputAttrs = computed(() => _omit(attrs, [ "class", "disabled", "id", "type", "list", "size" ]))
-
 const datalistId = computed(() => `${props.id}_list`)
-
-const inputSize = {
-  xl: "input-xl",
-  lg: "input-lg",
-  md: "input-md",
-  sm: "input-sm",
-  xs: "input-xs"
-}
+const inputSize = prefixUiSizes("input")
 
 const defaultClass = [ "input", "w-full", inputSize[props.size], props.disabled && "cursor-not-allowed" ]
 const inputClass = computed(() => twMerge(defaultClass, props.class))

@@ -37,7 +37,7 @@ const model = defineModel({ type: String })
 const props = defineProps({
   // class merged with UITextField
   class: {
-    type: [ Array, Object, String ],
+    type: [ Array, String ],
     default: () => ""
   },
   // id of input
@@ -58,7 +58,7 @@ const props = defineProps({
     type: String,
     default: "md",
     validator(value) {
-      return [ "xl", "lg", "md", "sm", "xs" ].includes(value)
+      return uiSizes.includes(value)
     }
   },
   // array of option values for datalist

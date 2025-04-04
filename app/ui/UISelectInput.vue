@@ -36,7 +36,7 @@ const model = defineModel()
 const props = defineProps({
   // class merged with UISelectField
   class: {
-    type: [ Array, Object, String ],
+    type: [ Array, String ],
     default: () => ""
   },
   // id of select
@@ -49,7 +49,7 @@ const props = defineProps({
     type: String,
     default: "md",
     validator(value) {
-      return [ "xl", "lg", "md", "sm", "xs" ].includes(value)
+      return uiSizes.includes(value)
     }
   },
   // disable select

@@ -35,7 +35,7 @@ const model = defineModel()
 const props = defineProps({
   // class merged with UITrixEditor
   class: {
-    type: [ Array, Object, String ],
+    type: [ Array, String ],
     default: () => ""
   },
   // id of hidden input
