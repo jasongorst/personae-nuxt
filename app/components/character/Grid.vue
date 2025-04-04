@@ -1,13 +1,17 @@
 <template>
-  <table class="w-full table table-pin-rows table-md table-zebra mb-4">
+  <table
+    class="w-full table table-pin-rows table-md table-zebra mb-4"
+    data-testid="grid"
+  >
     <thead>
     <tr class="bg-base-300 z-0">
       <th
-        v-for="attribute of listAttributes"
+        v-for="attribute in listAttributes"
         :key="attribute"
         :data-tip="attributeTooltip(attribute)"
+        :data-testid="attribute"
         class="text-secondary select-none font-light table-cell tooltip tooltip-bottom tooltip-primary tooltip-late tooltip-bottom-close hover:text-primary"
-        @click="updateSort(attribute)"
+        @click="cycleSort(attribute)"
       >
         <div class="uppercase font-bold flex flex-row gap-0.25 items-center">
           <div>{{ _startCase(attribute) }}</div>
@@ -43,15 +47,18 @@ const sort = ref({
   direction: "asc"
 })
 
-function updateSort(attribute) {
+function cycleSort(attribute) {
   if (sort.value.attribute === attribute) {
     if (sort.value.direction === "asc") {
+      // current sort attribute, descending order
       sort.value.direction = "desc"
     } else {
+      // default sort
       sort.value.attribute = "createdAt"
       sort.value.direction = "asc"
     }
   } else {
+    // change sort attribute, ascending order
     sort.value.attribute = attribute
     sort.value.direction = "asc"
   }
