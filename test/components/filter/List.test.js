@@ -39,8 +39,8 @@ describe("filter menus", async () => {
     expect(attributes).toHaveLength(2)
   })
 
-  it("should render each attribute as a menu title", async () => {
-    expect(attributes[0].get("[data-testid='title']").text()).toBe("player")
+  it("should render each attribute as a menu heading", async () => {
+    expect(attributes[0].get("[data-testid='heading']").text()).toBe("player")
   })
 
   it("should render the values of each attribute", async () => {
