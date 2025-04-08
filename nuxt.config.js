@@ -1,6 +1,6 @@
 import tailwindcss from "@tailwindcss/vite"
 
-const mockAuthModule = process.env.VITEST ? ['./test/mocks/setup.js'] : []
+const mockAuthModule = process.env.VITEST ? [ "./test/mocks/setup.js" ] : []
 
 export default defineNuxtConfig({
   app: {
@@ -67,6 +67,7 @@ export default defineNuxtConfig({
   },
 
   vite: {
+    build: { sourcemap: false },
     plugins: [ tailwindcss() ],
 
     vue: {
