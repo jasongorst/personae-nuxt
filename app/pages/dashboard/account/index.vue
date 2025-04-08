@@ -1,60 +1,64 @@
-<!--suppress HtmlUnknownTarget -->
 <template>
-  <div>
-    <table class="w-full table table-pin-rows table-sm xl:table-md table-zebra mb-4">
-      <thead>
-      <tr class="bg-base-300">
-        <th
-          v-for="attribute in accountAttributes"
-          :key="attribute"
-          :data-tip="attributeTooltip(attribute)"
-          class="text-secondary select-none font-light table-cell tooltip tooltip-bottom tooltip-primary tooltip-late tooltip-bottom-close hover:text-primary"
-          @click="cycleSort(attribute)"
-        >
-          <div class="uppercase font-bold flex flex-row gap-0.25 items-center">
-            <div>{{ _startCase(attribute) }}</div>
-
-            <div class="w-0 overflow-x-visible">
-              <Icon
-                v-if="sort.attribute === attribute"
-                :name="sort.direction === 'asc' ? 'ph:sort-ascending-bold' : 'ph:sort-descending-bold'"
-                size="1.125rem"
-                class="block! text-accent"
-              />
-            </div>
-          </div>
-        </th>
-      </tr>
-      </thead>
-
-      <tbody>
-      <tr
-        v-for="account in accounts"
-        :key="account.id"
-        class="hover"
+  <table
+    class="w-full table table-pin-rows table-sm xl:table-md table-zebra mb-4"
+    data-testid="account-grid"
+  >
+    <thead>
+    <tr class="bg-base-300">
+      <th
+        v-for="attribute in accountAttributes"
+        :key="attribute"
+        :data-tip="attributeTooltip(attribute)"
+        class="text-secondary select-none font-light table-cell tooltip tooltip-bottom tooltip-primary
+          tooltip-late tooltip-bottom-close hover:text-primary"
+        @click="cycleSort(attribute)"
       >
-        <td
-          v-for="attribute in accountAttributes"
-          :key="attribute"
-          class="p-0!"
-        >
-          <NuxtLink
-            :to="`/dashboard/account/edit-${account.id}`"
-            class="inline-block w-full px-3 py-2 xl:px-4 xl:py-3"
-          >
-            <span v-if="isPresent(account[attribute])">
-              {{ account[attribute] }}
-            </span>
+        <div class="uppercase font-bold flex flex-row gap-0.25 items-center">
+          <div>
+            {{ _startCase(attribute) }}
+          </div>
 
-            <span v-else>
-              &nbsp;
-            </span>
-          </NuxtLink>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+          <div class="w-0 overflow-x-visible">
+            <Icon
+              v-if="sort.attribute === attribute"
+              :name="sort.direction === 'asc' ? 'ph:sort-ascending-bold' : 'ph:sort-descending-bold'"
+              size="1.125rem"
+              class="block! text-accent"
+            />
+          </div>
+        </div>
+      </th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr
+      v-for="account in accounts"
+      :key="account.id"
+      class="hover"
+    >
+      <td
+        v-for="attribute in accountAttributes"
+        :key="attribute"
+        class="p-0!"
+      >
+        <!--suppress HtmlUnknownTarget -->
+        <NuxtLink
+          :to="`/dashboard/account/edit-${account.id}`"
+          class="inline-block w-full px-3 py-2 xl:px-4 xl:py-3"
+        >
+          <span v-if="isPresent(account[attribute])">
+            {{ account[attribute] }}
+          </span>
+
+          <span v-else>
+            &nbsp;
+          </span>
+        </NuxtLink>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 
   <div class="sticky bottom-0 w-full -mt-4 accounts-toolbar">
     <div class="bg-primary text-primary-content p-4 flex flex-row justify-between text-sm">

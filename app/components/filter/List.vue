@@ -12,7 +12,7 @@
       >
         <li
           class="menu-title py-1 mb-2 border-y-2 border-primary text-center text-sm uppercase font-bold text-base-content"
-          data-testid="title"
+          data-testid="heading"
         >
           {{ attribute }}
         </li>

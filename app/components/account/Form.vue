@@ -4,6 +4,7 @@
     v-model="account.email"
     size="sm"
     type="email"
+    data-testid="input_email"
   >
     <template #label>
       Email
@@ -18,6 +19,7 @@
     id="password"
     v-model="account.password"
     size="sm"
+    data-testid="input_password"
   >
     <template #label>
       {{ action === "edit" ? "New Password" : "Password" }}
@@ -35,6 +37,7 @@
     :options="statusValues"
     :tooltip="isOwnAccount ? 'Please don\'t change your own status.' : null"
     size="sm"
+    data-testid="input_status"
   >
     <template #label>
       Status
@@ -52,6 +55,7 @@
     :tooltip="isOwnAccount ? 'Please don\'t remove your own admin flag.' : null"
     size="sm"
     wrapper-class="flex flex-row gap-2 items-center pt-4"
+    data-testid="input_admin"
   >
     <template #label>
       Admin?
@@ -74,6 +78,7 @@ const props = defineProps({
       return [ "create", "edit" ].includes(value)
     }
   },
+
   fieldError: {
     type: Object,
     default: {}
@@ -86,7 +91,6 @@ const statusValues = [ "unverified", "verified", "closed" ]
 const isOwnAccount = computed(
   () => (data.value?.email === account.value.email)
 )
-
 </script>
 
 <style scoped>
