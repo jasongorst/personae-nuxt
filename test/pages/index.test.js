@@ -16,29 +16,43 @@ it("should render", async () => {
   expect(wrapper).toBeDefined
 })
 
-it("should fetch characters from endpoint", async () => {
+describe("fetch characters from endpoint", async () => {
+  let wrapper, personae
+
+  beforeEach(async () => {
+    wrapper = await mountSuspended(index, {
+      global: {
+        plugins: [ createTestingPinia() ]
+      }
+    })
+
+    personae = usePersonae()
+  })
+
+  it("should fetch characters from endpoint", async () => {
+    expect(personae.characters).toEqual(characters)
+  })
+
+  it("should render CharacterGrid with test character", async () => {
+    await sleep(10)
+
+    expect(wrapper.get("[data-testid='grid']")).toBeDefined()
+    expect(wrapper.get("[data-testid='row_1']")).toBeDefined()
+    expect(wrapper.get("[data-testid='player_test-1']")).toBeDefined()
+  })
+})
+
+it("should render CharacterEmpty with empty characters", async () => {
+  // return empty array from mocked endpoint
+  registerEndpoint("/characters", () => [])
+
   const wrapper = await mountSuspended(index, {
-    // include pinia testing plugin
     global: {
       plugins: [ createTestingPinia() ]
     }
   })
 
   const personae = usePersonae()
-
-  expect(personae.characters).toEqual(characters)
-})
-
-it("should render CharacterGrid with test characters", async () => {
-  const wrapper = await mountSuspended(index)
-
-  expect(wrapper.get("[data-testid='grid']")).toBeDefined()
-})
-
-it("should render CharacterEmpty with empty characters", async () => {
-  // return empty array from mocked endpoint
-  registerEndpoint("/characters", () => [])
-  const wrapper = await mountSuspended(index)
 
   expect(wrapper.get("[data-testid='empty']")).toBeDefined()
 })
