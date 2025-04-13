@@ -34,8 +34,8 @@
 <script setup>
 const showFilter = useState("show-filter")
 const personae = usePersonae()
-const { removeFilter } = personae
 const { filter, isFilterSet } = storeToRefs(personae)
+const { removeFilter } = personae
 </script>
 
 <style scoped>
