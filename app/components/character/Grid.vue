@@ -10,7 +10,8 @@
         :key="attribute"
         :data-tip="attributeTooltip(attribute)"
         :data-testid="attribute"
-        class="text-secondary select-none font-light table-cell tooltip tooltip-bottom tooltip-primary tooltip-late tooltip-bottom-close hover:text-primary"
+        class="text-secondary select-none font-light table-cell hover:text-primary
+          tooltip tooltip-bottom tooltip-primary tooltip-late tooltip-bottom-close"
         @click="cycleSort(attribute)"
       >
         <div class="uppercase font-bold flex flex-row gap-0.25 items-center">
