@@ -1,7 +1,7 @@
 <template>
   <div
     class="skeleton w-full mb-4 max-h-[calc(100vh-8.5rem)] overflow-y-hidden"
-    data-testid="skeleton"
+    data-testid="data-skeleton"
   >
     <table class="w-full table table-md">
       <thead>

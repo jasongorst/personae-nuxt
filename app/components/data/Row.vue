@@ -1,5 +1,8 @@
 <template>
-  <tr class="hover">
+  <tr
+    class="hover"
+    data-testid="data-row"
+  >
     <td
       v-for="field in fields"
       :key="field"
@@ -7,30 +10,18 @@
     >
       <!--suppress HtmlUnknownTarget -->
       <NuxtLink
-        v-if="isPresent(linkTemplate)"
-        :to="link(row)"
+        v-if="isPresent(rowLink)"
+        :to="rowLink(row)"
         class="inline-block w-full px-3 py-2 xl:px-4 xl:py-3"
       >
-        <span v-if="isPresent(row[field])">
-          {{ row[field] }}
-        </span>
-
-        <span v-else>
-          &nbsp;
-        </span>
+        {{ isPresent(row[field]) ? row[field] : "&nbsp;" }}
       </NuxtLink>
 
       <div
         v-else
         class="inline-block w-full px-3 py-2 xl:px-4 xl:py-3"
       >
-        <span v-if="isPresent(row[field])">
-          {{ row[field] }}
-        </span>
-
-        <span v-else>
-          &nbsp;
-        </span>
+        {{ isPresent(row[field]) ? row[field] : "&nbsp;" }}
       </div>
     </td>
   </tr>
@@ -46,12 +37,10 @@ const props = defineProps({
     type: Array,
     required: true
   },
-  linkTemplate: {
-    type: String
+  rowLink: {
+    type: Function
   }
 })
-
-const link = computed(() => _template(props.linkTemplate, { interpolate: /{{([\s\S]+?)}}/g }))
 </script>
 
 <style scoped>
