@@ -1,15 +1,22 @@
 <template>
-  <div class="sticky bottom-0 w-full -mt-4 toolbar">
+  <div
+    class="sticky bottom-0 w-full -mt-4 toolbar"
+    data-testid="data-toolbar"
+  >
     <div class="bg-primary text-primary-content p-4 flex flex-row justify-between text-sm">
-      <div class="leading-6">
-        {{ `${count} ${count > 1 ? name : pluralName}` }}
+      <div
+        class="leading-6"
+        data-testid="count"
+      >
+        {{ `${count} ${count > 1 ? pluralName : name }` }}
       </div>
 
       <!--suppress HtmlUnknownTarget -->
       <NuxtLink
-        v-if="isPresent(createLink)"
-        :to="createLink"
+        v-if="isPresent(createUrl)"
+        :to="createUrl"
         class="justify-self-end btn btn-xs btn-secondary uppercase"
+        data-testid="link"
       >
         Add
 
@@ -24,6 +31,10 @@
 
 <script setup>
 const props = defineProps({
+  count: {
+    type: Number,
+    required: true
+  },
   name: {
     type: String,
     default: "row"
@@ -32,11 +43,7 @@ const props = defineProps({
     type: String,
     default: (rawProps) => isPresent(rawProps?.name) ? rawProps.name + "s" : "rows"
   },
-  count: {
-    type: Number,
-    required: true
-  },
-  createLink: {
+  createUrl: {
     type: String
   }
 })
