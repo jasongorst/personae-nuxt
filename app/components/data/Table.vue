@@ -8,15 +8,15 @@
       :data="sortedData"
       :fields="fields"
       :sort="sort"
-      :link-template="linkTemplate"
-      @sort="(attribute) => cycleSort(attribute)"
+      :row-link="rowLink"
+      @sort="(field) => cycleSort(field)"
     />
 
     <DataToolbar
       :count="data.length"
       :name="name"
       :plural-name="pluralName"
-      :create-link="createLink"
+      :create-url="createUrl"
     />
   </template>
 </template>
@@ -35,23 +35,23 @@ const props = defineProps({
     default: () => ({ field: "id", direction: "asc" }),
     validator: (value) => includesKeys(value, [ "field", "direction" ])
   },
+  rowLink: {
+    type: Function
+  },
   name: {
     type: String,
     default: "row"
   },
   pluralName: {
     type: String,
-    default: (rawProps) => isPresent(rawProps?.name) ? rawProps.name + "s" : "rows"
+    default: (rawProps) => (isPresent(rawProps?.name) ? rawProps.name + "s" : "rows")
   },
-  linkTemplate: {
-    type: String
-  },
-  createLink: {
+  createUrl: {
     type: String
   }
 })
 
-const sort = ref(props.defaultSort)
+const sort = ref(_clone(props.defaultSort))
 
 const sortedData = computed(() => {
   if (sort.value.direction === "asc") {
