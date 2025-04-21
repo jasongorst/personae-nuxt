@@ -2,6 +2,7 @@
   <div
     class="collapse rounded-none w-full bg-base-300"
     :class="showFilter ? 'collapse-open p-4' : 'collapse-close'"
+    data-testid="filter-list"
   >
     <div class="relative collapse-content p-0! grid grid-cols-4 gap-2">
       <ul

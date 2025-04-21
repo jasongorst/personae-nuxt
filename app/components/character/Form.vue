@@ -1,43 +1,45 @@
 <template>
-  <template
-    v-for="attribute in detailAttributes"
-    :key="attribute"
-  >
-    <UITextInput
-      v-model="character[attribute]"
-      :id="attribute"
-      type="text"
-      size="sm"
-      :datalist="options?.[attribute]"
-      :data-testid="`input_${attribute}`"
-    >
-      <template #label>
-        {{ _startCase(attribute) }}
-      </template>
-
-      <template #error v-if="_has(fieldError, attribute)">
-        {{ fieldError[attribute] }}
-      </template>
-    </UITextInput>
-  </template>
-
-  <ClientOnly>
-    <UITrixInput
-      v-for="attribute in richTextAttributes"
+  <div data-testid="character-form">
+    <template
+      v-for="attribute in detailAttributes"
       :key="attribute"
-      v-model="character[attribute]"
-      :id="attribute"
-      :data-testid="`trix_${attribute}`"
     >
-      <template #label>
-        {{ _startCase(attribute) }}
-      </template>
+      <UITextInput
+        v-model="character[attribute]"
+        :id="attribute"
+        type="text"
+        size="sm"
+        :datalist="options?.[attribute]"
+        :data-testid="`input_${attribute}`"
+      >
+        <template #label>
+          {{ _startCase(attribute) }}
+        </template>
 
-      <template #error v-if="_has(fieldError, attribute)">
-        {{ fieldError[attribute] }}
-      </template>
-    </UITrixInput>
-  </ClientOnly>
+        <template #error v-if="_has(fieldError, attribute)">
+          {{ fieldError[attribute] }}
+        </template>
+      </UITextInput>
+    </template>
+
+    <ClientOnly>
+      <UITrixInput
+        v-for="attribute in richTextAttributes"
+        :key="attribute"
+        v-model="character[attribute]"
+        :id="attribute"
+        :data-testid="`trix_${attribute}`"
+      >
+        <template #label>
+          {{ _startCase(attribute) }}
+        </template>
+
+        <template #error v-if="_has(fieldError, attribute)">
+          {{ fieldError[attribute] }}
+        </template>
+      </UITrixInput>
+    </ClientOnly>
+  </div>
 </template>
 
 <script setup>

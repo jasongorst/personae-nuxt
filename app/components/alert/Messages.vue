@@ -1,5 +1,8 @@
 <template>
-  <div class="toast w-full md:w-[24rem] lg:w-[28rem] xl:w-[32rem] p-0 z-[9] whitespace-normal">
+  <div
+    class="toast w-full md:w-[24rem] lg:w-[28rem] xl:w-[32rem] p-0 z-[9] whitespace-normal"
+    data-testid="alert-messages"
+  >
     <AlertItem
       v-for="[id, message] in alert.messages"
       :key="id"

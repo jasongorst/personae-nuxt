@@ -5,7 +5,7 @@
       hover:swap-active"
     :class="[ borderColor[severity], (dismissable && 'alert-animate cursor-pointer') ]"
     @click="dismiss"
-    data-testid="wrapper"
+    data-testid="alert-item"
   >
     <template v-if="dismissable">
       <button
