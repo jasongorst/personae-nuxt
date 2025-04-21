@@ -20,10 +20,10 @@ it("should render", async () => {
 })
 
 it("should render account grid with test accounts", async () => {
-  expect(wrapper.get("[data-testid='account-grid']")).toBeDefined()
-  expect(wrapper.findAll("[data-testid^='account-row']")).toHaveLength(3)
+  expect(wrapper.get("[data-testid='data-grid']").exists()).toBe(true)
+  expect(wrapper.findAll("[data-testid='data-row']")).toHaveLength(3)
 })
 
 it("should render account toolbar with count", async () => {
-  expect(wrapper.get("[data-testid='account-toolbar']").text()).toContain("3 accounts")
+  expect(wrapper.get("[data-testid='data-toolbar']").text()).toContain("3 accounts")
 })
