@@ -1,7 +1,7 @@
 <template>
   <table
     class="w-full table table-pin-rows table-md table-zebra mb-4"
-    data-testid="grid"
+    data-testid="data-grid"
   >
     <thead>
     <tr class="bg-base-300 z-0">
@@ -11,6 +11,7 @@
         :data-tip="tooltip(sort, field)"
         class="text-secondary select-none font-light table-cell hover:text-primary
           tooltip tooltip-bottom tooltip-primary tooltip-late tooltip-bottom-close"
+        data-testid="data-header"
         @click="$emit('sort', field)"
       >
         <div class="uppercase font-bold flex flex-row gap-0.25 items-center">
@@ -32,12 +33,19 @@
     </thead>
 
     <tbody>
-    <DataRow
-      v-for="row in data"
-      :row="row"
-      :fields="fields"
-      :link-template="linkTemplate"
-    />
+    <template v-for="row in data">
+      <slot
+        name="row"
+        :row="row"
+        :row-link="rowLink"
+      >
+        <DataRow
+          :row="row"
+          :fields="fields"
+          :row-link="rowLink"
+        />
+      </slot>
+    </template>
     </tbody>
   </table>
 </template>
@@ -57,8 +65,8 @@ const props = defineProps({
     default: () => ({ field: "id", direction: "asc" }),
     validator: (value) => includesKeys(value, [ "field", "direction" ])
   },
-  linkTemplate: {
-    type: String
+  rowLink: {
+    type: Function
   }
 })
 
