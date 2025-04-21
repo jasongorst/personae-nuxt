@@ -7,7 +7,7 @@ mockComponent("Icon", () => import("~~/test/mocks/Icon.mock.vue"))
 it("should render", async () => {
   const wrapper = await mountSuspended(AlertItem)
 
-  expect(wrapper).toBeDefined()
+  expect(wrapper.get("[data-testid='alert-item']").exists()).toBe(true)
 })
 
 it("should renter the slot content", async () => {
@@ -23,7 +23,7 @@ it("should use the correct border color when the severity prop is 'info'", async
     props: { severity: "info" }
   })
 
-  expect(wrapper.get("[data-testid='wrapper']").classes()).toContain("border-info/50")
+  expect(wrapper.get("[data-testid='alert-item']").classes()).toContain("border-info/50")
 })
 
 it("should use the correct border color when the severity prop is 'error'", async () => {
@@ -31,7 +31,7 @@ it("should use the correct border color when the severity prop is 'error'", asyn
     props: { severity: "error" }
   })
 
-  expect(wrapper.get("[data-testid='wrapper']").classes()).toContain("border-error/50")
+  expect(wrapper.get("[data-testid='alert-item']").classes()).toContain("border-error/50")
 })
 
 it("should use the correct border color when the severity prop is 'warning'", async () => {
@@ -39,7 +39,7 @@ it("should use the correct border color when the severity prop is 'warning'", as
     props: { severity: "warning" }
   })
 
-  expect(wrapper.get("[data-testid='wrapper']").classes()).toContain("border-warning/50")
+  expect(wrapper.get("[data-testid='alert-item']").classes()).toContain("border-warning/50")
 })
 
 it("should use the correct border color when the severity prop is 'success'", async () => {
@@ -47,7 +47,7 @@ it("should use the correct border color when the severity prop is 'success'", as
     props: { severity: "success" }
   })
 
-  expect(wrapper.get("[data-testid='wrapper']").classes()).toContain("border-success/50")
+  expect(wrapper.get("[data-testid='alert-item']").classes()).toContain("border-success/50")
 })
 
 it("should use the correct icon color when the severity prop is 'info'", async () => {
@@ -119,7 +119,7 @@ it("should render the close button if the dismissable prop is true", async () =>
     props: { dismissable: true }
   })
 
-  expect(wrapper.get("[data-testid='button']")).toBeDefined()
+  expect(wrapper.get("[data-testid='button']").exists()).toBe(true)
 })
 
 it("should render the swap wrapper if the dismissedIn prop > 0", async () => {
@@ -127,7 +127,7 @@ it("should render the swap wrapper if the dismissedIn prop > 0", async () => {
     props: { dismissable: true, dismissedIn: 1000 }
   })
 
-  expect(wrapper.get("[data-testid='swap']")).toBeDefined()
+  expect(wrapper.get("[data-testid='swap']").exists()).toBe(true)
 })
 
 it("should render the close icon if the dismissedIn prop === 0", async () => {
@@ -135,7 +135,7 @@ it("should render the close icon if the dismissedIn prop === 0", async () => {
     props: { dismissable: true, dismissedIn: 0 }
   })
 
-  expect(wrapper.get("[data-testid='close-icon']")).toBeDefined()
+  expect(wrapper.get("[data-testid='close-icon']").exists()).toBe(true)
 })
 
 it("should render the progress bar if the dismissable prop is false", async () => {
@@ -143,7 +143,7 @@ it("should render the progress bar if the dismissable prop is false", async () =
     props: { dismissable: false, dismissedIn: 4000 }
   })
 
-  expect(wrapper.get("[data-testid='progressbar']")).toBeDefined()
+  expect(wrapper.get("[data-testid='progressbar']").exists()).toBe(true)
 })
 
 it("emits 'dismiss' after timeout if dismissedIn prop > 0", async () => {
@@ -169,7 +169,7 @@ it("emits 'dismiss' when clicked if dismissable is true", async () => {
     props: { dismissable: true, dismissedIn: 0 }
   })
 
-  wrapper.find("[data-testid='wrapper']").trigger("click")
+  wrapper.find("[data-testid='alert-item']").trigger("click")
   expect(wrapper.emitted("dismiss")).toHaveLength(1)
 })
 
@@ -178,6 +178,6 @@ it("doesn't emit 'dismiss' when clicked if dismissable is false", async () => {
     props: { dismissable: false, dismissedIn: 1000 }
   })
 
-  wrapper.find("[data-testid='wrapper']").trigger("click")
+  wrapper.find("[data-testid='alert-item']").trigger("click")
   expect(wrapper.emitted("dismiss")).toBeUndefined()
 })

@@ -25,7 +25,7 @@ beforeEach(async () => {
 })
 
 it("should render", async () => {
-  expect(wrapper).toBeDefined
+  expect(wrapper.get("[data-testid='filter-list']").exists()).toBe(true)
 })
 
 describe("filter menus", async () => {
@@ -55,6 +55,6 @@ describe("filter menus", async () => {
     const checkbox = attributes[0].find("[data-testid='checkbox']")
     await checkbox.setValue()
 
-    expect(attributes[0].get("[data-testid='clear']")).toBeDefined()
+    expect(attributes[0].get("[data-testid='clear']").exists()).toBe(true)
   })
 })

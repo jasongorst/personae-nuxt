@@ -15,12 +15,12 @@ beforeEach(async () => wrapper = await mountSuspended(AccountForm, {
 }))
 
 it("should render", async () => {
-  expect(wrapper).toBeDefined()
+  expect(wrapper.get("[data-testid='account-form']").exists()).toBe(true)
 })
 
 it("should render inputs for attributes", async () => {
-  expect(wrapper.get("[data-testid='input_email']")).toBeDefined()
-  expect(wrapper.get("[data-testid='input_password']")).toBeDefined()
-  expect(wrapper.get("[data-testid='input_status']")).toBeDefined()
-  expect(wrapper.get("[data-testid='input_admin']")).toBeDefined()
+  expect(wrapper.get("[data-testid='input_email']").exists()).toBe(true)
+  expect(wrapper.get("[data-testid='input_password']").exists()).toBe(true)
+  expect(wrapper.get("[data-testid='input_status']").exists()).toBe(true)
+  expect(wrapper.get("[data-testid='input_admin']").exists()).toBe(true)
 })

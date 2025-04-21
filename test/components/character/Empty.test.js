@@ -12,7 +12,7 @@ mockNuxtImport("usePersonae", () => usePersonaeMock)
 it("should render", async () => {
   const wrapper = await mountSuspended(CharacterEmpty)
 
-  expect(wrapper.get("[data-testid='empty']")).toBeDefined()
+  expect(wrapper.get("[data-testid='empty']").exists()).toBe(true)
 })
 
 it("should show empty message for query and filter", async () => {
@@ -25,7 +25,7 @@ it("should show empty message for query and filter", async () => {
 
   const wrapper = await mountSuspended(CharacterEmpty)
 
-  expect(wrapper.get("[data-testid='query-filter']")).toBeDefined()
+  expect(wrapper.get("[data-testid='query-filter']").exists()).toBe(true)
 })
 
 it("should show empty message for query and no filter", async () => {
@@ -38,7 +38,7 @@ it("should show empty message for query and no filter", async () => {
 
   const wrapper = await mountSuspended(CharacterEmpty)
 
-  expect(wrapper.get("[data-testid='query-nofilter']")).toBeDefined()
+  expect(wrapper.get("[data-testid='query-nofilter']").exists()).toBe(true)
 })
 
 it("should show empty message for query and no filter", async () => {
@@ -51,5 +51,5 @@ it("should show empty message for query and no filter", async () => {
 
   const wrapper = await mountSuspended(CharacterEmpty)
 
-  expect(wrapper.get("[data-testid='noquery-filter']")).toBeDefined()
+  expect(wrapper.get("[data-testid='noquery-filter']").exists()).toBe(true)
 })

@@ -21,5 +21,5 @@ mockNuxtImport("useAlert", () => (() => mockAlert))
 it("should render", async () => {
   const wrapper = await mountSuspended(AlertMessages)
 
-  expect(wrapper).toBeDefined()
+  expect(wrapper.get("[data-testid='alert-messages']").exists()).toBe(true)
 })

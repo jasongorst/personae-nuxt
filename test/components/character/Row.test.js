@@ -12,7 +12,7 @@ beforeEach(async () => {
 })
 
 it("should render", async () => {
-  expect(wrapper).toBeDefined()
+  expect(wrapper.get("[data-testid='row_1']").exists()).toBe(true)
 })
 
 it("should render the character attributes", async () => {

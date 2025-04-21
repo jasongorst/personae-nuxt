@@ -17,7 +17,7 @@ mockNuxtImport("usePersonae", () => usePersonaeMock)
 it("should render", async () => {
   const wrapper = await mountSuspended(CharacterToolbar)
 
-  expect(wrapper).toBeDefined()
+  expect(wrapper.get("[data-testid='character-toolbar']").exists()).toBe(true)
 })
 
 it("should show filtered and total character counts", async () => {

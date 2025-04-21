@@ -21,7 +21,7 @@ beforeEach(async () => {
 })
 
 it("should render", async () => {
-  expect(wrapper.get("[data-testid='summary']")).toBeDefined
+  expect(wrapper.get("[data-testid='summary']").exists()).toBe(true)
 })
 
 it("should render all attribute values in the filter", async () => {

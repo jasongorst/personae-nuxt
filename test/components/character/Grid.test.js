@@ -25,20 +25,20 @@ beforeEach(async () => {
 })
 
 it("should render", async () => {
-  expect(wrapper).toBeDefined
+  expect(wrapper.get("[data-testid='grid']").exists()).toBe(true)
 })
 
 it("should render 2 CharacterRows", async () => {
   expect(wrapper.findAll("[data-testid^='row']")).toHaveLength(2)
 })
 
-it("calls sortCharacters with attribute and 'asc' when header is clicked", async () => {
+it("should call sortCharacters with attribute and 'asc' when header is clicked", async () => {
   await wrapper.find("[data-testid='player']").trigger("click")
 
   expect(sortCharactersSpy).toHaveBeenCalledExactlyOnceWith("player", "asc")
 })
 
-it("calls sortCharacters with attribute and 'desc' when header is clicked twice", async () => {
+it("should call sortCharacters with attribute and 'desc' when header is clicked twice", async () => {
   const th = wrapper.find("[data-testid='player']")
   _times(2, async () => await th.trigger("click"))
 
@@ -47,7 +47,7 @@ it("calls sortCharacters with attribute and 'desc' when header is clicked twice"
 })
 
 
-it("calls sortCharacters with defaults when header is clicked three times", async () => {
+it("should call sortCharacters with defaults when header is clicked three times", async () => {
   const th = wrapper.find("[data-testid='player']")
   _times(3, async () => await th.trigger("click"))
 
@@ -55,13 +55,13 @@ it("calls sortCharacters with defaults when header is clicked three times", asyn
   expect(sortCharactersSpy).toHaveBeenLastCalledWith("createdAt", "asc")
 })
 
-it("shows ascending sort icon when header is clicked", async () => {
+it("should show ascending sort icon when header is clicked", async () => {
   await wrapper.find("[data-testid='player']").trigger("click")
 
   expect(wrapper.get("[data-testid='icon']").text()).toBe("ph:sort-ascending-bold")
 })
 
-it("shows descending sort icon when header is clicked twice", async () => {
+it("should show descending sort icon when header is clicked twice", async () => {
   const th = wrapper.find("[data-testid='player']")
   // noinspection ES6RedundantAwait
   await _times(2, async () => await th.trigger("click"))
@@ -69,7 +69,7 @@ it("shows descending sort icon when header is clicked twice", async () => {
   expect(wrapper.get("[data-testid='icon']").text()).toBe("ph:sort-descending-bold")
 })
 
-it("shows no sort icon when header is clicked three times", async () => {
+it("should show no sort icon when header is clicked three times", async () => {
   const th = wrapper.find("[data-testid='player']")
   // noinspection ES6RedundantAwait
   await _times(3, async () => await th.trigger("click"))

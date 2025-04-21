@@ -20,14 +20,14 @@ beforeEach(async () => {
 })
 
 it("should render", async () => {
-  expect(wrapper).toBeDefined()
+  expect(wrapper.get("[data-testid='character-form']").exists()).toBe(true)
 })
 
 it("should render inputs for detailAttributes", async () => {
-  expect(wrapper.get("[data-testid='input_player']")).toBeDefined()
-  expect(wrapper.get("[data-testid='input_name']")).toBeDefined()
+  expect(wrapper.get("[data-testid='input_player']").exists()).toBe(true)
+  expect(wrapper.get("[data-testid='input_name']").exists()).toBe(true)
 })
 
 it("should render trix inputs for richTextAttributes", async () => {
-  expect(wrapper.get("[data-testid='trix_text']")).toBeDefined()
+  expect(wrapper.get("[data-testid='trix_text']").exists()).toBe(true)
 })
