@@ -1,61 +1,25 @@
 <template>
-  <CharacterSkeleton
-    v-if="status !== 'success'"
+  <DataTable
+    :data="data"
+    :fields="fields"
+    :defaultSort="{ field: 'id', direction: 'asc' }"
+    :row-link = "rowLink"
+    name="account"
+    create-url="/dashboard/account/create"
   />
-
-  <template v-else>
-    <AccountGrid
-      :accounts="accounts"
-      :account-attributes="accountAttributes"
-      :sort="sort"
-      @sort="(attribute) => cycleSort(attribute)"
-    />
-
-    <AccountToolbar
-      :count="accounts.length"
-    />
-  </template>
 </template>
 
 <script setup>
 const alert = useAlert()
 const { token } = useAuth()
+const fields = [ "id", "email", "status", "admin" ]
 
-const accountAttributes = [ "id", "email", "status", "admin" ]
+const template = "/dashboard/account/edit-{{ row?.id }}"
+const compiled = _template(template, { interpolate: /{{([\s\S]+?)}}/g })
+const rowLink = (row) => compiled({ row: row })
 
-const sort = ref({
-  attribute: "id",
-  direction: "asc"
-})
-
-function cycleSort(attribute) {
-  if (sort.value.attribute === attribute) {
-    if (sort.value.direction === "asc") {
-      // current sort attribute, descending order
-      sort.value.direction = "desc"
-    } else {
-      // default sort
-      sort.value.attribute = "id"
-      sort.value.direction = "asc"
-    }
-  } else {
-    // change sort attribute, ascending order
-    sort.value.attribute = attribute
-    sort.value.direction = "asc"
-  }
-
-  sortAccounts()
-}
-
-function sortAccounts() {
-  if (sort.value.direction === "asc") {
-    accounts.value.sort(compareAsc(sort.value.attribute))
-  } else {
-    accounts.value.sort(compareDesc(sort.value.attribute))
-  }
-}
-
-const { data: accounts, status } = await useApi(
+// noinspection JSCheckFunctionSignatures
+const { data, status } = await useApi(
   "/accounts",
   {
     token: token,
@@ -82,12 +46,5 @@ const { data: accounts, status } = await useApi(
 </script>
 
 <style scoped>
-@reference "~/assets/css/main.css";
 
-@layer components {
-  .accounts-toolbar {
-    @apply before:block before:sticky before:bottom-20 before:w-full before:h-4 before:bg-gradient-to-t before:from-base-100 before:to-transparent;
-    @apply after:block after:sticky after:bottom-0 after:w-full after:h-4 after:bg-base-100;
-  }
-}
 </style>
