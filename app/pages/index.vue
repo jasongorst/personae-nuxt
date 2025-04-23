@@ -1,23 +1,21 @@
 <template>
-  <NuxtPage />
+  <div data-testid="index">
+    <template v-if="status === 'pending'">
+      <CharacterSkeleton />
+    </template>
 
-  <template v-if="status === 'pending'">
-    <CharacterSkeleton />
-  </template>
+    <template v-else-if="isPositive(filteredCount)">
+      <FilterSummary />
 
-  <template v-else-if="isPositive(filteredCount)">
-    <FilterSummary />
+      <CharacterGrid />
 
-    <CharacterGrid />
+      <CharacterToolbar />
+    </template>
 
-    <CharacterToolbar />
-  </template>
-
-  <template v-else>
-    <ClientOnly>
+    <template v-else>
       <CharacterEmpty />
-    </ClientOnly>
-  </template>
+    </template>
+  </div>
 </template>
 
 <script setup>
@@ -25,9 +23,6 @@ const alert = useAlert()
 const personae = usePersonae()
 const { characters, filteredCount, isFilterSet, query } = storeToRefs(personae)
 const { clearFilter } = usePersonae()
-
-const showSignInModal = useState("showSignInModal")
-callOnce(() => showSignInModal.value = true)
 
 const { data, status, refresh: loadCharacters } = await useApi(
   "/characters", {

@@ -61,6 +61,7 @@
 const userMenuRef = ref(null)
 const alert = useAlert()
 const { status, data: user, signOut } = useAuth()
+const showSignInModal = useState("showSignInModal")
 
 const isLoading = computed(() => status.value === "loading")
 const isLoggedIn = computed(() => status.value === "authenticated")
@@ -80,7 +81,7 @@ async function useSignOut() {
 
 function signIn() {
   closeUserMenu()
-  navigateTo("/sign-in")
+  showSignInModal.value = true
 }
 
 function closeUserMenu() {
