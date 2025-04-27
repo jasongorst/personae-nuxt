@@ -2,7 +2,7 @@
 @plugin "@tailwindcss/typography";
 
 @plugin "daisyui" {
-  themes: ebee, emerald, fantasy --default, cmyk, winter, corporate, wireframe, lofi, pastel, light, bumbl acid, silk, cupcake, autumn, garden, nord, lemonade, caramellatte, retro, valentine, cyberpunk, aqua, synthwave, coffee, dim, sunset, abyss, night, dracula, dark, halloween, business --prefersdark, forest, luxury, black;
+  themes: bumblebee, emerald, fantasy --default, cmyk, winter, corporate, wireframe, lofi, pastel, light, acid, silk, cupcake, autumn, garden, nord, lemonade, caramellatte, retro, valentine, cyberpunk, aqua, synthwave, coffee, dim, sunset, abyss, night, dracula, dark, halloween, business --prefersdark, forest, luxury, black;
 }
 
 /*
