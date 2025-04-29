@@ -11,9 +11,9 @@
     "test": "vitest"
   },
   "dependencies": {
-    "nuxt": "^3.16.2",
+    "nuxt": "^3.17.1",
     "vue": "^3.5.13",
-    "vue-router": "^4.5.0"
+    "vue-router": "^4.5.1"
   },
   "devDependencies": {
     "@iconify-json/fa6-solid": "^1.2.3",
@@ -28,9 +28,9 @@
     "@sidebase/nuxt-auth": "^0.10.1",
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.1.4",
-    "@types/node": "^22.14.1",
+    "@types/node": "^22.15.3",
     "@vue/test-utils": "^2.4.6",
-    "daisyui": "^5.0.27",
+    "daisyui": "^5.0.28",
     "happy-dom": "^17.4.4",
     "lodash-es": "^4.17.21",
     "nuxt-headlessui": "^1.2.0",
@@ -41,7 +41,7 @@
     "tailwindcss": "^4.1.4",
     "trix": "^2.1.13",
     "uuid": "^11.1.0",
-    "vite": "^6.3.2",
+    "vite": "^6.3.3",
     "vitest": "^3.1.2"
   },
   "packageManager": "pnpm@10.9.0"
